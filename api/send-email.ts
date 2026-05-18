@@ -22,7 +22,7 @@ export default {
     const body = await req.json()
 
     try {
-      await resend.emails.send({
+      const { data, error } = await resend.emails.send({
         from: "onboarding@resend.dev",
         to: "Giacomassi.nqn@gmail.com",
         subject: "Nuevo diagnostico recibido",
@@ -45,10 +45,26 @@ export default {
         `,
       })
 
+      if (error) {
+        console.error("Resend error:", error)
+
+        return Response.json(
+          {
+            error:
+              "Resend rechazo el email. Revisá remitente, destinatario o dominio.",
+            details: error,
+          },
+          { status: 400 }
+        )
+      }
+
       return Response.json({
         success: true,
+        data,
       })
     } catch (error) {
+      console.error("Email function error:", error)
+
       return Response.json(
         {
           error: error instanceof Error ? error.message : "Error desconocido",

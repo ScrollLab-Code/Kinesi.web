@@ -173,7 +173,7 @@ export default function TestSection() {
         throw error
       }
 
-      fetch("/api/send-email", {
+      const emailResponse = await fetch("/api/send-email", {
         method: "POST",
 
         headers: {
@@ -181,9 +181,16 @@ export default function TestSection() {
         },
 
         body: JSON.stringify(lead),
-      }).catch((error) => {
-        console.log(error)
       })
+
+      const emailResult = await emailResponse.json()
+
+      if (!emailResponse.ok) {
+        throw new Error(
+          emailResult.error ||
+            "El lead se guardó, pero no se pudo enviar el email."
+        )
+      }
 
       setShowForm(false)
     } catch (error) {
