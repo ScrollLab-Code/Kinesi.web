@@ -60,6 +60,8 @@ export default function TestSection() {
 
   const [showForm, setShowForm] = useState(false)
   const [finished, setFinished] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState("")
 
   const [formData, setFormData] = useState({
     name: "",
@@ -144,41 +146,56 @@ export default function TestSection() {
     })
   }
 
-  const handleSubmit = async () => {
-    const { error } = await supabase
-      .from("leads")
-      .insert([
-        {
-          name: formData.name,
-          lastname: formData.lastname,
-          email: formData.email,
-          phone: formData.phone,
-          career: formData.career,
-          result: result.title,
-          answers: answers.join(", "),
-        },
-      ])
+  const handleSubmit = async (
+    e?: React.FormEvent<HTMLFormElement>
+  ) => {
+    e?.preventDefault()
 
-    if (error) {
-      console.log(error)
-      return
+    setIsSubmitting(true)
+    setSubmitError("")
+
+    const lead = {
+      name: formData.name,
+      lastname: formData.lastname,
+      email: formData.email,
+      phone: formData.phone,
+      career: formData.career,
+      result: result.title,
+      answers: answers.join(", "),
     }
 
-    await fetch("/api/send-email", {
-      method: "POST",
+    try {
+      const { error } = await supabase
+        .from("leads")
+        .insert([lead])
 
-      headers: {
-        "Content-Type": "application/json",
-      },
+      if (error) {
+        throw error
+      }
 
-      body: JSON.stringify({
-        ...formData,
-        result: result.title,
-        answers: answers.join(", "),
-      }),
-    })
+      fetch("/api/send-email", {
+        method: "POST",
 
-    setShowForm(false)
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify(lead),
+      }).catch((error) => {
+        console.log(error)
+      })
+
+      setShowForm(false)
+    } catch (error) {
+      console.log(error)
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : "No se pudo enviar el diagnostico. Revisá Supabase y probá otra vez."
+      )
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   // FORMULARIO
@@ -214,7 +231,9 @@ export default function TestSection() {
                 type="text"
                 name="name"
                 placeholder="Nombre"
+                value={formData.name}
                 onChange={handleChange}
+                required
                 className="w-full p-5 rounded-2xl border border-zinc-200 outline-none focus:border-blue-500"
               />
 
@@ -222,7 +241,9 @@ export default function TestSection() {
                 type="text"
                 name="lastname"
                 placeholder="Apellido"
+                value={formData.lastname}
                 onChange={handleChange}
+                required
                 className="w-full p-5 rounded-2xl border border-zinc-200 outline-none focus:border-blue-500"
               />
 
@@ -230,15 +251,19 @@ export default function TestSection() {
                 type="email"
                 name="email"
                 placeholder="Email"
+                value={formData.email}
                 onChange={handleChange}
+                required
                 className="w-full p-5 rounded-2xl border border-zinc-200 outline-none focus:border-blue-500"
               />
 
               <input
-                type="text"
+                type="tel"
                 name="phone"
                 placeholder="Teléfono"
+                value={formData.phone}
                 onChange={handleChange}
+                required
                 className="w-full p-5 rounded-2xl border border-zinc-200 outline-none focus:border-blue-500"
               />
 
@@ -248,15 +273,26 @@ export default function TestSection() {
               type="text"
               name="career"
               placeholder="Carrera universitaria"
+              value={formData.career}
               onChange={handleChange}
+              required
               className="w-full mt-5 p-5 rounded-2xl border border-zinc-200 outline-none focus:border-blue-500"
             />
 
+            {submitError && (
+              <p className="mt-5 rounded-2xl border border-red-200 bg-red-50 p-4 text-red-700">
+                {submitError}
+              </p>
+            )}
+
             <button
-              onClick={handleSubmit}
-              className="w-full mt-8 bg-blue-600 text-white py-5 rounded-2xl font-semibold text-lg hover:scale-[1.01] transition"
+              onClick={() => void handleSubmit()}
+              disabled={isSubmitting}
+              className="w-full mt-8 bg-blue-600 text-white py-5 rounded-2xl font-semibold text-lg hover:scale-[1.01] transition disabled:cursor-not-allowed disabled:bg-zinc-400 disabled:hover:scale-100"
             >
-              Enviar diagnóstico
+              {isSubmitting
+                ? "Enviando..."
+                : "Enviar diagnóstico"}
             </button>
 
           </div>
