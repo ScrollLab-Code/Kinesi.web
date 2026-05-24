@@ -1,98 +1,66 @@
-import { motion } from "framer-motion"
+﻿import { motion } from "framer-motion"
 
 export default function Hero() {
   return (
-    <section
-      id="inicio"
-      className="relative min-h-screen flex items-center justify-center px-6 bg-gradient-to-b from-white to-blue-50 overflow-hidden"
-    >
-      
-      {/* Background Glow */}
-      <div className="absolute top-20 left-10 w-72 h-72 bg-blue-200 rounded-full blur-3xl opacity-40"></div>
+    <section id="inicio" className="relative min-h-screen overflow-hidden px-6 pt-28 bg-[#eff6ff] text-slate-900">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(168,223,255,0.25),transparent_25%)]" />
+      <div className="absolute inset-x-0 top-24 h-[420px] bg-[radial-gradient(circle,_rgba(145,206,255,0.18),transparent_55%)]" />
+      <div className="absolute left-0 top-0 h-56 w-1/3 bg-gradient-to-r from-sky-200/70 to-transparent blur-3xl" />
+      <div className="absolute right-0 bottom-0 h-64 w-1/2 bg-gradient-to-l from-slate-200/50 to-transparent blur-3xl" />
 
-      <div className="absolute bottom-10 right-10 w-96 h-96 bg-purple-200 rounded-full blur-3xl opacity-40"></div>
-
-      {/* Floating Cards */}
-      <div className="hidden xl:block absolute left-6 top-52 bg-white shadow-xl border border-zinc-100 rounded-3xl p-5 backdrop-blur-xl">
-        <p className="text-sm text-zinc-500 mb-2">
-          Estudiantes ayudados
-        </p>
-
-        <h3 className="text-3xl font-bold text-zinc-900">
-          +40
-        </h3>
-      </div>
-
-      <div className="hidden xl:block absolute right-6 bottom-32 bg-white shadow-xl border border-zinc-100 rounded-3xl p-5 backdrop-blur-xl max-w-[240px]">
-        <p className="text-sm text-zinc-500 mb-2">
-          Seguimiento personalizado
-        </p>
-
-        <h3 className="text-xl font-semibold text-zinc-900 leading-snug">
-          Técnicas de estudio + hábitos
-        </h3>
-      </div>
-
-      {/* Main Content */}
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="max-w-5xl text-center relative z-10 pt-20"
-      >
-        
+      <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center justify-center text-center py-24">
         <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="text-blue-600 font-medium mb-4"
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          className="text-sm uppercase tracking-[0.35em] text-slate-500 mb-8"
         >
-          Acompañamiento académico personalizado
+          Acompañante académico para estudiantes
         </motion.p>
 
         <motion.h1
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="text-5xl md:text-7xl font-bold leading-tight mb-6 text-zinc-900"
+          transition={{ duration: 0.85, delay: 0.1 }}
+          className="text-[4rem] md:text-[6.5rem] leading-[0.92] font-black uppercase tracking-[-0.05em] text-slate-900"
         >
-          Descubrí una mejor forma de estudiar
+          KINASE
         </motion.h1>
 
         <motion.p
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="text-zinc-600 text-lg md:text-xl max-w-2xl mx-auto mb-10"
+          transition={{ duration: 0.85, delay: 0.2 }}
+          className="mt-8 max-w-3xl text-xl md:text-2xl leading-tight text-slate-600"
         >
-          Técnicas de estudio, organización académica y acompañamiento personalizado para estudiantes universitarios.
+          Estudio con compañía, guía y herramientas reales para que cada alumno pueda avanzar con seguridad y foco.
         </motion.p>
 
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-          className="flex items-center justify-center gap-4 flex-wrap"
+          transition={{ duration: 0.85, delay: 0.35 }}
+          className="mt-12 flex flex-col items-center gap-4 sm:flex-row sm:justify-center"
         >
-          
           <a
-            href="#diagnostico"
-            className="bg-blue-600 text-white px-8 py-4 rounded-full font-semibold hover:scale-105 transition"
+            href="#que-es"
+            className="rounded-full border border-slate-300 bg-white px-8 py-4 text-sm font-semibold uppercase tracking-[0.16em] text-slate-900 transition hover:bg-slate-50"
           >
-            Hacer diagnóstico
+            Conocer más
           </a>
-
           <a
-            href="#cursos"
-            className="bg-white border border-zinc-200 px-8 py-4 rounded-full hover:bg-zinc-50 transition"
+            href="#unirse"
+            className="rounded-full bg-sky-700 px-8 py-4 text-sm font-semibold uppercase tracking-[0.16em] text-white transition hover:bg-sky-600"
           >
-            Ver cursos
+            Registrarme
           </a>
-
         </motion.div>
+      </div>
 
-      </motion.div>
-
+      <div className="absolute bottom-10 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-4 text-slate-500/70">
+        <span className="text-xs uppercase tracking-[0.35em]">Scroll</span>
+        <span className="h-16 w-[1px] bg-slate-300/30" />
+      </div>
     </section>
   )
 }

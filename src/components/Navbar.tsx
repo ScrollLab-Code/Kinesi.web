@@ -1,42 +1,33 @@
-export default function Navbar() {
+﻿export default function Navbar() {
   return (
-    <header className="fixed top-0 w-full bg-white/80 backdrop-blur-lg border-b border-zinc-100 z-50">
-      
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-        
-        <h1 className="text-2xl font-bold text-zinc-900">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-slate-200/70 bg-white/95 backdrop-blur-xl shadow-sm">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
+        <a href="#inicio" className="text-lg font-semibold tracking-[0.2em] uppercase text-slate-900">
           KINASE
-        </h1>
+        </a>
 
-        <nav className="hidden md:flex items-center gap-8 text-sm text-zinc-600">
-          
-          <a href="#inicio" className="hover:text-zinc-900 transition">
-            Inicio
+        <nav className="hidden items-center gap-10 text-sm text-slate-600 md:flex">
+          <a href="#que-es" className="hover:text-slate-900 transition">
+            Qué es
           </a>
-
-          <a href="#diagnostico" className="hover:text-zinc-900 transition">
-            Diagnóstico
+          <a href="#como-funciona" className="hover:text-slate-900 transition">
+            Cómo funciona
           </a>
-
-          <a href="#cursos" className="hover:text-zinc-900 transition">
-            Cursos
+          <a href="#unirse" className="hover:text-slate-900 transition">
+            Registro
           </a>
-
-          <a href="#contacto" className="hover:text-zinc-900 transition">
-            Contacto
+          <a href="#marketplace" className="hover:text-slate-900 transition">
+            Marketplace
           </a>
-
         </nav>
 
         <a
-          href="#diagnostico"
-          className="bg-blue-600 text-white px-5 py-2 rounded-full font-medium hover:scale-105 transition"
+          href="#unirse"
+          className="rounded-full border border-transparent bg-sky-700 px-5 py-3 text-sm font-semibold uppercase tracking-[0.15em] text-white transition hover:bg-sky-600"
         >
-          Empezar
+          Unirse
         </a>
-
       </div>
-
     </header>
   )
 }

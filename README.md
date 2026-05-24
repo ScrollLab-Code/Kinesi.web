@@ -1,73 +1,70 @@
-# React + TypeScript + Vite
+# Kinase - Landing Page
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive landing page built with React, TypeScript, and Vite. Featuring dynamic sections for courses, testimonials, payment schedules, and more.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- ⚡ **Vite** for fast development and optimized builds
+- 🎨 **Tailwind CSS** for modern, responsive design
+- ✨ **Framer Motion** for smooth animations
+- 🔐 **Supabase Integration** for backend services
+- 📧 **Email Support** via Resend
+- 📱 **Fully Responsive** design
+- ✅ **Type-Safe** with TypeScript
 
-## React Compiler
+## Project Structure
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+src/
+├── components/      # Reusable UI components (Navbar, Footer)
+├── sections/        # Page sections (Hero, Features, Courses, etc.)
+├── api/            # API integration functions
+├── assets/         # Images and static assets
+├── lib/            # Utility functions and helpers
+├── types.ts        # Shared interfaces and types
+└── App.tsx         # Main application component
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+**For detailed structure documentation**, see [STRUCTURE.md](./STRUCTURE.md)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Quick Start
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Run linting
+npm run lint
 ```
+
+## Environment Variables
+
+Copy `.env.example` to `.env.local` and fill in your values:
+
+```bash
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_key
+RESEND_API_KEY=your_resend_key
+RESEND_FROM_EMAIL=noreply@yourdomain.com
+RESEND_CONTACT_EMAIL=your-email@yourdomain.com
+```
+
+See [api/README.md](./api/README.md) for email API setup.
+
+## API Documentation
+
+The project includes serverless functions for email handling:
+
+- **POST /api/send-email** - Send lead notification emails
+  - See [api/README.md](./api/README.md) for full documentation
+  - Includes validation, sanitization, and email templates
+
+## ESLint Configuration
+
+This project uses ESLint with type-aware rules for production quality. The configuration is already optimized in `eslint.config.js`.

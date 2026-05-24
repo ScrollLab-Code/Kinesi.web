@@ -1,69 +1,43 @@
+﻿const features = [
+  {
+    title: "Registro rápido",
+    description: "Completa tus datos y accede a un espacio privado para tu estudio.",
+  },
+  {
+    title: "Análisis de perfil",
+    description: "Responde preguntas pensadas para entender cómo aprendés mejor.",
+  },
+  {
+    title: "Recomendaciones reales",
+    description: "Recibí sugerencias de estudio adaptadas a tu situación y materia.",
+  },
+  {
+    title: "Apoyo continuo",
+    description: "Seguimiento pensado para acompañarte durante tus parciales y finales.",
+  },
+]
+
 export default function Features() {
-  const features = [
-    {
-      title: "Organización académica",
-      description:
-        "Aprendé a administrar tus materias, tiempos y objetivos de forma eficiente.",
-    },
-    {
-      title: "Técnicas de estudio",
-      description:
-        "Descubrí métodos personalizados para mejorar tu comprensión y retención.",
-    },
-    {
-      title: "Acompañamiento personalizado",
-      description:
-        "Recibí ayuda y seguimiento adaptado a tu situación académica.",
-    },
-    {
-      title: "Preparación para exámenes",
-      description:
-        "Planificá mejor tus parciales y finales con estrategias concretas.",
-    },
-  ]
-
   return (
-    <section className="py-32 px-6 bg-white">
-      
-      <div className="max-w-6xl mx-auto">
-        
-        <div className="text-center mb-20">
-          
-          <p className="text-blue-600 font-medium mb-4">
-            Beneficios
-          </p>
-
-          <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 mb-6">
-            Todo lo que necesitás para mejorar académicamente
+    <section id="como-funciona" className="border-t border-slate-200 bg-slate-50 py-28 px-6">
+      <div className="mx-auto max-w-6xl">
+        <div className="text-center mb-16">
+          <p className="text-sm uppercase tracking-[0.35em] text-slate-500 mb-5">Cómo funciona</p>
+          <h2 className="text-4xl md:text-5xl font-semibold text-slate-900 leading-tight">
+            Un proceso simple que te acompaña desde el registro hasta el perfil.
           </h2>
-
-          <p className="text-zinc-600 max-w-2xl mx-auto text-lg">
-            Un enfoque pensado para estudiantes universitarios que buscan mejorar su rendimiento y hábitos de estudio.
-          </p>
-
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          
+        <div className="grid gap-6 md:grid-cols-2">
           {features.map((feature, index) => (
-            <div
-              key={index}
-              className="bg-blue-50 border border-blue-100 rounded-3xl p-8 hover:scale-[1.02] transition"
-            >
-              <h3 className="text-2xl font-semibold text-zinc-900 mb-4">
-                {feature.title}
-              </h3>
-
-              <p className="text-zinc-600 leading-relaxed">
-                {feature.description}
-              </p>
+            <div key={index} className="rounded-[2rem] border border-slate-200 bg-white p-8 transition hover:-translate-y-1 shadow-sm">
+              <span className="text-sm uppercase tracking-[0.28em] text-slate-500">Paso {index + 1}</span>
+              <h3 className="mt-5 text-2xl font-semibold text-slate-900">{feature.title}</h3>
+              <p className="mt-4 text-slate-600 leading-relaxed">{feature.description}</p>
             </div>
           ))}
-
         </div>
-
       </div>
-
     </section>
   )
 }
