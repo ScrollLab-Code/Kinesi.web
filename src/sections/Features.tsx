@@ -4,14 +4,14 @@ const features = [
     description:
       "Espacios para preguntar, responder y ordenar dudas por carrera, examen o tema puntual.",
     icon: "💬",
-    color: "blue",
+    color: "emerald",
   },
   {
     title: "Feria académica",
     description:
-      "Mentorías, packs de estudio, preparación de parciales y recursos comprables desde la misma plataforma.",
-    
-    color: "green",
+      "Mentorías, packs de estudio y recursos listos para comprar o vender en la misma plataforma.",
+    icon: "🛒",
+    color: "sky",
   },
   {
     title: "Acompañamiento personalizado",
@@ -20,7 +20,13 @@ const features = [
     icon: "📊",
     color: "purple",
   },
-  
+  {
+    title: "Acceso rápido",
+    description:
+      "Inicio de sesión con email o celular y contenidos disponibles desde el primer momento.",
+    icon: "⚡",
+    color: "amber",
+  },
 ]
 
 export default function Features() {
@@ -31,11 +37,9 @@ export default function Features() {
           <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-emerald-700">
             Qué ofrece Kinase
           </p>
-
           <h2 className="text-4xl font-black leading-tight text-slate-950 md:text-5xl">
             Una plataforma diseñada para que el estudiante avance realmente.
           </h2>
-          
           <p className="mt-4 text-lg text-slate-600">
             Combinamos comunidad, feria académica y tutoría personalizada en un solo lugar.
           </p>
@@ -45,14 +49,12 @@ export default function Features() {
           {features.map((feature) => (
             <article
               key={feature.title}
-              className="group rounded-xl border border-slate-200 bg-gradient-to-br from-white to-stone-50 p-7 shadow-sm transition hover:shadow-lg hover:border-emerald-300"
+              className={`group rounded-xl border border-slate-200 bg-gradient-to-br from-white to-stone-50 p-7 shadow-sm transition hover:shadow-lg hover:border-emerald-300`}
             >
               <div className="mb-4 text-5xl">{feature.icon}</div>
-
               <h3 className="mb-2 text-lg font-black text-slate-950 group-hover:text-emerald-700 transition">
                 {feature.title}
               </h3>
-
               <p className="text-sm leading-6 text-slate-600">
                 {feature.description}
               </p>

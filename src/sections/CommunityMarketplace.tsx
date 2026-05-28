@@ -1,12 +1,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { motion } from "framer-motion"
 import { supabase } from "../lib/supabase"
-supabase.from('community_posts').select('id,title,body,tag,author,votes,comments').order('created_at', { ascending: false }).then(({ data, error }) => {
-  if (error) {
-    console.error("Error fetching posts:", error)
-  } else {
-    console.log("Fetched posts:", data)
-  } 
+
 type Post = {
   id: number
   title: string
@@ -34,16 +29,13 @@ export default function CommunityMarketplace({ onOpenFair }: CommunityMarketplac
   useEffect(() => {
     const loadPosts = async () => {
       setIsLoadingPosts(true)
-
       const { data, error } = await supabase
         .from("community_posts")
         .select("id,title,body,tag,author,votes,comments")
         .order("created_at", { ascending: false })
 
       if (error) {
-        setDatabaseMessage(
-          "El foro esta en modo demo hasta crear la tabla community_posts en Supabase."
-        )
+        setDatabaseMessage("El foro está en modo demo hasta crear la tabla community_posts en Supabase.")
         setIsLoadingPosts(false)
         return
       }
@@ -51,11 +43,9 @@ export default function CommunityMarketplace({ onOpenFair }: CommunityMarketplac
       if (data?.length) {
         setPosts(data)
       }
-
       setDatabaseMessage("")
       setIsLoadingPosts(false)
     }
-
     loadPosts()
   }, [])
 
@@ -68,19 +58,14 @@ export default function CommunityMarketplace({ onOpenFair }: CommunityMarketplac
     const cleanDraft = draft.trim()
     if (!cleanDraft) return
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
+    const { data: { user } } = await supabase.auth.getUser()
 
+    // Nota: Aquí podrías dinámicamente asignar un tag si dejaras elegir al usuario.
     const newPost = {
       title: cleanDraft,
       body: "Nueva duda publicada por un estudiante. La comunidad puede responder, votar y pedir apoyo experto.",
-      tag: "Recursos",
-      author:
-        user?.user_metadata?.name ||
-        user?.email ||
-        user?.phone ||
-        "Nuevo estudiante",
+      tag: activeTag === "Todos" ? "Recursos" : activeTag, // Usa el tag activo actual o uno por defecto
+      author: user?.user_metadata?.name || user?.email || user?.phone || "Nuevo estudiante",
       votes: 1,
       comments: 0,
     }
@@ -92,17 +77,13 @@ export default function CommunityMarketplace({ onOpenFair }: CommunityMarketplac
       .single()
 
     if (error) {
-      setDatabaseMessage(
-        "No se pudo guardar en Supabase. Revisa la tabla community_posts y sus politicas RLS."
-      )
-      setPosts((current) => [{ id: Date.now(), ...newPost }, ...current])
+      setDatabaseMessage("No se pudo guardar en Supabase. Revisa la tabla community_posts y sus políticas RLS.")
     } else {
       setPosts((current) => [data, ...current])
       setDatabaseMessage("")
+      setDraft("")
+      setActiveTag("Todos")
     }
-
-    setDraft("")
-    setActiveTag("Todos")
   }
 
   const upvote = async (id: number) => {
@@ -111,10 +92,9 @@ export default function CommunityMarketplace({ onOpenFair }: CommunityMarketplac
 
     const nextVotes = post.votes + 1
 
+    // 1. Actualización optimista en interfaz
     setPosts((current) =>
-      current.map((post) =>
-        post.id === id ? { ...post, votes: nextVotes } : post
-      )
+      current.map((p) => (p.id === id ? { ...p, votes: nextVotes } : p))
     )
 
     const { error } = await supabase
@@ -122,9 +102,11 @@ export default function CommunityMarketplace({ onOpenFair }: CommunityMarketplac
       .update({ votes: nextVotes })
       .eq("id", id)
 
+    // 2. Si hay error, hacemos un Rollback inmediato del estado local
     if (error) {
-      setDatabaseMessage(
-        "El voto se ve en pantalla, pero Supabase no lo guardo. Revisa permisos de update."
+      setDatabaseMessage("El voto falló en el servidor. Revisa los permisos de UPDATE en Supabase.")
+      setPosts((current) =>
+        current.map((p) => (p.id === id ? { ...p, votes: post.votes } : p))
       )
     }
   }
@@ -137,22 +119,21 @@ export default function CommunityMarketplace({ onOpenFair }: CommunityMarketplac
             <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-emerald-700">
               Comunidad
             </p>
-
             <h2 className="text-4xl font-black leading-tight text-slate-950 md:text-5xl">
               Un espacio para compartir dudas, recursos y ayudarnos entre estudiantes.
             </h2>
           </div>
-
           <p className="text-lg leading-8 text-slate-600">
             El estudiante entra por una duda, conversa con otros, descubre
-            recursos utiles y encuentra ayuda academica personalizada cuando
-            necesita avanzar mas rapido.
+            recursos útiles y encuentra ayuda académica personalizada cuando
+            necesita avanzar más rápido.
           </p>
         </div>
 
         <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
           <div>
-            <div className="mb-5 rounded-lg border border-slate-200 bg-stone-50 p-4">
+            {/* Formulario de publicación */}
+            <div className="mb-8 rounded-lg border border-slate-200 bg-stone-50 p-4">
               {databaseMessage && (
                 <p className="mb-4 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm font-bold leading-6 text-amber-900">
                   {databaseMessage}
@@ -162,42 +143,50 @@ export default function CommunityMarketplace({ onOpenFair }: CommunityMarketplac
               <textarea
                 value={draft}
                 onChange={(event) => setDraft(event.target.value)}
-                placeholder="Publica una duda: materia, parcial, tema trabado o recurso que estas buscando..."
+                placeholder="Publica una duda: materia, parcial, tema trabado o recurso que estás buscando..."
                 className="min-h-28 w-full resize-none rounded-lg border border-slate-200 bg-white p-4 outline-none focus:border-emerald-600 focus:ring-4 focus:ring-emerald-100"
               />
 
-              <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-                <div className="flex flex-wrap gap-2">
-                  {tags.map((tag) => (
-                    <button
-                      key={tag}
-                      type="button"
-                      onClick={() => setActiveTag(tag)}
-                      className={`rounded-md px-3 py-2 text-sm font-bold transition ${
-                        activeTag === tag
-                          ? "bg-slate-950 text-white"
-                          : "bg-white text-slate-600 hover:text-slate-950"
-                      }`}
-                    >
-                      {tag}
-                    </button>
-                  ))}
-                </div>
-
+              <div className="mt-4 flex justify-end">
                 <button
                   type="button"
                   onClick={publishPost}
                   className="rounded-lg bg-emerald-700 px-5 py-3 font-black text-white transition hover:bg-slate-950"
                 >
-                  Publicar
+                  Publicar duda
                 </button>
               </div>
             </div>
 
+            {/* Barra de Filtros (Ubicación correcta fuera de la caja de creación) */}
+            <div className="mb-6 flex flex-wrap gap-2 border-b border-slate-100 pb-4">
+              {tags.map((tag) => (
+                <button
+                  key={tag}
+                  type="button"
+                  onClick={() => setActiveTag(tag)}
+                  className={`rounded-md px-3 py-2 text-sm font-bold transition ${
+                    activeTag === tag
+                      ? "bg-slate-950 text-white"
+                      : "bg-slate-100 text-slate-600 hover:text-slate-950"
+                  }`}
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
+
+            {/* Feed de Publicaciones */}
             <div className="space-y-4">
               {isLoadingPosts && (
                 <div className="rounded-lg border border-slate-200 bg-white p-5 font-bold text-slate-500">
                   Cargando publicaciones desde Supabase...
+                </div>
+              )}
+
+              {!isLoadingPosts && filteredPosts.length === 0 && (
+                <div className="rounded-lg border border-slate-200 bg-white p-8 text-center text-slate-500">
+                  No hay publicaciones en esta categoría todavía.
                 </div>
               )}
 
@@ -217,7 +206,7 @@ export default function CommunityMarketplace({ onOpenFair }: CommunityMarketplac
                       className="text-lg font-black text-slate-600 hover:text-emerald-700"
                       aria-label="Votar publicacion"
                     >
-                      ^
+                      ▲
                     </button>
                     <span className="text-lg font-black text-slate-950">
                       {post.votes}
@@ -235,7 +224,6 @@ export default function CommunityMarketplace({ onOpenFair }: CommunityMarketplac
                     <h3 className="mb-2 text-xl font-black text-slate-950">
                       {post.title}
                     </h3>
-
                     <p className="mb-4 leading-7 text-slate-600">{post.body}</p>
 
                     <div className="flex flex-wrap gap-3 text-sm font-bold text-slate-500">
@@ -243,9 +231,7 @@ export default function CommunityMarketplace({ onOpenFair }: CommunityMarketplac
                         {post.comments} comentarios
                       </button>
                       <button className="hover:text-slate-950">Guardar</button>
-                      <button className="hover:text-slate-950">
-                        Pedir experto
-                      </button>
+                      <button className="hover:text-slate-950">Pedir experto</button>
                     </div>
                   </div>
                 </motion.article>
@@ -253,18 +239,17 @@ export default function CommunityMarketplace({ onOpenFair }: CommunityMarketplac
             </div>
           </div>
 
+          {/* Sidebar */}
           <aside className="lg:sticky lg:top-24 lg:self-start">
             <div className="rounded-lg border border-slate-200 bg-slate-950 p-6 text-white shadow-sm">
               <p className="mb-2 text-sm font-black uppercase tracking-[0.18em] text-emerald-300">
                 Feria universitaria
               </p>
-
               <h3 className="mb-3 text-2xl font-black">
                 Los mejores recursos de la comunidad, listos para comprar o vender.
               </h3>
-
               <p className="mb-6 leading-7 text-slate-300">
-                Apuntes, guias, plantillas y simulacros creados por estudiantes.
+                Apuntes, guías, plantillas y simulacros creados por estudiantes.
                 Entra a la feria para filtrar por carrera, guardar favoritos y
                 postular tu propio material.
               </p>
