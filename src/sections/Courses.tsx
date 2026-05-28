@@ -1,45 +1,113 @@
 import { motion } from "framer-motion"
+import { useState } from "react"
 
 const courses = [
   {
-    title: "Acompañamiento academico 1 a 1",
+    title: "Gestion del tiempo",
     description:
-      "Sesiones personalizadas para ordenar materias, detectar bloqueos y sostener una rutina de estudio posible.",
-    price: "$30.000",
+      "Metodos y estructuras horarias diseñadas para organizar calendarios, maximizar el rendimiento por bloque y eliminar la procastinacion.",
+    previousPrice: "$37.000",
+    price: "$12.000",
+    duration: "30 minutos",
+    features: ["Metodos de gestión del tiempo", "Estructuración de horarios", "Técnicas anti-procrastinación"],
+    badge: "Más popular",
   },
   {
-    title: "Metodo de estudio intensivo",
+    title: "Metodología de estudio",
     description:
-      "Tecnicas de comprension, memoria activa, repaso espaciado y practica para parciales o finales.",
+      "Sesiones personalizadas para ordenar materias, detectar bloqueos y sostener una rutina de estudio realista.",
+    previousPrice: "$30.500",
+    price: "$15.000",
+    duration: "1 hora",
+    features: ["Plan semanal personalizado", "3 sesiones por semana", "Seguimiento de avance", "Corrección de hábitos"],
+    badge: "Tendencia",
+  },
+  {
+    title: "Regulacion emocional",
+    description:
+      "Anclaje emocional,revaluacion cognitiva, condicinamiento clasico y efecto primado",
     price: "$25.000",
+    duration: "1 Hora, 30 minutos",
+    features: ["Técnicas de regulación emocional", "Manejo de ansiedad y estrés académico", "Estrategias para mantener la motivación"],
+  
   },
   {
-    title: "Organizacion universitaria",
+    title: "Preparacion de estancia evaluativas",
     description:
-      "Planificacion semanal, calendario de entregas, objetivos medibles y control de procrastinacion.",
-    price: "$18.000",
+      "Sesiones personalizadas para preparar exámenes y evaluaciones.",
+    previousPrice: "$30.000",
+    price: "$15.000",
+    duration: "3 horas",
+    features: ["Estrategias para preparar exámenes", "Técnicas de estudio efectivas", "Simulaciones de evaluaciones"],
+   
   },
+  {
+    title: "Procesamiento de bloqueos",
+    description: "Sesiones personalizadas para ordenar materias, detectar bloqueos y sostener una rutina de estudio realista.",
+    price: "$8.000",
+    duration: "2 horas",
+    features: ["Identificación de bloqueos académicos", "Técnicas para superar bloqueos mentales", "Estrategias para mantener la motivación"],
+    badge: "interesante",
+  },
+  {
+    title: "ordenamiento de materias",
+    description: "Sesiones personalizadas para organizar y estructurar las materias de estudio.",
+    price: "$15.000",
+    duration: "2 horas",
+    features: ["Organización de materias", "Estructuración de horarios de estudio", "Técnicas para mantener la consistencia en el estudio"],
+  
+  },
+  {
+    title: "Soporte familiar",
+    description:
+      "Destinado para padres y familiares de estudiantes universitarios, este servicio ofrece orientación y estrategias para apoyar el proceso académico de sus hijos, fomentando un ambiente de estudio positivo y efectivo.",
+    price: "...",
+    duration: "2 horas",
+    features: ["orientación para padres de estudiantes universitarios", "estrategias para apoyar el estudio desde casa", "fomento de hábitos de estudio saludables"],
+    badge: "En desarrrollo",
+  },
+  {
+    title: "Comunicacion y oratoria",
+    description:
+      "Desarrollo de hablidades blandas, oratoria especifica para exposicion para trabajos practicos y examenes.",
+    price: "...",
+    duration: "2 horas",
+    features: ["Técnicas de comunicación efectiva", "Oratoria para presentaciones académicas", "Manejo de nervios y ansiedad"],
+   
+  },
+   {
+    title: "IA para el estudiante",
+    description:
+      "Darle la capacidad al estudiante estudiar inteligentemente entorno a las nuevas tecnologías.",
+    price: "En desarrollo",
+    duration: "...",
+    features: ["Whatsapp para estudiantes", "Asistente de estudio personalizado directo de whatsapp", "Recomendaciones de recursos con IA", "Alertas de fechas importantes"],
+    badge: "En desarrollo, proxima tendencia.",
+  },
+  
+  
+  
 ]
 
 export default function Courses() {
+  const [selectedCourse, setSelectedCourse] = useState<number | null>(null)
+
   return (
     <section id="cursos" className="bg-stone-50 py-24 px-6">
       <div className="mx-auto max-w-7xl">
-        <div className="mb-14 grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+        <div className="mb-16 grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
           <div>
             <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-emerald-700">
-              Venta central
+              Servicios de ayuda académica
             </p>
 
             <h2 className="text-4xl font-black leading-tight text-slate-950 md:text-5xl">
-              La comunidad atrae estudiantes; la ayuda academica genera valor.
+              Planes profesionales de tutoría y asesoramiento.
             </h2>
           </div>
 
           <p className="text-lg leading-8 text-slate-600">
-            Cada servicio esta presentado como una solucion concreta para el
-            dolor principal del estudiante: no saber por donde empezar, perder
-            constancia o llegar tarde a los examenes.
+            Elige el plan que se adapte a tu necesidad: desde sesiones puntuales hasta acompañamiento integral para todo el semestre.
           </p>
         </div>
 
@@ -51,34 +119,92 @@ export default function Courses() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: index * 0.08 }}
               viewport={{ once: true }}
-              className="rounded-lg border border-slate-200 bg-white p-7 shadow-sm"
+              onClick={() => setSelectedCourse(selectedCourse === index ? null : index)}
+              className={`rounded-xl border-2 p-7 shadow-sm transition cursor-pointer ${
+                selectedCourse === index
+                  ? "border-emerald-600 bg-emerald-50 shadow-lg"
+                  : "border-slate-200 bg-white hover:border-emerald-300 hover:shadow-lg"
+              }`}
             >
-              <span className="mb-6 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-emerald-100 text-lg font-black text-emerald-800">
-                {index + 1}
-              </span>
+              <div className="mb-4 flex items-start justify-between">
+                <span className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-emerald-100 text-lg font-black text-emerald-800">
+                  {index + 1}
+                </span>
+                <span className="rounded-full bg-emerald-700 text-white px-3 py-1 text-xs font-bold">
+                  {course.badge}
+                </span>
+              </div>
 
-              <h3 className="mb-4 text-2xl font-black text-slate-950">
+              <h3 className="mb-2 text-2xl font-black text-slate-950">
                 {course.title}
               </h3>
 
-              <p className="mb-8 leading-7 text-slate-600">
+              <p className="mb-5 text-sm text-slate-600">
+                {course.duration}
+              </p>
+
+              <p className="mb-6 leading-7 text-slate-600 text-sm">
                 {course.description}
               </p>
 
-              <div className="flex items-center justify-between gap-4">
-                <span className="text-2xl font-black text-slate-950">
-                  {course.price}
-                </span>
+              {selectedCourse === index && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  className="mb-6 space-y-2 border-t border-emerald-200 pt-4"
+                >
+                  <p className="text-xs font-bold uppercase text-emerald-700 mb-3">
+                    Incluye:
+                  </p>
+                  {course.features.map((feature) => (
+                    <div key={feature} className="flex items-start gap-2">
+                      <span className="text-emerald-600 font-bold mt-1">✓</span>
+                      <span className="text-sm text-slate-700">{feature}</span>
+                    </div>
+                  ))}
+                </motion.div>
+              )}
+
+              <div className="border-t border-slate-200 pt-5 flex items-center justify-between gap-4">
+                <div>
+                  <p className="text-xs text-slate-500 mb-1">A partir de</p>
+                  <div className="flex items-baseline gap-3">
+                    {course.previousPrice && (
+                      <span className="text-sm text-slate-500 line-through">
+                        {course.previousPrice}
+                      </span>
+                    )}
+
+                    <span className="text-3xl font-black text-slate-950">
+                      {course.price}
+                    </span>
+                  </div>
+                </div>
 
                 <a
                   href="#diagnostico"
-                  className="rounded-lg bg-slate-950 px-5 py-3 font-black text-white transition hover:bg-emerald-700"
+                  className="rounded-lg bg-emerald-700 px-6 py-3 font-black text-white transition hover:bg-emerald-800 text-sm whitespace-nowrap"
                 >
-                  Quiero esto
+                  Contratar
                 </a>
               </div>
             </motion.article>
           ))}
+        </div>
+
+        <div className="mt-16 rounded-xl bg-gradient-to-r from-emerald-50 to-emerald-100/50 border border-emerald-200 p-8 text-center">
+          <h3 className="mb-2 text-2xl font-black text-emerald-900">
+            ¿No estás seguro qué plan necesitas?
+          </h3>
+          <p className="mb-6 text-emerald-800">
+            Realiza un diagnóstico gratuito y te recomendaremos el mejor plan para ti.
+          </p>
+          <a
+            href="#diagnostico"
+            className="inline-block rounded-lg bg-emerald-700 px-8 py-3 font-black text-white transition hover:bg-emerald-800"
+          >
+            Diagnóstico gratis
+          </a>
         </div>
       </div>
     </section>

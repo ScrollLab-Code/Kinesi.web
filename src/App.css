@@ -181,4 +181,8 @@
     right: 0;
     border-right-color: var(--border);
   }
+   .tachado-rojo {
+    text-decoration: line-through;
+    text-decoration-color: red;
+  }
 }

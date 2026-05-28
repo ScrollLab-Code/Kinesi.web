@@ -117,6 +117,7 @@ function App() {
   if (!session && !localAccess) {
     return (
       <main>
+        <Navbar />
         <Hero onAuthenticated={unlockApp} />
       </main>
     )
@@ -132,11 +133,11 @@ function App() {
       >
         <div className="mx-auto max-w-7xl">
           <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-emerald-700">
-            Bienvenido a Kinase
+            Bienvenido
           </p>
 
           <h1 className="max-w-4xl text-4xl font-black leading-tight md:text-6xl">
-            Ya estas adentro: pregunta, compra ayuda academica y estudia con comunidad.
+            ¡ya sos parte de kinase! vamos camino hacia el exito.
           </h1>
         </div>
       </section>
@@ -162,7 +163,7 @@ function App() {
                 : 'bg-gray-100 text-slate-950 hover:bg-gray-200'
             }`}
           >
-            Mercado
+            Feria universitaria
           </button>
           <button
             onClick={() => setActiveSection('ayuda')}
@@ -172,7 +173,7 @@ function App() {
                 : 'bg-gray-100 text-slate-950 hover:bg-gray-200'
             }`}
           >
-            Ayuda Académica
+            coaching Académico
           </button>
           <button
             onClick={() => setActiveSection('cursos')}
