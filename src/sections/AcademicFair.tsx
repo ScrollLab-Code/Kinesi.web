@@ -21,7 +21,7 @@ type Resource = {
 }
 
 const resources: Resource[] = [
-  
+  // Aquí irán tus recursos de Supabase o manuales en el futuro
 ]
 
 const categories = ["Todos", "Medicina", "Ingenieria", "Derecho", "Organizacion"]
@@ -62,12 +62,9 @@ const createSellerRequestMessage = (sellerForm: {
   ].join("\n")
 
 const createTeamWhatsAppLink = (message: string) => {
-  
- 
   if (teamWhatsAppLink.includes("https://chat.whatsapp.com/LBElkQFM83KAeytkBYFfU9?s=sh&p=a&mlu=3")) {
     return `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`
   }
-
   return teamWhatsAppLink
 }
 
@@ -75,7 +72,9 @@ export default function AcademicFair() {
   const [activeCategory, setActiveCategory] = useState("Todos")
   const [activeType, setActiveType] = useState("Todos")
   const [query, setQuery] = useState("")
-  const [selectedResource, setSelectedResource] = useState(resources[0])
+  
+  // Solución TypeScript: Inicializa en null ya que la lista empieza vacía
+  const [selectedResource, setSelectedResource] = useState<Resource | null>(null)
   const [savedIds, setSavedIds] = useState<number[]>([1, 3])
   const [sellerForm, setSellerForm] = useState({
     name: "",
@@ -147,7 +146,7 @@ export default function AcademicFair() {
     try {
       await navigator.clipboard?.writeText(requestMessage)
     } catch {
-      // Some browsers block clipboard without changing the WhatsApp flow.
+      // Evita bloqueos en navegadores estrictos
     }
 
     window.open(createTeamWhatsAppLink(requestMessage), "_blank", "noopener,noreferrer")
@@ -256,7 +255,7 @@ export default function AcademicFair() {
                   transition={{ duration: 0.35, delay: index * 0.04 }}
                   viewport={{ once: true }}
                   className={`rounded-lg border bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-lg ${
-                    selectedResource.id === resource.id
+                    selectedResource?.id === resource.id
                       ? "border-emerald-500"
                       : "border-slate-200"
                   }`}
@@ -343,63 +342,72 @@ export default function AcademicFair() {
           </div>
 
           <aside className="space-y-5 lg:sticky lg:top-24 lg:self-start">
-            <div
-              id="resource-detail"
-              className="scroll-mt-28 rounded-lg border border-slate-200 bg-slate-950 p-6 text-white shadow-sm"
-            >
-              <p className="mb-2 text-sm font-black uppercase tracking-[0.18em] text-emerald-300">
-                Ficha del recurso
-              </p>
-              <h3 className="mb-3 text-2xl font-black">
-                {selectedResource.title}
-              </h3>
-              <p className="mb-5 leading-7 text-slate-300">
-                {selectedResource.description}
-              </p>
-
-              <div className="mb-5 rounded-lg border border-slate-700 bg-slate-900 p-4">
-                <div className="mb-3 flex items-center justify-between gap-4">
-                  <span className="text-slate-400">Vendedor</span>
-                  <strong>{selectedResource.seller}</strong>
-                </div>
-                <div className="mb-3 flex items-center justify-between gap-4">
-                  <span className="text-slate-400">Entrega</span>
-                  <strong className="text-right">{selectedResource.delivery}</strong>
-                </div>
-                <div className="flex items-center justify-between gap-4">
-                  <span className="text-slate-400">Precio</span>
-                  <strong className="text-xl text-emerald-300">
-                    {formatPrice(selectedResource.price)}
-                  </strong>
-                </div>
-              </div>
-
-              <div className="mb-6">
-                <p className="mb-3 text-sm font-black uppercase tracking-[0.12em] text-slate-400">
-                  Incluye
-                </p>
-                <div className="space-y-2">
-                  {selectedResource.includes.map((item) => (
-                    <div key={item} className="flex items-start gap-2 text-sm">
-                      <span className="mt-1 h-2 w-2 rounded-full bg-emerald-400" />
-                      <span>{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <a
-                href={createWhatsAppLink(
-                  selectedResource.sellerWhatsapp,
-                  createPurchaseMessage(selectedResource)
-                )}
-                target="_blank"
-                rel="noreferrer"
-                className="block rounded-lg bg-emerald-600 px-5 py-3 text-center font-black text-white transition hover:bg-emerald-500"
+            {/* Validación: Renderiza la ficha solo si hay un recurso seleccionado */}
+            {selectedResource ? (
+              <div
+                id="resource-detail"
+                className="scroll-mt-28 rounded-lg border border-slate-200 bg-slate-950 p-6 text-white shadow-sm"
               >
-                Comprar por WhatsApp
-              </a>
-            </div>
+                <p className="mb-2 text-sm font-black uppercase tracking-[0.18em] text-emerald-300">
+                  Ficha del recurso
+                </p>
+                <h3 className="mb-3 text-2xl font-black">
+                  {selectedResource.title}
+                </h3>
+                <p className="mb-5 leading-7 text-slate-300">
+                  {selectedResource.description}
+                </p>
+
+                <div className="mb-5 rounded-lg border border-slate-700 bg-slate-900 p-4">
+                  <div className="mb-3 flex items-center justify-between gap-4">
+                    <span className="text-slate-400">Vendedor</span>
+                    <strong>{selectedResource.seller}</strong>
+                  </div>
+                  <div className="mb-3 flex items-center justify-between gap-4">
+                    <span className="text-slate-400">Entrega</span>
+                    <strong className="text-right">{selectedResource.delivery}</strong>
+                  </div>
+                  <div className="flex items-center justify-between gap-4">
+                    <span className="text-slate-400">Precio</span>
+                    <strong className="text-xl text-emerald-300">
+                      {formatPrice(selectedResource.price)}
+                    </strong>
+                  </div>
+                </div>
+
+                <div className="mb-6">
+                  <p className="mb-3 text-sm font-black uppercase tracking-[0.12em] text-slate-400">
+                    Incluye
+                  </p>
+                  <div className="space-y-2">
+                    {selectedResource.includes?.map((item) => (
+                      <div key={item} className="flex items-start gap-2 text-sm">
+                        <span className="mt-1 h-2 w-2 rounded-full bg-emerald-400" />
+                        <span>{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <a
+                  href={createWhatsAppLink(
+                    selectedResource.sellerWhatsapp,
+                    createPurchaseMessage(selectedResource)
+                  )}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="block rounded-lg bg-emerald-600 px-5 py-3 text-center font-black text-white transition hover:bg-emerald-500"
+                >
+                  Comprar por WhatsApp
+                </a>
+              </div>
+            ) : (
+              <div className="rounded-lg border border-slate-200 bg-white p-6 text-center shadow-sm">
+                <p className="text-sm font-bold text-slate-500">
+                  Selecciona un recurso de la lista para ver el detalle y comprarlo.
+                </p>
+              </div>
+            )}
 
             <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
               <h3 className="mb-4 text-lg font-black text-slate-950">
