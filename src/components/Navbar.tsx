@@ -4,14 +4,10 @@ type NavbarProps = {
   onLogout?: () => void
 }
 
-type NavItem = {
-  id: string
-  label: string
-  icon: string
-}
+// NavItem type removed because it's not used
 
 export default function Navbar({ onLogout }: NavbarProps) {
-  const [activeSection, setActiveSection] = useState("inicio")
+  const [_activeSection, setActiveSection] = useState("inicio")
 
   useEffect(() => {
     const handleScroll = () => {
