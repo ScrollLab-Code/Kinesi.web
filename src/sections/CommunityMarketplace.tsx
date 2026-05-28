@@ -1,7 +1,12 @@
 import { useEffect, useMemo, useState } from "react"
 import { motion } from "framer-motion"
 import { supabase } from "../lib/supabase"
-
+supabase.from('community_posts').select('id,title,body,tag,author,votes,comments').order('created_at', { ascending: false }).then(({ data, error }) => {
+  if (error) {
+    console.error("Error fetching posts:", error)
+  } else {
+    console.log("Fetched posts:", data)
+  } 
 type Post = {
   id: number
   title: string

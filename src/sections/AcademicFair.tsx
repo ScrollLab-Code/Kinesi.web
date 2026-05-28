@@ -21,110 +21,7 @@ type Resource = {
 }
 
 const resources: Resource[] = [
-  {
-    id: 1,
-    title: "Pack completo de Anatomia I",
-    subject: "Medicina",
-    faculty: "Ciencias de la Salud",
-    type: "Apuntes",
-    level: "Primer ano",
-    price: 8500,
-    seller: "Sofia M.",
-    sellerWhatsapp: "5491100000000",
-    rating: 4.9,
-    sales: 38,
-    description:
-      "Resumen visual por sistemas, cuadros comparativos y preguntas frecuentes para parciales teoricos.",
-    includes: ["PDF editable", "Mapas conceptuales", "Banco de 120 preguntas"],
-    delivery: "Entrega digital inmediata",
-    badge: "Mas vendido",
-  },
-  {
-    id: 2,
-    title: "Guia resuelta de Calculo II",
-    subject: "Ingenieria",
-    faculty: "Exactas e Ingenieria",
-    type: "Ejercicios",
-    level: "Segundo ano",
-    price: 7200,
-    seller: "Mateo R.",
-    sellerWhatsapp: "5491100000000",
-    rating: 4.8,
-    sales: 24,
-    description:
-      "Integrales, series y ecuaciones diferenciales explicadas paso a paso, con criterios para elegir metodo.",
-    includes: ["70 ejercicios resueltos", "Formulario", "Simulacro de parcial"],
-    delivery: "Entrega digital inmediata",
-  },
-  {
-    id: 3,
-    title: "Plantilla Notion para semestre",
-    subject: "Organizacion",
-    faculty: "Todas las carreras",
-    type: "Plantillas",
-    level: "Todos",
-    price: 3900,
-    seller: "Equipo Kinase",
-    sellerWhatsapp: "5491100000000",
-    rating: 4.7,
-    sales: 61,
-    description:
-      "Tablero listo para materias, fechas, parciales, tareas y bloques de estudio semanales.",
-    includes: ["Template duplicable", "Video de setup", "Sistema de prioridades"],
-    delivery: "Link duplicable",
-    badge: "Nuevo",
-  },
-  {
-    id: 4,
-    title: "Final oral de Derecho Civil",
-    subject: "Derecho",
-    faculty: "Ciencias Juridicas",
-    type: "Finales",
-    level: "Avanzado",
-    price: 6200,
-    seller: "Valen C.",
-    sellerWhatsapp: "5491100000000",
-    rating: 4.6,
-    sales: 17,
-    description:
-      "Bolillas ordenadas, preguntas de mesa y respuestas modelo para practicar exposicion oral.",
-    includes: ["Resumen por bolilla", "Preguntas frecuentes", "Checklist oral"],
-    delivery: "Entrega digital en PDF",
-  },
-  {
-    id: 5,
-    title: "Bioquimica: rutas metabolicas",
-    subject: "Medicina",
-    faculty: "Ciencias de la Salud",
-    type: "Mapas",
-    level: "Segundo ano",
-    price: 5400,
-    seller: "Camila P.",
-    sellerWhatsapp: "5491100000000",
-    rating: 4.9,
-    sales: 29,
-    description:
-      "Rutas integradas con regulacion, enzimas clave y puntos que suelen tomar en examenes.",
-    includes: ["Laminas imprimibles", "Resumen por ruta", "Mini quiz"],
-    delivery: "Entrega digital inmediata",
-  },
-  {
-    id: 6,
-    title: "Fisica I para parciales",
-    subject: "Ingenieria",
-    faculty: "Exactas e Ingenieria",
-    type: "Apuntes",
-    level: "Primer ano",
-    price: 6800,
-    seller: "Nico A.",
-    sellerWhatsapp: "5491100000000",
-    rating: 4.7,
-    sales: 21,
-    description:
-      "Cinematica, dinamica y energia con ejemplos tipo parcial y errores comunes marcados.",
-    includes: ["Resumen teorico", "Ejercicios tipo", "Formulario comentado"],
-    delivery: "Entrega digital inmediata",
-  },
+  
 ]
 
 const categories = ["Todos", "Medicina", "Ingenieria", "Derecho", "Organizacion"]
@@ -165,7 +62,9 @@ const createSellerRequestMessage = (sellerForm: {
   ].join("\n")
 
 const createTeamWhatsAppLink = (message: string) => {
-  if (teamWhatsAppLink.includes("REEMPLAZAR_LINK_DEL_GRUPO")) {
+  
+ 
+  if (teamWhatsAppLink.includes("https://chat.whatsapp.com/LBElkQFM83KAeytkBYFfU9?s=sh&p=a&mlu=3")) {
     return `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`
   }
 
@@ -271,8 +170,7 @@ export default function AcademicFair() {
 
           <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
             <p className="text-lg leading-8 text-slate-600">
-              Un mercado curado para apuntes, guias, plantillas, simulacros y
-              materiales de cursada. Cada publicacion muestra carrera, nivel,
+              Un mercado para recursos academicos. Y/O para general(objetos(elementos escolares, mates, termos, vasos termicos, etc)) Cada publicacion muestra carrera, nivel,
               vendedor, entregables y compra directa por WhatsApp.
             </p>
           </div>
@@ -280,9 +178,9 @@ export default function AcademicFair() {
 
         <div className="mb-8 grid gap-4 md:grid-cols-3">
           {[
-            ["6", "recursos destacados"],
-            ["4.8/5", "promedio de valoracion"],
-            ["190+", "entregas entre estudiantes"],
+            ["1", "recursos destacados"],
+            ["5/5", "promedio de valoracion"],
+            ["+2", "entregas entre estudiantes"],
           ].map(([value, label]) => (
             <div
               key={label}

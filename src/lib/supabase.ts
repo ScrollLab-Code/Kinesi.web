@@ -27,3 +27,4 @@ const supabaseUrl = isValidHttpUrl(envSupabaseUrl)
 const supabaseKey = envSupabaseKey || fallbackSupabaseKey
 
 export const supabase = createClient(supabaseUrl, supabaseKey)
+
