@@ -1,65 +1,130 @@
-const features = [
-  {
-    title: "Foros por materia",
-    description:
-      "Espacios para preguntar, responder y ordenar dudas por carrera, examen o tema puntual.",
-    icon: "💬",
-    color: "emerald",
-  },
-  {
-    title: "Feria académica",
-    description:
-      "Mentorías, packs de estudio y recursos listos para comprar o vender en la misma plataforma.",
-    icon: "🛒",
-    color: "sky",
-  },
-  {
-    title: "Acompañamiento personalizado",
-    description:
-      "Diagnóstico, plan de acción y seguimiento real para mejorar resultados en cada materia.",
-    icon: "📊",
-    color: "purple",
-  },
-  {
-    title: "Acceso rápido",
-    description:
-      "Inicio de sesión con email o celular y contenidos disponibles desde el primer momento.",
-    icon: "⚡",
-    color: "amber",
-  },
-]
-
-export default function Features() {
+export default function FooterInfo() {
   return (
-    <section className="bg-white py-24 px-6">
-      <div className="mx-auto max-w-7xl">
-        <div className="mb-16 max-w-3xl">
-          <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-emerald-700">
-            Qué ofrece Kinase
-          </p>
-          <h2 className="text-4xl font-black leading-tight text-slate-950 md:text-5xl">
-            Una plataforma diseñada para que el estudiante avance realmente.
-          </h2>
-          <p className="mt-4 text-lg text-slate-600">
-            Combinamos comunidad, feria académica y tutoría personalizada en un solo lugar.
-          </p>
-        </div>
+    <section className="bg-white px-6 py-10">
+      <div className="mx-auto max-w-7xl border-t border-dashed border-slate-300 pt-8">
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {features.map((feature) => (
-            <article
-              key={feature.title}
-              className={`group rounded-xl border border-slate-200 bg-gradient-to-br from-white to-stone-50 p-7 shadow-sm transition hover:shadow-lg hover:border-emerald-300`}
-            >
-              <div className="mb-4 text-5xl">{feature.icon}</div>
-              <h3 className="mb-2 text-lg font-black text-slate-950 group-hover:text-emerald-700 transition">
-                {feature.title}
+        <div className="grid gap-16 lg:grid-cols-3 text-sm text-slate-700">
+
+          {/* SOPORTE */}
+          <div className="space-y-8">
+
+            <div>
+              <h3 className="mb-3 text-lg font-bold text-slate-900">
+                Soporte
               </h3>
-              <p className="text-sm leading-6 text-slate-600">
-                {feature.description}
+
+              <a
+                href="mailto:Scrolllabti@gmail.com"
+                className="block hover:text-emerald-700 transition"
+              >
+                Scrolllabti@gmail.com
+              </a>
+
+              <p className="mt-1 text-slate-500">
+                Asunto: Soporte KINASE
               </p>
-            </article>
-          ))}
+            </div>
+
+            <div>
+              <h3 className="mb-3 text-lg font-bold text-slate-900">
+                Colaboraciones
+              </h3>
+
+              <a
+                href="mailto:Scrolllabti@gmail.com"
+                className="block hover:text-emerald-700 transition"
+              >
+                Scrolllabti@gmail.com
+              </a>
+
+              <p className="mt-1 text-slate-500">
+                Asunto: Colaboraciones KINASE
+              </p>
+
+              <p className="mt-3 max-w-md leading-6 text-slate-600">
+                Ideal para quienes quieren contribuir y dejar su huella en KINASE.
+              </p>
+            </div>
+
+          </div>
+
+          {/* DOCUMENTOS */}
+          <div className="space-y-5">
+
+            <h3 className="text-lg font-bold text-slate-900">
+              Documentos
+            </h3>
+
+            <a
+              href="/docs/preguntas-frecuentes.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block hover:text-emerald-700 transition"
+            >
+              Preguntas frecuentes
+            </a>
+
+            <a
+              href="/docs/documentacion.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block hover:text-emerald-700 transition"
+            >
+              Documentación
+            </a>
+
+            <a
+              href="/docs/politicas-kinase.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block hover:text-emerald-700 transition"
+            >
+              Políticas KINASE
+            </a>
+
+          </div>
+
+          {/* CONTACTOS */}
+          <div className="space-y-5 lg:text-right">
+
+            <h3 className="text-lg font-bold text-slate-900">
+              Contactos
+            </h3>
+
+            <a
+              href="https://instagram.com/scrolllab"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block hover:text-emerald-700 transition"
+            >
+              Instagram — @Tizigiacomassi
+            </a>
+
+            <a
+              href="https://instagram.com/kinase"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block hover:text-emerald-700 transition"
+            >
+              Instagram — 
+            </a>
+
+            <a
+              href="tel:+5492990000000"
+              className="block hover:text-emerald-700 transition"
+            >
+              +54 9 2942-543208
+            </a>
+
+            <a
+              href="tel:+5492991111111"
+              className="block hover:text-emerald-700 transition"
+            >
+              +54 9 2996 23-2195
+            </a>
+
+          </div>
+
         </div>
       </div>
     </section>

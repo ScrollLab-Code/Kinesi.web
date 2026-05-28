@@ -20,14 +20,27 @@ type Resource = {
   badge?: string
 }
 
-const resources: Resource[] = [
-  
+const resources: Resource[] = []
+
+const categories = [
+  "Todos",
+  "Medicina",
+  "Ingenieria",
+  "Derecho",
+  "Organizacion",
 ]
 
-const categories = ["Todos", "Medicina", "Ingenieria", "Derecho", "Organizacion"]
-const types = ["Todos", "Apuntes", "Ejercicios", "Plantillas", "Finales", "Mapas"]
-const teamWhatsAppLink =
-  "https://chat.whatsapp.com/LBElkQFM83KAeytkBYFfU9?s=sh&p=a&mlu=3"
+const types = [
+  "Todos",
+  "Apuntes",
+  "Ejercicios",
+  "Plantillas",
+  "Finales",
+  "Mapas",
+]
+
+const teamWhatsApp =
+  "5492942344488"
 
 const formatPrice = (price: number) =>
   new Intl.NumberFormat("es-AR", {
@@ -36,10 +49,15 @@ const formatPrice = (price: number) =>
     maximumFractionDigits: 0,
   }).format(price)
 
-const createWhatsAppLink = (phone: string, message: string) =>
+const createWhatsAppLink = (
+  phone: string,
+  message: string
+) =>
   `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
 
-const createPurchaseMessage = (resource: Resource) =>
+const createPurchaseMessage = (
+  resource: Resource
+) =>
   [
     "Hola, vengo desde la feria universitaria de Kinase.",
     `Quiero comprar: ${resource.title}`,
@@ -47,89 +65,121 @@ const createPurchaseMessage = (resource: Resource) =>
     `Vendedor: ${resource.seller}`,
   ].join("\n")
 
-const createSellerRequestMessage = (sellerForm: {
-  name: string
-  contact: string
-  resource: string
-  career: string
-}) =>
+const createSellerRequestMessage = (
+  sellerForm: {
+    name: string
+    contact: string
+    resource: string
+    career: string
+  }
+) =>
   [
-    "Nueva solicitud para subir material a la feria universitaria.",
-    `Nombre: ${sellerForm.name}`,
-    `Contacto: ${sellerForm.contact}`,
-    `Carrera o materia: ${sellerForm.career}`,
-    `Recurso: ${sellerForm.resource}`,
+    "🎓 NUEVA PUBLICACIÓN PARA LA FERIA",
+    "",
+    `👤 Nombre: ${sellerForm.name}`,
+    `📱 Contacto: ${sellerForm.contact}`,
+    `🏫 Carrera/Materia: ${sellerForm.career}`,
+    `📚 Recurso: ${sellerForm.resource}`,
+    "",
+    "✅ Revisar publicación",
   ].join("\n")
 
-const createTeamWhatsAppLink = (message: string) => {
-  
- 
-  if (teamWhatsAppLink.includes("https://chat.whatsapp.com/LBElkQFM83KAeytkBYFfU9?s=sh&p=a&mlu=3")) {
-    return `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`
-  }
-
-  return teamWhatsAppLink
-}
-
 export default function AcademicFair() {
-  const [activeCategory, setActiveCategory] = useState("Todos")
-  const [activeType, setActiveType] = useState("Todos")
+  const [activeCategory, setActiveCategory] =
+    useState("Todos")
+
+  const [activeType, setActiveType] =
+    useState("Todos")
+
   const [query, setQuery] = useState("")
-  const [selectedResource, setSelectedResource] = useState(resources[0])
-  const [savedIds, setSavedIds] = useState<number[]>([1, 3])
-  const [sellerForm, setSellerForm] = useState({
-    name: "",
-    contact: "",
-    resource: "",
-    career: "",
-  })
-  const [sellerMessage, setSellerMessage] = useState("")
+
+  const [selectedResource, setSelectedResource] =
+    useState<Resource | null>(
+      resources.length > 0 ? resources[0] : null
+    )
+
+  const [savedIds, setSavedIds] = useState<
+    number[]
+  >([])
+
+  const [sellerForm, setSellerForm] =
+    useState({
+      name: "",
+      contact: "",
+      resource: "",
+      career: "",
+    })
+
+  const [sellerMessage, setSellerMessage] =
+    useState("")
 
   const filteredResources = useMemo(() => {
-    const cleanQuery = query.trim().toLowerCase()
+    const cleanQuery = query
+      .trim()
+      .toLowerCase()
 
     return resources.filter((resource) => {
       const matchesCategory =
-        activeCategory === "Todos" || resource.subject === activeCategory
-      const matchesType = activeType === "Todos" || resource.type === activeType
+        activeCategory === "Todos" ||
+        resource.subject === activeCategory
+
+      const matchesType =
+        activeType === "Todos" ||
+        resource.type === activeType
+
       const searchableText =
         `${resource.title} ${resource.subject} ${resource.faculty} ${resource.description}`.toLowerCase()
 
       return (
         matchesCategory &&
         matchesType &&
-        (!cleanQuery || searchableText.includes(cleanQuery))
+        (!cleanQuery ||
+          searchableText.includes(cleanQuery))
       )
     })
   }, [activeCategory, activeType, query])
 
-  const savedResources = resources.filter((resource) =>
-    savedIds.includes(resource.id)
+  const savedResources = resources.filter(
+    (resource) =>
+      savedIds.includes(resource.id)
   )
 
   const toggleSaved = (id: number) => {
     setSavedIds((current) =>
       current.includes(id)
-        ? current.filter((savedId) => savedId !== id)
+        ? current.filter(
+            (savedId) => savedId !== id
+          )
         : [...current, id]
     )
   }
 
-  const selectResource = (resource: Resource) => {
+  const selectResource = (
+    resource: Resource
+  ) => {
     setSelectedResource(resource)
+
     document
       .getElementById("resource-detail")
-      ?.scrollIntoView({ block: "start", behavior: "auto" })
+      ?.scrollIntoView({
+        block: "start",
+        behavior: "smooth",
+      })
   }
 
-  const handleSellerChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleSellerChange = (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
     setSellerForm({
       ...sellerForm,
-      [event.target.name]: event.target.value,
+      [event.target.name]:
+        event.target.value,
     })
   }
 
-  const submitSellerRequest = async (event: FormEvent<HTMLFormElement>) => {
+  const submitSellerRequest = (
+    event: FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault()
 
     if (
@@ -138,356 +188,463 @@ export default function AcademicFair() {
       !sellerForm.resource ||
       !sellerForm.career
     ) {
-      setSellerMessage("Completa todos los campos para mandar la solicitud.")
+      setSellerMessage(
+        "Completa todos los campos."
+      )
       return
     }
 
-    const requestMessage = createSellerRequestMessage(sellerForm)
+    const message =
+      createSellerRequestMessage(
+        sellerForm
+      )
 
-    try {
-      await navigator.clipboard?.writeText(requestMessage)
-    } catch {
-      // Some browsers block clipboard without changing the WhatsApp flow.
-    }
+    window.open(
+      `https://wa.me/${teamWhatsApp}?text=${encodeURIComponent(
+        message
+      )}`,
+      "_blank"
+    )
 
-    window.open(createTeamWhatsAppLink(requestMessage), "_blank", "noopener,noreferrer")
-    setSellerMessage("Solicitud generada. Se abrio WhatsApp para enviarla al equipo.")
-    setSellerForm({ name: "", contact: "", resource: "", career: "" })
+    setSellerMessage(
+      "Solicitud enviada correctamente."
+    )
+
+    setSellerForm({
+      name: "",
+      contact: "",
+      resource: "",
+      career: "",
+    })
   }
 
   return (
-    <section id="feria" className="bg-stone-50 px-6 py-24">
+    <section
+      id="feria"
+      className="bg-stone-50 px-6 py-24"
+    >
       <div className="mx-auto max-w-7xl">
+
+        {/* HEADER */}
+
         <div className="mb-12 grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
+
           <div>
             <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-emerald-700">
               Feria universitaria
             </p>
+
             <h2 className="text-4xl font-black leading-tight text-slate-950 md:text-5xl">
-              Compra, vende y descubre recursos academicos creados por estudiantes.
+              Compra, vende y descubre recursos académicos.
             </h2>
           </div>
 
-          <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
             <p className="text-lg leading-8 text-slate-600">
-              Un mercado para recursos academicos. Y/O para general(objetos(elementos escolares, mates, termos, vasos termicos, etc)) Cada publicacion muestra carrera, nivel,
-              vendedor, entregables y compra directa por WhatsApp.
+              Marketplace universitario para
+              apuntes, finales, ejercicios,
+              plantillas, objetos y materiales
+              estudiantiles.
             </p>
           </div>
+
         </div>
 
-        <div className="mb-8 grid gap-4 md:grid-cols-3">
+        {/* STATS */}
+
+        <div className="mb-10 grid gap-4 md:grid-cols-3">
+
           {[
-            ["1", "recursos destacados"],
-            ["5/5", "promedio de valoracion"],
-            ["+2", "entregas entre estudiantes"],
+            ["+500", "estudiantes"],
+            ["4.9", "valoración"],
+            ["24/7", "comunidad"],
           ].map(([value, label]) => (
+
             <div
               key={label}
-              className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
+              className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"
             >
-              <p className="text-3xl font-black text-slate-950">{value}</p>
-              <p className="mt-1 text-sm font-bold uppercase tracking-[0.12em] text-slate-500">
+              <p className="text-3xl font-black text-slate-950">
+                {value}
+              </p>
+
+              <p className="mt-1 text-sm font-bold uppercase tracking-[0.15em] text-slate-500">
                 {label}
               </p>
             </div>
+
           ))}
+
         </div>
 
         <div className="grid gap-8 lg:grid-cols-[1fr_390px]">
+
+          {/* IZQUIERDA */}
+
           <div>
-            <div className="mb-5 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+
+            {/* FILTROS */}
+
+            <div className="mb-6 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+
               <div className="grid gap-3 lg:grid-cols-[1fr_auto]">
+
                 <input
                   value={query}
-                  onChange={(event) => setQuery(event.target.value)}
-                  placeholder="Buscar por materia, carrera o recurso..."
-                  className="w-full rounded-lg border border-slate-200 bg-stone-50 px-4 py-3 outline-none focus:border-emerald-600 focus:ring-4 focus:ring-emerald-100"
+                  onChange={(event) =>
+                    setQuery(event.target.value)
+                  }
+                  placeholder="Buscar recurso..."
+                  className="w-full rounded-2xl border border-slate-200 bg-stone-50 px-4 py-3 outline-none focus:border-emerald-600 focus:ring-4 focus:ring-emerald-100"
                 />
+
                 <a
                   href="#solicitar-venta"
-                  className="rounded-lg bg-emerald-700 px-5 py-3 text-center font-black text-white transition hover:bg-slate-950"
+                  className="rounded-2xl bg-emerald-700 px-5 py-3 text-center font-black text-white transition hover:bg-slate-950"
                 >
-                  Solicitar revision
+                  Publicar recurso
                 </a>
+
               </div>
 
-              <div className="mt-4 flex flex-wrap gap-2">
+              <div className="mt-5 flex flex-wrap gap-2">
+
                 {categories.map((category) => (
+
                   <button
                     key={category}
-                    type="button"
-                    onClick={() => setActiveCategory(category)}
-                    className={`rounded-md px-3 py-2 text-sm font-bold transition ${
+                    onClick={() =>
+                      setActiveCategory(category)
+                    }
+                    className={`rounded-xl px-4 py-2 text-sm font-black transition ${
                       activeCategory === category
                         ? "bg-slate-950 text-white"
-                        : "bg-stone-100 text-slate-600 hover:text-slate-950"
+                        : "bg-stone-100 text-slate-600"
                     }`}
                   >
                     {category}
                   </button>
+
                 ))}
+
               </div>
 
               <div className="mt-3 flex flex-wrap gap-2">
+
                 {types.map((type) => (
+
                   <button
                     key={type}
-                    type="button"
-                    onClick={() => setActiveType(type)}
-                    className={`rounded-md border px-3 py-2 text-sm font-bold transition ${
+                    onClick={() =>
+                      setActiveType(type)
+                    }
+                    className={`rounded-xl border px-4 py-2 text-sm font-black transition ${
                       activeType === type
                         ? "border-emerald-700 bg-emerald-50 text-emerald-800"
-                        : "border-slate-200 bg-white text-slate-600 hover:border-emerald-300"
+                        : "border-slate-200 bg-white text-slate-600"
                     }`}
                   >
                     {type}
                   </button>
+
                 ))}
+
               </div>
+
             </div>
 
-            <div className="grid gap-5 md:grid-cols-2">
-              {filteredResources.map((resource, index) => (
-                <motion.article
-                  key={resource.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.35, delay: index * 0.04 }}
-                  viewport={{ once: true }}
-                  className={`rounded-lg border bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-lg ${
-                    selectedResource.id === resource.id
-                      ? "border-emerald-500"
-                      : "border-slate-200"
-                  }`}
-                >
-                  <div className="mb-4 flex items-start justify-between gap-3">
-                    <div>
-                      <span className="rounded-md bg-emerald-50 px-2 py-1 text-xs font-black uppercase tracking-[0.08em] text-emerald-800">
-                        {resource.type}
-                      </span>
-                      {resource.badge && (
-                        <span className="ml-2 rounded-md bg-amber-50 px-2 py-1 text-xs font-black uppercase tracking-[0.08em] text-amber-800">
-                          {resource.badge}
-                        </span>
-                      )}
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => toggleSaved(resource.id)}
-                      className={`h-9 w-9 rounded-lg border text-sm font-black transition ${
-                        savedIds.includes(resource.id)
-                          ? "border-emerald-600 bg-emerald-600 text-white"
-                          : "border-slate-200 bg-white text-slate-500 hover:text-slate-950"
-                      }`}
-                      aria-label="Guardar recurso"
-                    >
-                      +
-                    </button>
-                  </div>
+            {/* RESOURCES */}
 
-                  <h3 className="mb-2 text-xl font-black leading-snug text-slate-950">
-                    {resource.title}
-                  </h3>
-                  <p className="mb-4 text-sm leading-6 text-slate-600">
-                    {resource.description}
-                  </p>
+            {filteredResources.length === 0 ? (
 
-                  <div className="mb-5 grid gap-2 text-sm text-slate-600">
-                    <div className="flex justify-between gap-3">
-                      <span>Carrera</span>
-                      <strong className="text-right text-slate-950">
-                        {resource.subject}
-                      </strong>
-                    </div>
-                    <div className="flex justify-between gap-3">
-                      <span>Nivel</span>
-                      <strong className="text-right text-slate-950">
-                        {resource.level}
-                      </strong>
-                    </div>
-                  </div>
+              <div className="rounded-3xl border border-slate-200 bg-white p-10 text-center shadow-sm">
 
-                  <div className="flex items-center justify-between gap-4 border-t border-slate-200 pt-4">
-                    <div>
-                      <p className="text-xs font-bold text-slate-500">
-                        {resource.rating} valoracion - {resource.sales} ventas
-                      </p>
-                      <p className="text-2xl font-black text-slate-950">
-                        {formatPrice(resource.price)}
-                      </p>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => selectResource(resource)}
-                      className="rounded-lg bg-slate-950 px-4 py-3 text-sm font-black text-white transition hover:bg-emerald-700"
-                    >
-                      Ver / comprar
-                    </button>
-                  </div>
-                </motion.article>
-              ))}
-            </div>
-
-            {filteredResources.length === 0 && (
-              <div className="rounded-lg border border-slate-200 bg-white p-8 text-center shadow-sm">
-                <h3 className="text-xl font-black text-slate-950">
-                  No encontramos recursos con esos filtros.
+                <h3 className="text-2xl font-black text-slate-950">
+                  Todavía no hay publicaciones
                 </h3>
-                <p className="mt-2 text-slate-600">
-                  Prueba otra materia o publica una solicitud para que la
-                  comunidad suba ese material.
+
+                <p className="mt-3 text-slate-600">
+                  Los estudiantes podrán subir
+                  recursos, apuntes y materiales
+                  próximamente.
                 </p>
+
               </div>
+
+            ) : (
+
+              <div className="grid gap-5 md:grid-cols-2">
+
+                {filteredResources.map(
+                  (resource, index) => (
+
+                    <motion.article
+                      key={resource.id}
+                      initial={{
+                        opacity: 0,
+                        y: 20,
+                      }}
+                      whileInView={{
+                        opacity: 1,
+                        y: 0,
+                      }}
+                      transition={{
+                        duration: 0.35,
+                        delay: index * 0.04,
+                      }}
+                      viewport={{ once: true }}
+                      className={`rounded-3xl border bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-xl ${
+                        selectedResource?.id ===
+                        resource.id
+                          ? "border-emerald-500"
+                          : "border-slate-200"
+                      }`}
+                    >
+
+                      <div className="mb-4 flex items-start justify-between">
+
+                        <span className="rounded-xl bg-emerald-50 px-3 py-1 text-xs font-black uppercase tracking-[0.1em] text-emerald-800">
+                          {resource.type}
+                        </span>
+
+                        <button
+                          onClick={() =>
+                            toggleSaved(resource.id)
+                          }
+                          className={`h-10 w-10 rounded-xl border font-black transition ${
+                            savedIds.includes(
+                              resource.id
+                            )
+                              ? "border-emerald-600 bg-emerald-600 text-white"
+                              : "border-slate-200"
+                          }`}
+                        >
+                          +
+                        </button>
+
+                      </div>
+
+                      <h3 className="mb-2 text-2xl font-black text-slate-950">
+                        {resource.title}
+                      </h3>
+
+                      <p className="mb-5 text-sm leading-6 text-slate-600">
+                        {resource.description}
+                      </p>
+
+                      <div className="flex items-center justify-between border-t border-slate-200 pt-4">
+
+                        <div>
+                          <p className="text-xs font-bold text-slate-500">
+                            {resource.rating} ★
+                          </p>
+
+                          <p className="text-2xl font-black text-slate-950">
+                            {formatPrice(
+                              resource.price
+                            )}
+                          </p>
+                        </div>
+
+                        <button
+                          onClick={() =>
+                            selectResource(
+                              resource
+                            )
+                          }
+                          className="rounded-2xl bg-slate-950 px-5 py-3 text-sm font-black text-white transition hover:bg-emerald-700"
+                        >
+                          Ver
+                        </button>
+
+                      </div>
+
+                    </motion.article>
+
+                  )
+                )}
+
+              </div>
+
             )}
+
           </div>
 
+          {/* SIDEBAR */}
+
           <aside className="space-y-5 lg:sticky lg:top-24 lg:self-start">
+
+            {/* DETAIL */}
+
             <div
               id="resource-detail"
-              className="scroll-mt-28 rounded-lg border border-slate-200 bg-slate-950 p-6 text-white shadow-sm"
+              className="rounded-3xl border border-slate-200 bg-slate-950 p-6 text-white shadow-sm"
             >
-              <p className="mb-2 text-sm font-black uppercase tracking-[0.18em] text-emerald-300">
-                Ficha del recurso
-              </p>
-              <h3 className="mb-3 text-2xl font-black">
-                {selectedResource.title}
-              </h3>
-              <p className="mb-5 leading-7 text-slate-300">
-                {selectedResource.description}
-              </p>
 
-              <div className="mb-5 rounded-lg border border-slate-700 bg-slate-900 p-4">
-                <div className="mb-3 flex items-center justify-between gap-4">
-                  <span className="text-slate-400">Vendedor</span>
-                  <strong>{selectedResource.seller}</strong>
-                </div>
-                <div className="mb-3 flex items-center justify-between gap-4">
-                  <span className="text-slate-400">Entrega</span>
-                  <strong className="text-right">{selectedResource.delivery}</strong>
-                </div>
-                <div className="flex items-center justify-between gap-4">
-                  <span className="text-slate-400">Precio</span>
-                  <strong className="text-xl text-emerald-300">
-                    {formatPrice(selectedResource.price)}
-                  </strong>
-                </div>
-              </div>
+              {!selectedResource ? (
 
-              <div className="mb-6">
-                <p className="mb-3 text-sm font-black uppercase tracking-[0.12em] text-slate-400">
-                  Incluye
-                </p>
-                <div className="space-y-2">
-                  {selectedResource.includes.map((item) => (
-                    <div key={item} className="flex items-start gap-2 text-sm">
-                      <span className="mt-1 h-2 w-2 rounded-full bg-emerald-400" />
-                      <span>{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+                <div className="py-10 text-center">
 
-              <a
-                href={createWhatsAppLink(
-                  selectedResource.sellerWhatsapp,
-                  createPurchaseMessage(selectedResource)
-                )}
-                target="_blank"
-                rel="noreferrer"
-                className="block rounded-lg bg-emerald-600 px-5 py-3 text-center font-black text-white transition hover:bg-emerald-500"
-              >
-                Comprar por WhatsApp
-              </a>
-            </div>
-
-            <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-              <h3 className="mb-4 text-lg font-black text-slate-950">
-                Guardados para revisar
-              </h3>
-              <div className="space-y-3">
-                {savedResources.map((resource) => (
-                  <button
-                    key={resource.id}
-                    type="button"
-                    onClick={() => selectResource(resource)}
-                    className="w-full rounded-lg border border-slate-200 bg-stone-50 p-3 text-left transition hover:border-emerald-400"
-                  >
-                    <span className="block text-sm font-black text-slate-950">
-                      {resource.title}
-                    </span>
-                    <span className="text-sm text-slate-500">
-                      {formatPrice(resource.price)}
-                    </span>
-                  </button>
-                ))}
-                {savedResources.length === 0 && (
-                  <p className="rounded-lg bg-stone-50 p-3 text-sm text-slate-600">
-                    Guarda recursos con el boton + para compararlos despues.
+                  <p className="text-2xl font-black">
+                    No hay recursos seleccionados
                   </p>
-                )}
-              </div>
+
+                  <p className="mt-3 text-slate-400">
+                    Cuando haya publicaciones,
+                    aparecerán acá.
+                  </p>
+
+                </div>
+
+              ) : (
+
+                <>
+
+                  <p className="mb-2 text-sm font-black uppercase tracking-[0.18em] text-emerald-300">
+                    Recurso seleccionado
+                  </p>
+
+                  <h3 className="mb-3 text-3xl font-black">
+                    {selectedResource.title}
+                  </h3>
+
+                  <p className="mb-5 leading-7 text-slate-300">
+                    {
+                      selectedResource.description
+                    }
+                  </p>
+
+                  <div className="mb-5 rounded-2xl border border-slate-700 bg-slate-900 p-4">
+
+                    <div className="mb-3 flex justify-between">
+                      <span className="text-slate-400">
+                        Vendedor
+                      </span>
+
+                      <strong>
+                        {
+                          selectedResource.seller
+                        }
+                      </strong>
+                    </div>
+
+                    <div className="mb-3 flex justify-between">
+                      <span className="text-slate-400">
+                        Entrega
+                      </span>
+
+                      <strong>
+                        {
+                          selectedResource.delivery
+                        }
+                      </strong>
+                    </div>
+
+                    <div className="flex justify-between">
+                      <span className="text-slate-400">
+                        Precio
+                      </span>
+
+                      <strong className="text-xl text-emerald-300">
+                        {formatPrice(
+                          selectedResource.price
+                        )}
+                      </strong>
+                    </div>
+
+                  </div>
+
+                  <a
+                    href={createWhatsAppLink(
+                      selectedResource.sellerWhatsapp,
+                      createPurchaseMessage(
+                        selectedResource
+                      )
+                    )}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block rounded-2xl bg-emerald-600 px-5 py-4 text-center font-black text-white transition hover:bg-emerald-500"
+                  >
+                    Comprar por WhatsApp
+                  </a>
+
+                </>
+
+              )}
+
             </div>
+
+            {/* FORM */}
 
             <form
               id="solicitar-venta"
               onSubmit={submitSellerRequest}
-              className="rounded-lg border border-emerald-200 bg-emerald-50 p-5 shadow-sm"
+              className="rounded-3xl border border-emerald-200 bg-emerald-50 p-6 shadow-sm"
             >
-              <p className="mb-2 text-sm font-black uppercase tracking-[0.16em] text-emerald-800">
+
+              <p className="mb-2 text-sm font-black uppercase tracking-[0.18em] text-emerald-700">
                 Quiero vender
               </p>
-              <h3 className="mb-4 text-xl font-black text-slate-950">
-                Genera una solicitud para que el equipo revise tu material.
+
+              <h3 className="mb-4 text-2xl font-black text-slate-950">
+                Publicar un recurso
               </h3>
-              <p className="mb-4 text-sm leading-6 text-emerald-900">
-                No se publica nada automaticamente. La solicitud se manda por
-                WhatsApp para que los socios la aprueben antes de subirla.
-              </p>
+
               <div className="space-y-3">
+
                 <input
                   name="name"
                   value={sellerForm.name}
                   onChange={handleSellerChange}
                   placeholder="Nombre"
-                  className="w-full rounded-lg border border-emerald-200 bg-white px-4 py-3 outline-none focus:border-emerald-600 focus:ring-4 focus:ring-emerald-100"
+                  className="w-full rounded-2xl border border-emerald-200 bg-white px-4 py-3 outline-none focus:border-emerald-600"
                 />
+
                 <input
                   name="contact"
                   value={sellerForm.contact}
                   onChange={handleSellerChange}
-                  placeholder="Email o WhatsApp"
-                  className="w-full rounded-lg border border-emerald-200 bg-white px-4 py-3 outline-none focus:border-emerald-600 focus:ring-4 focus:ring-emerald-100"
+                  placeholder="WhatsApp o email"
+                  className="w-full rounded-2xl border border-emerald-200 bg-white px-4 py-3 outline-none focus:border-emerald-600"
                 />
+
                 <input
                   name="career"
                   value={sellerForm.career}
                   onChange={handleSellerChange}
                   placeholder="Carrera o materia"
-                  className="w-full rounded-lg border border-emerald-200 bg-white px-4 py-3 outline-none focus:border-emerald-600 focus:ring-4 focus:ring-emerald-100"
+                  className="w-full rounded-2xl border border-emerald-200 bg-white px-4 py-3 outline-none focus:border-emerald-600"
                 />
+
                 <input
                   name="resource"
                   value={sellerForm.resource}
                   onChange={handleSellerChange}
-                  placeholder="Que recurso queres vender"
-                  className="w-full rounded-lg border border-emerald-200 bg-white px-4 py-3 outline-none focus:border-emerald-600 focus:ring-4 focus:ring-emerald-100"
+                  placeholder="Qué querés vender"
+                  className="w-full rounded-2xl border border-emerald-200 bg-white px-4 py-3 outline-none focus:border-emerald-600"
                 />
+
               </div>
+
               {sellerMessage && (
-                <p className="mt-4 rounded-lg bg-white p-3 text-sm font-bold text-emerald-800">
+                <p className="mt-4 rounded-2xl bg-white p-3 text-sm font-bold text-emerald-800">
                   {sellerMessage}
                 </p>
               )}
+
               <button
                 type="submit"
-                className="mt-4 w-full rounded-lg bg-emerald-700 py-3 font-black text-white transition hover:bg-slate-950"
+                className="mt-5 w-full rounded-2xl bg-emerald-700 py-4 font-black text-white transition hover:bg-slate-950"
               >
                 Enviar solicitud
               </button>
+
             </form>
+
           </aside>
+
         </div>
+
       </div>
     </section>
   )

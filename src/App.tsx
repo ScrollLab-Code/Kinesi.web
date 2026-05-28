@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react'
 import type { Session } from '@supabase/supabase-js'
+
 import Navbar from './components/Navbar'
 import Hero from './sections/Hero'
 import Features from './sections/Features'
 import CommunityMarketplace from './sections/CommunityMarketplace'
-import TestSection from './sections/TestSection'
+import AcademicFair from './sections/AcademicFair'
 import About from './sections/About'
 import Courses from './sections/Courses'
 import Testimonials from './sections/Testimonials'
 import Footer from './components/Footer'
+
 import { supabase } from './lib/supabase'
 
 const accessKey = 'kinase_student_access'
@@ -29,15 +31,20 @@ const setStoredAccess = (value: boolean) => {
       window.localStorage.removeItem(accessKey)
     }
   } catch {
-    // Local files and some privacy modes can block storage; React state still works.
+    // ignore
   }
 }
 
 function App() {
   const [session, setSession] = useState<Session | null>(null)
+
   const [localAccess, setLocalAccess] = useState(getStoredAccess)
+
   const [isCheckingSession, setIsCheckingSession] = useState(true)
-  const [activeSection, setActiveSection] = useState<'comunidad' | 'mercado' | 'ayuda' | 'cursos' | 'testimonios'>('comunidad')
+
+  const [activeSection, setActiveSection] = useState<
+    'comunidad' | 'mercado' | 'ayuda' | 'cursos' | 'testimonios'
+  >('ayuda')
 
   useEffect(() => {
     let isMounted = true
@@ -73,10 +80,12 @@ function App() {
       if (!isMounted) return
 
       setSession(activeSession)
+
       if (activeSession) {
         setStoredAccess(true)
         setLocalAccess(true)
       }
+
       setIsCheckingSession(false)
     })
 
@@ -94,6 +103,7 @@ function App() {
 
   const signOut = async () => {
     await supabase.auth.signOut()
+
     setStoredAccess(false)
     setSession(null)
     setLocalAccess(false)
@@ -106,6 +116,7 @@ function App() {
           <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-emerald-700">
             Kinase
           </p>
+
           <h1 className="text-3xl font-black text-slate-950">
             Preparando tu espacio de estudio...
           </h1>
@@ -124,92 +135,141 @@ function App() {
   }
 
   return (
-    <main>
+    <main className="min-h-screen bg-stone-50 text-slate-950">
       <Navbar onLogout={signOut} />
 
+      {/* HERO */}
       <section
         id="inicio"
-        className="bg-stone-50 px-6 pb-16 pt-32 text-slate-950"
+        className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 px-6 pb-24 pt-36 text-white"
       >
-        <div className="mx-auto max-w-7xl">
-          <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-emerald-700">
-            Bienvenido
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute left-0 top-0 h-96 w-96 rounded-full bg-emerald-500 blur-3xl" />
+          <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-cyan-500 blur-3xl" />
+        </div>
+
+        <div className="relative mx-auto max-w-7xl">
+          <p className="mb-4 text-sm font-black uppercase tracking-[0.25em] text-emerald-300">
+            Bienvenido a Kinase
           </p>
 
-          <h1 className="max-w-4xl text-4xl font-black leading-tight md:text-6xl">
-            ¡ya sos parte de kinase! vamos camino hacia el exito.
+          <h1 className="max-w-5xl text-5xl font-black leading-tight md:text-7xl">
+            La comunidad universitaria donde aprendés, compartís y crecés.
           </h1>
+
+          <p className="mt-8 max-w-3xl text-lg leading-8 text-slate-300">
+            Coaching académico, comunidad universitaria, marketplace de recursos
+            y herramientas creadas para ayudarte a avanzar más rápido en la facultad.
+          </p>
         </div>
       </section>
 
-      {/* Navigation Buttons */}
-      <nav className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 z-40">
-        <div className="mx-auto max-w-7xl flex gap-2 overflow-x-auto">
+      {/* NAV */}
+      <nav className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 px-6 py-4 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl gap-3 overflow-x-auto">
+
           <button
             onClick={() => setActiveSection('ayuda')}
-            className={`px-4 py-2 rounded-lg font-semibold transition-colors whitespace-nowrap ${
+            className={`rounded-xl px-5 py-3 font-black transition-all whitespace-nowrap ${
               activeSection === 'ayuda'
-                ? 'bg-emerald-700 text-white'
-                : 'bg-gray-100 text-slate-950 hover:bg-gray-200'
+                ? 'bg-emerald-700 text-white shadow-lg'
+                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
           >
-            coaching Académico
+            Coaching Académico
           </button>
+
           <button
             onClick={() => setActiveSection('comunidad')}
-            className={`px-4 py-2 rounded-lg font-semibold transition-colors whitespace-nowrap ${
+            className={`rounded-xl px-5 py-3 font-black transition-all whitespace-nowrap ${
               activeSection === 'comunidad'
-                ? 'bg-emerald-700 text-white'
-                : 'bg-gray-100 text-slate-950 hover:bg-gray-200'
+                ? 'bg-emerald-700 text-white shadow-lg'
+                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
-      
           >
             Comunidad
           </button>
+
           <button
             onClick={() => setActiveSection('mercado')}
-            className={`px-4 py-2 rounded-lg font-semibold transition-colors whitespace-nowrap ${
+            className={`rounded-xl px-5 py-3 font-black transition-all whitespace-nowrap ${
               activeSection === 'mercado'
-                ? 'bg-emerald-700 text-white'
-                : 'bg-gray-100 text-slate-950 hover:bg-gray-200'
+                ? 'bg-emerald-700 text-white shadow-lg'
+                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
           >
-            Feria universitaria
+            Feria Universitaria
           </button>
+
           <button
             onClick={() => setActiveSection('cursos')}
-            className={`px-4 py-2 rounded-lg font-semibold transition-colors whitespace-nowrap ${
+            className={`rounded-xl px-5 py-3 font-black transition-all whitespace-nowrap ${
               activeSection === 'cursos'
-                ? 'bg-emerald-700 text-white'
-                : 'bg-gray-100 text-slate-950 hover:bg-gray-200'
+                ? 'bg-emerald-700 text-white shadow-lg'
+                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
           >
-        
             Cursos
           </button>
+
           <button
             onClick={() => setActiveSection('testimonios')}
-            className={`px-4 py-2 rounded-lg font-semibold transition-colors whitespace-nowrap ${
+            className={`rounded-xl px-5 py-3 font-black transition-all whitespace-nowrap ${
               activeSection === 'testimonios'
-                ? 'bg-emerald-700 text-white'
-                : 'bg-gray-100 text-slate-950 hover:bg-gray-200'
+                ? 'bg-emerald-700 text-white shadow-lg'
+                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
           >
             Testimonios
           </button>
+
         </div>
       </nav>
 
-      {/* Content Sections */}
-      <div className="min-h-screen">
-        {activeSection === 'ayuda' && <About />}
-        {activeSection === 'comunidad' && <CommunityMarketplace />}
-        {activeSection === 'mercado' && <TestSection />}
-        {activeSection === 'cursos' && <Courses />}
-        {activeSection === 'testimonios' && <Testimonials />}
-      </div>
+      {/* CONTENT */}
+      <section className="min-h-screen w-full">
 
+        {/* AYUDA */}
+        {activeSection === 'ayuda' && (
+          <div className="min-h-screen animate-in fade-in duration-300">
+            <About />
+          </div>
+        )}
+
+        {/* COMUNIDAD */}
+        {activeSection === 'comunidad' && (
+          <div className="min-h-screen bg-stone-50 animate-in fade-in duration-300">
+            <CommunityMarketplace />
+          </div>
+        )}
+
+        {/* FERIA */}
+        {activeSection === 'mercado' && (
+          <div className="min-h-screen bg-stone-50 animate-in fade-in duration-300">
+            <AcademicFair />
+          </div>
+        )}
+
+        {/* CURSOS */}
+        {activeSection === 'cursos' && (
+          <div className="min-h-screen animate-in fade-in duration-300">
+            <Courses />
+          </div>
+        )}
+
+        {/* TESTIMONIOS */}
+        {activeSection === 'testimonios' && (
+          <div className="min-h-screen animate-in fade-in duration-300">
+            <Testimonials />
+          </div>
+        )}
+
+      </section>
+
+      {/* FEATURES */}
       <Features />
+
+      {/* FOOTER */}
       <Footer />
     </main>
   )

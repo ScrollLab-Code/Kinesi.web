@@ -13,29 +13,40 @@ type Post = {
 }
 
 const initialPosts: Post[] = []
+
 const tags = ["Todos", "Medicina", "Ingenieria", "Recursos"]
+
+const FAIR_WHATSAPP = "5492942344488"
 
 type CommunityMarketplaceProps = {
   onOpenFair?: () => void
 }
 
-export default function CommunityMarketplace({ onOpenFair }: CommunityMarketplaceProps) {
+export default function CommunityMarketplace({
+  onOpenFair,
+}: CommunityMarketplaceProps) {
   const [activeTag, setActiveTag] = useState("Todos")
   const [posts, setPosts] = useState(initialPosts)
   const [draft, setDraft] = useState("")
   const [isLoadingPosts, setIsLoadingPosts] = useState(true)
   const [databaseMessage, setDatabaseMessage] = useState("")
 
+  console.log("CommunityMarketplace cargado")
+
   useEffect(() => {
     const loadPosts = async () => {
       setIsLoadingPosts(true)
+
       const { data, error } = await supabase
         .from("community_posts")
         .select("id,title,body,tag,author,votes,comments")
         .order("created_at", { ascending: false })
 
       if (error) {
-        setDatabaseMessage("El foro está en modo demo hasta crear la tabla community_posts en Supabase.")
+        setDatabaseMessage(
+          "El foro está en modo demo hasta crear la tabla community_posts en Supabase."
+        )
+
         setIsLoadingPosts(false)
         return
       }
@@ -43,29 +54,40 @@ export default function CommunityMarketplace({ onOpenFair }: CommunityMarketplac
       if (data?.length) {
         setPosts(data)
       }
+
       setDatabaseMessage("")
       setIsLoadingPosts(false)
     }
+
     loadPosts()
   }, [])
 
   const filteredPosts = useMemo(() => {
     if (activeTag === "Todos") return posts
+
     return posts.filter((post) => post.tag === activeTag)
   }, [activeTag, posts])
 
   const publishPost = async () => {
     const cleanDraft = draft.trim()
+
     if (!cleanDraft) return
 
-    const { data: { user } } = await supabase.auth.getUser()
+    const {
+  data: { session },
+} = await supabase.auth.getSession()
 
-    // Nota: Aquí podrías dinámicamente asignar un tag si dejaras elegir al usuario.
+const user = session?.user
     const newPost = {
       title: cleanDraft,
-      body: "Nueva duda publicada por un estudiante. La comunidad puede responder, votar y pedir apoyo experto.",
-      tag: activeTag === "Todos" ? "Recursos" : activeTag, // Usa el tag activo actual o uno por defecto
-      author: user?.user_metadata?.name || user?.email || user?.phone || "Nuevo estudiante",
+      body:
+        "Nueva duda publicada por un estudiante. La comunidad puede responder, votar y pedir apoyo experto.",
+      tag: activeTag === "Todos" ? "Recursos" : activeTag,
+      author:
+        user?.user_metadata?.name ||
+        user?.email ||
+        user?.phone ||
+        "Nuevo estudiante",
       votes: 1,
       comments: 0,
     }
@@ -77,9 +99,12 @@ export default function CommunityMarketplace({ onOpenFair }: CommunityMarketplac
       .single()
 
     if (error) {
-      setDatabaseMessage("No se pudo guardar en Supabase. Revisa la tabla community_posts y sus políticas RLS.")
+      setDatabaseMessage(
+        "No se pudo guardar en Supabase. Revisa la tabla community_posts y sus políticas RLS."
+      )
     } else {
       setPosts((current) => [data, ...current])
+
       setDatabaseMessage("")
       setDraft("")
       setActiveTag("Todos")
@@ -88,13 +113,15 @@ export default function CommunityMarketplace({ onOpenFair }: CommunityMarketplac
 
   const upvote = async (id: number) => {
     const post = posts.find((currentPost) => currentPost.id === id)
+
     if (!post) return
 
     const nextVotes = post.votes + 1
 
-    // 1. Actualización optimista en interfaz
     setPosts((current) =>
-      current.map((p) => (p.id === id ? { ...p, votes: nextVotes } : p))
+      current.map((p) =>
+        p.id === id ? { ...p, votes: nextVotes } : p
+      )
     )
 
     const { error } = await supabase
@@ -102,40 +129,54 @@ export default function CommunityMarketplace({ onOpenFair }: CommunityMarketplac
       .update({ votes: nextVotes })
       .eq("id", id)
 
-    // 2. Si hay error, hacemos un Rollback inmediato del estado local
     if (error) {
-      setDatabaseMessage("El voto falló en el servidor. Revisa los permisos de UPDATE en Supabase.")
+      setDatabaseMessage(
+        "El voto falló en el servidor. Revisa los permisos UPDATE en Supabase."
+      )
+
       setPosts((current) =>
-        current.map((p) => (p.id === id ? { ...p, votes: post.votes } : p))
+        current.map((p) =>
+          p.id === id ? { ...p, votes: post.votes } : p
+        )
       )
     }
   }
 
   return (
-    <section id="comunidad" className="bg-white px-6 py-24">
+    <section
+      id="comunidad"
+      className="min-h-screen bg-gradient-to-b from-stone-50 to-white px-6 py-24"
+    >
       <div className="mx-auto max-w-7xl">
-        <div className="mb-12 grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+
+        {/* Header */}
+        <div className="mb-14 grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
           <div>
             <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-emerald-700">
               Comunidad
             </p>
+
             <h2 className="text-4xl font-black leading-tight text-slate-950 md:text-5xl">
               Un espacio para compartir dudas, recursos y ayudarnos entre estudiantes.
             </h2>
           </div>
+
           <p className="text-lg leading-8 text-slate-600">
-            El estudiante entra por una duda, conversa con otros, descubre
-            recursos útiles y encuentra ayuda académica personalizada cuando
-            necesita avanzar más rápido.
+            Publicá dudas, encontrá estudiantes de tu carrera,
+            descubrí recursos útiles y accedé a ayuda académica personalizada.
           </p>
         </div>
 
         <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
+
+          {/* FEED */}
           <div>
-            {/* Formulario de publicación */}
-            <div className="mb-8 rounded-lg border border-slate-200 bg-stone-50 p-4">
+
+            {/* Crear publicación */}
+            <div className="mb-8 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+
               {databaseMessage && (
-                <p className="mb-4 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm font-bold leading-6 text-amber-900">
+                <p className="mb-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold leading-6 text-amber-900">
                   {databaseMessage}
                 </p>
               )}
@@ -143,32 +184,32 @@ export default function CommunityMarketplace({ onOpenFair }: CommunityMarketplac
               <textarea
                 value={draft}
                 onChange={(event) => setDraft(event.target.value)}
-                placeholder="Publica una duda: materia, parcial, tema trabado o recurso que estás buscando..."
-                className="min-h-28 w-full resize-none rounded-lg border border-slate-200 bg-white p-4 outline-none focus:border-emerald-600 focus:ring-4 focus:ring-emerald-100"
+                placeholder="Publica una duda: parcial, materia, tema complicado o recurso..."
+                className="min-h-32 w-full resize-none rounded-2xl border border-slate-200 bg-stone-50 p-5 outline-none transition focus:border-emerald-600 focus:ring-4 focus:ring-emerald-100"
               />
 
               <div className="mt-4 flex justify-end">
                 <button
                   type="button"
                   onClick={publishPost}
-                  className="rounded-lg bg-emerald-700 px-5 py-3 font-black text-white transition hover:bg-slate-950"
+                  className="rounded-2xl bg-emerald-700 px-6 py-3 font-black text-white transition hover:scale-[1.02] hover:bg-slate-950"
                 >
                   Publicar duda
                 </button>
               </div>
             </div>
 
-            {/* Barra de Filtros (Ubicación correcta fuera de la caja de creación) */}
-            <div className="mb-6 flex flex-wrap gap-2 border-b border-slate-100 pb-4">
+            {/* Tags */}
+            <div className="mb-6 flex flex-wrap gap-2">
               {tags.map((tag) => (
                 <button
                   key={tag}
                   type="button"
                   onClick={() => setActiveTag(tag)}
-                  className={`rounded-md px-3 py-2 text-sm font-bold transition ${
+                  className={`rounded-xl px-4 py-2 text-sm font-black transition ${
                     activeTag === tag
                       ? "bg-slate-950 text-white"
-                      : "bg-slate-100 text-slate-600 hover:text-slate-950"
+                      : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                   }`}
                 >
                   {tag}
@@ -176,17 +217,18 @@ export default function CommunityMarketplace({ onOpenFair }: CommunityMarketplac
               ))}
             </div>
 
-            {/* Feed de Publicaciones */}
+            {/* Posts */}
             <div className="space-y-4">
+
               {isLoadingPosts && (
-                <div className="rounded-lg border border-slate-200 bg-white p-5 font-bold text-slate-500">
-                  Cargando publicaciones desde Supabase...
+                <div className="rounded-3xl border border-slate-200 bg-white p-6 font-bold text-slate-500 shadow-sm">
+                  Cargando publicaciones...
                 </div>
               )}
 
               {!isLoadingPosts && filteredPosts.length === 0 && (
-                <div className="rounded-lg border border-slate-200 bg-white p-8 text-center text-slate-500">
-                  No hay publicaciones en esta categoría todavía.
+                <div className="rounded-3xl border border-slate-200 bg-white p-10 text-center text-slate-500 shadow-sm">
+                  No hay publicaciones todavía.
                 </div>
               )}
 
@@ -195,87 +237,205 @@ export default function CommunityMarketplace({ onOpenFair }: CommunityMarketplac
                   key={post.id}
                   initial={{ opacity: 0, y: 18 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.35, delay: index * 0.04 }}
+                  transition={{
+                    duration: 0.35,
+                    delay: index * 0.04,
+                  }}
                   viewport={{ once: true }}
-                  className="grid grid-cols-[64px_1fr] gap-4 rounded-lg border border-slate-200 bg-white p-4 shadow-sm"
+                  className="grid grid-cols-[70px_1fr] gap-4 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm"
                 >
-                  <div className="flex flex-col items-center rounded-lg bg-slate-100 py-3">
+
+                  {/* votos */}
+                  <div className="flex flex-col items-center rounded-2xl bg-slate-100 py-4">
                     <button
                       type="button"
                       onClick={() => upvote(post.id)}
-                      className="text-lg font-black text-slate-600 hover:text-emerald-700"
-                      aria-label="Votar publicacion"
+                      className="text-xl font-black text-slate-600 transition hover:text-emerald-700"
                     >
                       ▲
                     </button>
-                    <span className="text-lg font-black text-slate-950">
+
+                    <span className="text-xl font-black text-slate-950">
                       {post.votes}
                     </span>
                   </div>
 
+                  {/* contenido */}
                   <div>
-                    <div className="mb-2 flex flex-wrap items-center gap-2 text-sm text-slate-500">
-                      <span className="rounded-md bg-emerald-50 px-2 py-1 font-bold text-emerald-800">
+
+                    <div className="mb-3 flex flex-wrap items-center gap-2 text-sm text-slate-500">
+                      <span className="rounded-xl bg-emerald-50 px-3 py-1 font-black text-emerald-700">
                         {post.tag}
                       </span>
+
                       <span>Publicado por {post.author}</span>
                     </div>
 
-                    <h3 className="mb-2 text-xl font-black text-slate-950">
+                    <h3 className="mb-3 text-2xl font-black text-slate-950">
                       {post.title}
                     </h3>
-                    <p className="mb-4 leading-7 text-slate-600">{post.body}</p>
 
-                    <div className="flex flex-wrap gap-3 text-sm font-bold text-slate-500">
+                    <p className="mb-5 leading-7 text-slate-600">
+                      {post.body}
+                    </p>
+
+                    <div className="flex flex-wrap gap-4 text-sm font-bold text-slate-500">
                       <button className="hover:text-slate-950">
                         {post.comments} comentarios
                       </button>
-                      <button className="hover:text-slate-950">Guardar</button>
-                      <button className="hover:text-slate-950">Pedir experto</button>
+
+                      <button className="hover:text-slate-950">
+                        Guardar
+                      </button>
+
+                      <button className="hover:text-slate-950">
+                        Pedir experto
+                      </button>
                     </div>
+
                   </div>
                 </motion.article>
               ))}
             </div>
           </div>
 
-          {/* Sidebar */}
+          {/* SIDEBAR */}
           <aside className="lg:sticky lg:top-24 lg:self-start">
-            <div className="rounded-lg border border-slate-200 bg-slate-950 p-6 text-white shadow-sm">
-              <p className="mb-2 text-sm font-black uppercase tracking-[0.18em] text-emerald-300">
-                Feria universitaria
-              </p>
-              <h3 className="mb-3 text-2xl font-black">
-                Los mejores recursos de la comunidad, listos para comprar o vender.
-              </h3>
-              <p className="mb-6 leading-7 text-slate-300">
-                Apuntes, guías, plantillas y simulacros creados por estudiantes.
-                Entra a la feria para filtrar por carrera, guardar favoritos y
-                postular tu propio material.
-              </p>
 
-              <div className="mb-6 grid grid-cols-3 gap-3 text-center">
-                <div className="rounded-lg bg-slate-900 p-3">
-                  <p className="text-xl font-black text-emerald-300">6</p>
-                  <p className="text-xs text-slate-400">recursos</p>
+            <div className="overflow-hidden rounded-3xl border border-emerald-200 bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 p-6 text-white shadow-2xl">
+
+              <div className="mb-6">
+                <p className="mb-2 text-sm font-black uppercase tracking-[0.22em] text-emerald-300">
+                  Feria universitaria
+                </p>
+
+                <h3 className="mb-4 text-3xl font-black leading-tight">
+                  Compra, vende y comparte recursos académicos.
+                </h3>
+
+                <p className="leading-7 text-slate-300">
+                  Publicá apuntes, parciales, resúmenes,
+                  plantillas y material universitario creado por estudiantes reales.
+                </p>
+              </div>
+
+              {/* stats */}
+              <div className="mb-6 grid grid-cols-3 gap-3">
+
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-center backdrop-blur">
+                  <p className="text-2xl font-black text-emerald-300">
+                    190+
+                  </p>
+
+                  <p className="text-xs text-slate-400">
+                    ventas
+                  </p>
                 </div>
-                <div className="rounded-lg bg-slate-900 p-3">
-                  <p className="text-xl font-black text-emerald-300">4.8</p>
-                  <p className="text-xs text-slate-400">rating</p>
+
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-center backdrop-blur">
+                  <p className="text-2xl font-black text-emerald-300">
+                    4.8
+                  </p>
+
+                  <p className="text-xs text-slate-400">
+                    rating
+                  </p>
                 </div>
-                <div className="rounded-lg bg-slate-900 p-3">
-                  <p className="text-xl font-black text-emerald-300">190+</p>
-                  <p className="text-xs text-slate-400">ventas</p>
+
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-center backdrop-blur">
+                  <p className="text-2xl font-black text-emerald-300">
+                    +500
+                  </p>
+
+                  <p className="text-xs text-slate-400">
+                    estudiantes
+                  </p>
                 </div>
               </div>
 
-              <button
-                type="button"
-                onClick={onOpenFair}
-                className="block w-full rounded-lg bg-emerald-600 px-5 py-3 text-center font-black text-white transition hover:bg-emerald-500"
-              >
-                Abrir feria
-              </button>
+              {/* beneficios */}
+              <div className="mb-6 space-y-3">
+
+                <div className="flex items-center gap-3 rounded-2xl bg-white/5 p-3">
+                  <span className="text-xl">📚</span>
+
+                  <p className="text-sm font-semibold text-slate-200">
+                    Subí apuntes y resúmenes
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-3 rounded-2xl bg-white/5 p-3">
+                  <span className="text-xl">💸</span>
+
+                  <p className="text-sm font-semibold text-slate-200">
+                    Ganá dinero con tu material
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-3 rounded-2xl bg-white/5 p-3">
+                  <span className="text-xl">🛡️</span>
+
+                  <p className="text-sm font-semibold text-slate-200">
+                    Publicaciones revisadas manualmente
+                  </p>
+                </div>
+
+              </div>
+
+              {/* botones */}
+              <div className="space-y-3">
+
+                <button
+                  type="button"
+                  onClick={() => onOpenFair?.()}
+                  className="w-full rounded-2xl bg-emerald-500 px-5 py-4 text-lg font-black text-white transition hover:scale-[1.02] hover:bg-emerald-400"
+                >
+                  Explorar feria
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    const mensaje = encodeURIComponent(`
+🎓 NUEVA PUBLICACIÓN PARA LA FERIA
+
+📌 Nombre del recurso:
+✏️ Descripción:
+
+🏫 Carrera:
+📚 Materia:
+
+💰 Precio:
+📎 Link/Drive del material:
+
+👤 Nombre del vendedor:
+📱 Contacto:
+
+📝 Información extra:
+                    `)
+
+                    window.open(
+                      `https://wa.me/${FAIR_WHATSAPP}?text=${mensaje}`,
+                      "_blank"
+                    )
+                  }}
+                  className="w-full rounded-2xl border border-emerald-400/30 bg-white/10 px-5 py-4 text-lg font-black text-emerald-200 backdrop-blur transition hover:bg-white/20"
+                >
+                  Publicar recurso
+                </button>
+
+              </div>
+
+              {/* footer */}
+              <div className="mt-6 rounded-2xl border border-emerald-400/20 bg-emerald-500/10 p-4">
+
+                <p className="text-sm leading-6 text-emerald-100">
+                  Todas las publicaciones pasan por revisión antes
+                  de aparecer en la comunidad para mantener calidad
+                  y evitar spam.
+                </p>
+
+              </div>
             </div>
           </aside>
         </div>
