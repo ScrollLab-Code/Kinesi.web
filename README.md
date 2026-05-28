@@ -12,14 +12,19 @@ La app usa Supabase para:
 
 Para crear las tablas, entra a Supabase Dashboard, abre **SQL Editor**, pega el contenido de `supabase/schema.sql` y ejecutalo.
 
-Variables necesarias en `.env.local`:
+Variables necesarias en `.env.local` o en la configuración de Vercel:
 
 ```env
-VITE_SUPABASE_URL=...
-VITE_SUPABASE_ANON_KEY=...
+VITE_SUPABASE_URL=tu_supabase_url
+VITE_SUPABASE_ANON_KEY=tu_supabase_anon_key
+RESEND_API_KEY=tu_resend_api_key
+RESEND_FROM_EMAIL=onboarding@tudominio.com
+SEND_TO_EMAIL=tu_email_de_destino@example.com
 ```
 
 Para Google Auth, habilita el provider Google en **Authentication > Providers** y agrega el dominio de la web en **Authentication > URL Configuration**.
+
+> En Vercel, agrega estas mismas variables de entorno en el panel del proyecto para que la función `api/send-email.ts` funcione correctamente.
 
 Currently, two official plugins are available:
 

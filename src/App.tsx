@@ -148,11 +148,10 @@ function App() {
           <button
             onClick={() => setActiveSection('ayuda')}
             className={`px-4 py-2 rounded-lg font-semibold transition-colors whitespace-nowrap ${
-              activeSection === 'comunidad'
+              activeSection === 'ayuda'
                 ? 'bg-emerald-700 text-white'
                 : 'bg-gray-100 text-slate-950 hover:bg-gray-200'
             }`}
-             
           >
             coaching Académico
           </button>

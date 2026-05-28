@@ -216,13 +216,6 @@ export default function Hero({ onAuthenticated }: HeroProps) {
               >
                 {isLoading ? "Creando acceso..." : "Crear mi cuenta gratis"}
               </button>
-<button
-                type="submit"
-                disabled={isLoading}
-                className="mb-3 w-full rounded-lg bg-slate-950 px-5 py-3.5 font-black text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-slate-400"
-              >
-                {isLoading ? "acceso..." : "iniciar sesion"}
-              </button>
 
               {authStatus && (
                 <p className="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm font-bold leading-6 text-emerald-900">
