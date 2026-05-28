@@ -5,13 +5,17 @@ import Navbar from './components/Navbar'
 import Hero from './sections/Hero'
 import Features from './sections/Features'
 import CommunityMarketplace from './sections/CommunityMarketplace'
-import AcademicFair from './sections/AcademicFair'
 import About from './sections/About'
 import Courses from './sections/Courses'
 import Testimonials from './sections/Testimonials'
 import Footer from './components/Footer'
+import CommunityFloatButton from './/components/CommunityFloatButton'
+
+
 
 import { supabase } from './lib/supabase'
+import AcademicFair from './sections/AcademicFair'
+import TestSection from './sections/TestSection'
 
 const accessKey = 'kinase_student_access'
 
@@ -233,20 +237,23 @@ function App() {
         {activeSection === 'ayuda' && (
           <div className="min-h-screen animate-in fade-in duration-300">
             <About />
+             <CommunityFloatButton />
           </div>
         )}
 
         {/* COMUNIDAD */}
         {activeSection === 'comunidad' && (
           <div className="min-h-screen bg-stone-50 animate-in fade-in duration-300">
-            <CommunityMarketplace />
+            <AcademicFair />
+             <CommunityFloatButton />
           </div>
         )}
 
         {/* FERIA */}
         {activeSection === 'mercado' && (
           <div className="min-h-screen bg-stone-50 animate-in fade-in duration-300">
-            <AcademicFair />
+            <CommunityMarketplace />
+            <CommunityFloatButton />
           </div>
         )}
 
@@ -254,13 +261,17 @@ function App() {
         {activeSection === 'cursos' && (
           <div className="min-h-screen animate-in fade-in duration-300">
             <Courses />
+             <TestSection />
+              <CommunityFloatButton />
           </div>
         )}
-
+        
         {/* TESTIMONIOS */}
         {activeSection === 'testimonios' && (
           <div className="min-h-screen animate-in fade-in duration-300">
             <Testimonials />
+             <CommunityFloatButton />
+           
           </div>
         )}
 
