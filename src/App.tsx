@@ -5,6 +5,7 @@ import Hero from './sections/Hero'
 import Features from './sections/Features'
 import CommunityMarketplace from './sections/CommunityMarketplace'
 import TestSection from './sections/TestSection'
+import AcademicFair from './sections/AcademicFair'
 import About from './sections/About'
 import Courses from './sections/Courses'
 import Testimonials from './sections/Testimonials'
@@ -12,6 +13,16 @@ import Footer from './components/Footer'
 import { supabase } from './lib/supabase'
 
 const accessKey = 'kinase_student_access'
+type ActiveSection = 'comunidad' | 'mercado' | 'diagnostico' | 'ayuda' | 'cursos' | 'testimonios'
+
+const sectionTargets: Record<ActiveSection, string> = {
+  comunidad: 'comunidad',
+  mercado: 'feria',
+  diagnostico: 'diagnostico',
+  ayuda: 'ayuda',
+  cursos: 'cursos',
+  testimonios: 'testimonios',
+}
 
 const getStoredAccess = () => {
   try {
@@ -37,7 +48,7 @@ function App() {
   const [session, setSession] = useState<Session | null>(null)
   const [localAccess, setLocalAccess] = useState(getStoredAccess)
   const [isCheckingSession, setIsCheckingSession] = useState(true)
-  const [activeSection, setActiveSection] = useState<'comunidad' | 'mercado' | 'ayuda' | 'cursos' | 'testimonios'>('comunidad')
+  const [activeSection, setActiveSection] = useState<ActiveSection>('comunidad')
 
   useEffect(() => {
     let isMounted = true
@@ -99,6 +110,15 @@ function App() {
     setLocalAccess(false)
   }
 
+  const openSection = (section: ActiveSection) => {
+    setActiveSection(section)
+    window.setTimeout(() => {
+      document
+        .getElementById(sectionTargets[section])
+        ?.scrollIntoView({ block: 'start', behavior: 'auto' })
+    }, 0)
+  }
+
   if (isCheckingSession) {
     return (
       <main className="grid min-h-screen place-items-center bg-stone-50 px-6 text-center">
@@ -146,47 +166,60 @@ function App() {
       <nav className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 z-40">
         <div className="mx-auto max-w-7xl flex gap-2 overflow-x-auto">
           <button
-            onClick={() => setActiveSection('comunidad')}
+            onClick={() => openSection('ayuda')}
+            className={`px-4 py-2 rounded-lg font-semibold transition-colors whitespace-nowrap ${
+              activeSection === 'ayuda'
+                ? 'bg-emerald-700 text-white'
+                : 'bg-gray-100 text-slate-950 hover:bg-gray-200'
+            }`}
+             
+          >
+            coaching Académico
+          </button>
+          <button
+            onClick={() => openSection('comunidad')}
             className={`px-4 py-2 rounded-lg font-semibold transition-colors whitespace-nowrap ${
               activeSection === 'comunidad'
                 ? 'bg-emerald-700 text-white'
                 : 'bg-gray-100 text-slate-950 hover:bg-gray-200'
             }`}
+      
           >
             Comunidad
           </button>
           <button
-            onClick={() => setActiveSection('mercado')}
+            onClick={() => openSection('mercado')}
             className={`px-4 py-2 rounded-lg font-semibold transition-colors whitespace-nowrap ${
               activeSection === 'mercado'
                 ? 'bg-emerald-700 text-white'
                 : 'bg-gray-100 text-slate-950 hover:bg-gray-200'
             }`}
           >
-            Feria universitaria
+            Feria académica
           </button>
           <button
-            onClick={() => setActiveSection('ayuda')}
+            onClick={() => openSection('diagnostico')}
             className={`px-4 py-2 rounded-lg font-semibold transition-colors whitespace-nowrap ${
-              activeSection === 'ayuda'
+              activeSection === 'diagnostico'
                 ? 'bg-emerald-700 text-white'
                 : 'bg-gray-100 text-slate-950 hover:bg-gray-200'
             }`}
           >
-            coaching Académico
+            Diagnostico
           </button>
           <button
-            onClick={() => setActiveSection('cursos')}
+            onClick={() => openSection('cursos')}
             className={`px-4 py-2 rounded-lg font-semibold transition-colors whitespace-nowrap ${
               activeSection === 'cursos'
                 ? 'bg-emerald-700 text-white'
                 : 'bg-gray-100 text-slate-950 hover:bg-gray-200'
             }`}
           >
+        
             Cursos
           </button>
           <button
-            onClick={() => setActiveSection('testimonios')}
+            onClick={() => openSection('testimonios')}
             className={`px-4 py-2 rounded-lg font-semibold transition-colors whitespace-nowrap ${
               activeSection === 'testimonios'
                 ? 'bg-emerald-700 text-white'
@@ -200,9 +233,12 @@ function App() {
 
       {/* Content Sections */}
       <div className="min-h-screen">
-        {activeSection === 'comunidad' && <CommunityMarketplace />}
-        {activeSection === 'mercado' && <TestSection />}
         {activeSection === 'ayuda' && <About />}
+        {activeSection === 'comunidad' && (
+          <CommunityMarketplace onOpenFair={() => openSection('mercado')} />
+        )}
+        {activeSection === 'mercado' && <AcademicFair />}
+        {activeSection === 'diagnostico' && <TestSection />}
         {activeSection === 'cursos' && <Courses />}
         {activeSection === 'testimonios' && <Testimonials />}
       </div>

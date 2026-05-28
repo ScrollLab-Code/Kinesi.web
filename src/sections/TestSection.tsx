@@ -1,6 +1,8 @@
 import { useState } from "react"
 import type { ChangeEvent, FormEvent } from "react"
-import { supabase } from "../lib/supabase"
+
+const academicHelpWhatsAppLink =
+  "https://chat.whatsapp.com/LBElkQFM83KAeytkBYFfU9?s=sh&p=a&mlu=3"
 
 const questions = [
   {
@@ -30,6 +32,35 @@ const questions = [
     ],
   },
 ]
+
+type Lead = {
+  name: string
+  lastname: string
+  email: string
+  phone: string
+  career: string
+  result: string
+  answers: string
+}
+
+const createAcademicHelpMessage = (lead: Lead) =>
+  [
+    "Nueva solicitud de ayuda academica desde Kinase.",
+    `Nombre: ${lead.name} ${lead.lastname}`,
+    `Email: ${lead.email}`,
+    `WhatsApp: ${lead.phone}`,
+    `Carrera o materia: ${lead.career}`,
+    `Resultado: ${lead.result}`,
+    `Respuestas: ${lead.answers}`,
+  ].join("\n")
+
+const createAcademicHelpWhatsAppLink = (message: string) => {
+  if (academicHelpWhatsAppLink.includes("REEMPLAZAR_LINK_DEL_GRUPO")) {
+    return `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`
+  }
+
+  return academicHelpWhatsAppLink
+}
 
 export default function TestSection() {
   const [currentQuestion, setCurrentQuestion] = useState(0)
@@ -135,33 +166,25 @@ export default function TestSection() {
     }
 
     try {
-      const { error } = await supabase.from("leads").insert([lead])
+      const message = createAcademicHelpMessage(lead)
 
-      if (error) throw error
-
-      const emailResponse = await fetch("/api/send-email", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(lead),
-      })
-
-      const emailResult = await emailResponse.json()
-
-      if (!emailResponse.ok) {
-        throw new Error(
-          emailResult.error ||
-            "El lead se guardo, pero no se pudo enviar el email."
-        )
+      try {
+        await navigator.clipboard?.writeText(message)
+      } catch {
+        // Clipboard can be blocked; WhatsApp still opens with the same data.
       }
 
+      window.open(
+        createAcademicHelpWhatsAppLink(message),
+        "_blank",
+        "noopener,noreferrer"
+      )
       setSent(true)
     } catch (error) {
       setSubmitError(
         error instanceof Error
           ? error.message
-          : "No se pudo enviar el diagnostico. Revisa Supabase y proba otra vez."
+          : "No se pudo abrir WhatsApp."
       )
     } finally {
       setIsSubmitting(false)
@@ -183,13 +206,13 @@ export default function TestSection() {
             </h2>
 
             <p className="mb-8 text-lg leading-8 text-slate-600">
-              En las próximas horas nuestro equipo revisará tu diagnóstico y te contactará con una propuesta personalizada de acompañamiento.
+              Se abrio WhatsApp con tu solicitud para que el equipo revise tu diagnostico y coordine una propuesta personalizada.
             </p>
 
             <div className="space-y-3 text-left bg-emerald-50 p-6 rounded-xl mb-8">
               <div className="flex items-center gap-3">
                 <span className="text-2xl">📧</span>
-                <span className="text-slate-700"><strong>Confirmaremos</strong> tu email</span>
+                <span className="text-slate-700"><strong>Recibiremos</strong> tu solicitud por WhatsApp</span>
               </div>
               <div className="flex items-center gap-3">
                 <span className="text-2xl">💬</span>
@@ -308,7 +331,7 @@ export default function TestSection() {
                 disabled={isSubmitting}
                 className="w-full rounded-lg bg-emerald-700 py-4 font-black text-white transition hover:bg-emerald-800 disabled:cursor-not-allowed disabled:bg-slate-400 mb-3"
               >
-                {isSubmitting ? "Enviando diagnóstico..." : "Enviar diagnóstico"}
+                {isSubmitting ? "Abriendo WhatsApp..." : "Enviar por WhatsApp"}
               </button>
               
               <button

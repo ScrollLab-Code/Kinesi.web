@@ -7,10 +7,10 @@ const features = [
     color: "blue",
   },
   {
-    title: "Marketplace académico",
+    title: "Feria académica",
     description:
       "Mentorías, packs de estudio, preparación de parciales y recursos comprables desde la misma plataforma.",
-    icon: "🛒",
+    
     color: "green",
   },
   {
@@ -20,13 +20,7 @@ const features = [
     icon: "📊",
     color: "purple",
   },
-  {
-    title: "Perfil de estudiante",
-    description:
-      "Guarda publicaciones, compras, objetivos y monitorea tu progreso en un solo lugar.",
-    icon: "👤",
-    color: "orange",
-  },
+  
 ]
 
 export default function Features() {
@@ -43,7 +37,7 @@ export default function Features() {
           </h2>
           
           <p className="mt-4 text-lg text-slate-600">
-            Combinamos comunidad, marketplace y tutoría personalizada en un solo lugar.
+            Combinamos comunidad, feria académica y tutoría personalizada en un solo lugar.
           </p>
         </div>
 

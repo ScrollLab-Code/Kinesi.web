@@ -20,7 +20,7 @@ const nextActions = [
     detail: "Comunidad + apoyo experto cuando haga falta.",
   },
   {
-    title: "Compra ayuda academica",
+    title: "inverti en acompañamiento academico",
     detail: "Mentorias, planes de estudio y preparacion intensiva.",
   },
 ]
@@ -142,7 +142,7 @@ export default function Hero({ onAuthenticated }: HeroProps) {
             </div>
 
             <h2 className="mb-5 text-4xl font-black leading-tight md:text-5xl">
-              Entra, pregunta, compra ayuda academica y estudia con un plan.
+              Invierta en su aprendizaje y estudie con un plan.
             </h2>
 
             <p className="mb-8 text-lg leading-8 text-slate-600">
@@ -216,6 +216,13 @@ export default function Hero({ onAuthenticated }: HeroProps) {
               >
                 {isLoading ? "Creando acceso..." : "Crear mi cuenta gratis"}
               </button>
+<button
+                type="submit"
+                disabled={isLoading}
+                className="mb-3 w-full rounded-lg bg-slate-950 px-5 py-3.5 font-black text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-slate-400"
+              >
+                {isLoading ? "acceso..." : "iniciar sesion"}
+              </button>
 
               {authStatus && (
                 <p className="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm font-bold leading-6 text-emerald-900">
@@ -234,14 +241,14 @@ export default function Hero({ onAuthenticated }: HeroProps) {
           <div className="relative z-10 grid h-full min-h-[520px] content-between gap-8">
             <div className="max-w-2xl">
               <h3 className="text-4xl font-black leading-tight md:text-5xl">
-                Entras con una duda y salis con un plan para avanzar.
+                Invierta en su aprendizaje y estudie con un plan.
               </h3>
             </div>
 
             <div className="grid gap-4 xl:grid-cols-[1fr_0.9fr]">
               <div className="rounded-lg border border-white/15 bg-white/10 p-5 backdrop-blur">
                 <p className="mb-4 text-sm font-bold uppercase tracking-[0.18em] text-emerald-200">
-                  Flujo de la plataforma
+                  Pasos recomendados
                 </p>
 
                 <div className="space-y-3">

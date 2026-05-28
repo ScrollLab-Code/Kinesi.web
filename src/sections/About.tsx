@@ -3,7 +3,7 @@ import videoPresentacion from "../assets/video presentacion.mp4"
 
 export default function About() {
   return (
-    <section className="bg-gradient-to-br from-white via-slate-50 to-emerald-50 py-24 px-6">
+    <section id="ayuda" className="bg-gradient-to-br from-white via-slate-50 to-emerald-50 py-24 px-6">
       <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-2 lg:items-center">
         <motion.div
           initial={{ opacity: 0, x: -28 }}
@@ -36,10 +36,10 @@ export default function About() {
               </div>
             </div>
             <div className="flex items-start gap-4">
-              <div className="mt-1 text-2xl">🛒</div>
+              <div className="mt-1 text-2xl">📚</div>
               <div>
-                <h4 className="font-black text-slate-950 mb-1">Marketplace de expertos</h4>
-                <p className="text-slate-600">Mentores y tutores verificados listos para ayudar.</p>
+                <h4 className="font-black text-slate-950 mb-1">Feria academica</h4>
+                <p className="text-slate-600">Por y para estudiantes.</p>
               </div>
             </div>
             <div className="flex items-start gap-4">
