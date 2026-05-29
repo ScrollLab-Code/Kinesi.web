@@ -20,7 +20,7 @@ const nextActions = [
     detail: "Comunidad + apoyo experto cuando haga falta.",
   },
   {
-    title: "inverti en acompañamiento academico",
+    title: "Inverti en acompañamiento academico",
     detail: "Mentorias, planes de estudio y preparacion intensiva.",
   },
 ]
@@ -42,8 +42,23 @@ export default function Hero({ onAuthenticated }: HeroProps) {
   const [name, setName] = useState("")
   const [contact, setContact] = useState("")
   const [authStatus, setAuthStatus] = useState("")
+  const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
+  // 1. Escuchar el estado de autenticación en tiempo real (Estabilidad Clave)
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session) {
+        setAuthStatus("¡Sesión iniciada con éxito! Redirigiendo...")
+        setIsError(false)
+        onAuthenticated?.()
+      }
+    })
+
+    return () => subscription.unsubscribe()
+  }, [onAuthenticated])
+
+  // 2. Rotación de consejos de estudio
   useEffect(() => {
     const timer = window.setInterval(() => {
       setTipIndex((current) => (current + 1) % studyTips.length)
@@ -52,15 +67,11 @@ export default function Hero({ onAuthenticated }: HeroProps) {
     return () => window.clearInterval(timer)
   }, [])
 
-  const activateLocalAccess = (message: string) => {
-    onAuthenticated?.()
-    setAuthStatus(message)
-  }
-
   const normalizePhone = (value: string) =>
     value.replace(/[^\d+]/g, "").replace(/(?!^)\+/g, "")
 
-  const createAccount = async (event: FormEvent<HTMLFormElement>) => {
+  // 3. Manejo del Login / Registro real
+  const handleAuth = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     const cleanName = name.trim()
@@ -68,27 +79,26 @@ export default function Hero({ onAuthenticated }: HeroProps) {
       accessMode === "email" ? contact.trim() : normalizePhone(contact)
 
     if (!cleanName || !cleanContact) {
-      setAuthStatus("Completa tu nombre y tu medio de acceso.")
+      setIsError(true)
+      setAuthStatus("Por favor, completa tu nombre y tu medio de acceso.")
       return
     }
 
     setIsLoading(true)
     setAuthStatus("")
-    activateLocalAccess(
-      accessMode === "email"
-        ? "Acceso demo activado. Si Supabase tarda, ya podés entrar."
-        : "Acceso demo activado. Si el SMS tarda, ya podés entrar."
-    )
+    setIsError(false)
 
     try {
+      // Configuramos la URL de redirección exacta actual
       const redirectTo = `${window.location.origin}${window.location.pathname}`
+      
       const payload =
         accessMode === "email"
           ? {
               email: cleanContact,
               options: {
                 emailRedirectTo: redirectTo,
-                data: { name: cleanName },
+                data: { name: cleanName }, // Se guarda en user_metadata
               },
             }
           : {
@@ -104,38 +114,30 @@ export default function Hero({ onAuthenticated }: HeroProps) {
 
       setAuthStatus(
         accessMode === "email"
-          ? "Te enviamos el acceso por email. Ya podés usar la plataforma."
-          : "Te enviamos el acceso por SMS. Ya podés usar la plataforma."
+          ? "Te enviamos un enlace de acceso a tu email. Por favor, revisa tu bandeja de entrada."
+          : "Te enviamos un código de acceso por SMS."
       )
     } catch (error) {
+      setIsError(true)
       setAuthStatus(
         error instanceof Error
-          ? `${error.message}. El acceso demo ya quedó activo.`
-          : "No se pudo validar con Supabase, pero el acceso demo ya quedó activo."
+          ? `Error de autenticación: ${error.message}`
+          : "No se pudo conectar con el servidor de autenticación. Intenta de nuevo."
       )
     } finally {
       setIsLoading(false)
     }
   }
 
-
-
   return (
-    <section
-      id="inicio"
-      className="min-h-screen bg-stone-50 pt-20 text-slate-950"
-    >
+    <section id="inicio" className="min-h-screen bg-stone-50 pt-20 text-slate-950">
       <div className="grid min-h-[calc(100vh-80px)] lg:grid-cols-[0.92fr_1.08fr]">
-        <div
-          id="registro"
-          className="flex items-center px-6 py-12 md:px-10 lg:px-16"
-        >
+        <div id="registro" className="flex items-center px-6 py-12 md:px-10 lg:px-16">
           <div className="mx-auto w-full max-w-xl">
             <div className="mb-8">
               <p className="text-5xl font-black leading-none tracking-tight text-slate-950 md:text-7xl">
                 KINASE
               </p>
-
               <p className="mt-2 text-sm font-black uppercase tracking-[0.28em] text-emerald-700">
                 Academy
               </p>
@@ -152,13 +154,13 @@ export default function Hero({ onAuthenticated }: HeroProps) {
             </p>
 
             <form
-              onSubmit={createAccount}
+              onSubmit={handleAuth}
               className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm md:p-6"
             >
               <div className="mb-5 grid grid-cols-2 rounded-lg bg-slate-100 p-1">
                 <button
                   type="button"
-                  onClick={() => setAccessMode("email")}
+                  onClick={() => { setAccessMode("email"); setAuthStatus(""); }}
                   className={`rounded-md px-4 py-2 text-sm font-bold transition ${
                     accessMode === "email"
                       ? "bg-white text-slate-950 shadow-sm"
@@ -170,7 +172,7 @@ export default function Hero({ onAuthenticated }: HeroProps) {
 
                 <button
                   type="button"
-                  onClick={() => setAccessMode("phone")}
+                  onClick={() => { setAccessMode("phone"); setAuthStatus(""); }}
                   className={`rounded-md px-4 py-2 text-sm font-bold transition ${
                     accessMode === "phone"
                       ? "bg-white text-slate-950 shadow-sm"
@@ -214,19 +216,23 @@ export default function Hero({ onAuthenticated }: HeroProps) {
                 disabled={isLoading}
                 className="mb-3 w-full rounded-lg bg-slate-950 px-5 py-3.5 font-black text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-slate-400"
               >
-                {isLoading ? "Creando acceso..." : "Crear mi cuenta gratis"}
+                {isLoading ? "Enviando acceso..." : "Crear mi cuenta gratis"}
               </button>
 
               {authStatus && (
-                <p className="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm font-bold leading-6 text-emerald-900">
+                <p className={`mt-4 rounded-lg border p-3 text-sm font-bold leading-6 ${
+                  isError 
+                    ? "border-red-200 bg-red-50 text-red-900" 
+                    : "border-emerald-200 bg-emerald-50 text-emerald-900"
+                }`}>
                   {authStatus}
                 </p>
               )}
-
             </form>
           </div>
         </div>
 
+        {/* Lado derecho del layout (Diseño sin cambios visuales dañinos) */}
         <div className="relative min-h-[580px] overflow-hidden bg-slate-950 px-6 py-12 text-white md:px-10 lg:px-16">
           <div className="absolute inset-0 study-library" />
           <div className="absolute inset-0 bg-slate-950/58" />
@@ -297,7 +303,6 @@ export default function Hero({ onAuthenticated }: HeroProps) {
               <p className="mb-3 text-sm font-bold uppercase tracking-[0.18em] text-emerald-200">
                 Consejo rapido
               </p>
-
               <p className="text-xl font-bold leading-8">{studyTips[tipIndex]}</p>
             </div>
           </div>

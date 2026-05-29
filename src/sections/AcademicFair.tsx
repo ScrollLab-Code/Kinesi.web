@@ -62,8 +62,8 @@ const createSellerRequestMessage = (sellerForm: {
   ].join("\n")
 
 const createTeamWhatsAppLink = (message: string) => {
-  if (teamWhatsAppLink.includes("https://chat.whatsapp.com/LBElkQFM83KAeytkBYFfU9")) {
-    return `https://chat.whatsapp.com/LBElkQFM83KAeytkBYFfU9?s=sh&p=a&mlu=3&text=${encodeURIComponent(message)}`
+  if (teamWhatsAppLink.includes("https://chat.whatsapp.com/2942543208")) {
+    return `https://chat.whatsapp.com/2942543208?s=sh&p=a&mlu=3&text=${encodeURIComponent(message)}`
   }
   return teamWhatsAppLink
 }

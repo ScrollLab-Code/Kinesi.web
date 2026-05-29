@@ -113,14 +113,14 @@ export default function FooterInfo() {
               href="tel:+5492990000000"
               className="block hover:text-emerald-700 transition"
             >
-              +54 9 2942-543208
+              
             </a>
 
             <a
               href="tel:+5492991111111"
               className="block hover:text-emerald-700 transition"
             >
-              +54 9 2996 23-2195
+              
             </a>
 
           </div>
