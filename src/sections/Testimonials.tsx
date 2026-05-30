@@ -50,8 +50,11 @@ export default function Testimonials() {
               <p className="text-slate-500">{testimonial.career}</p>
             </motion.article>
           ))}
+          
         </div>
       </div>
     </section>
   )
+  
+  
 }

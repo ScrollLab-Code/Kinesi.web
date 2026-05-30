@@ -9,7 +9,8 @@ import About from './sections/About'
 import Courses from './sections/Courses'
 import Testimonials from './sections/Testimonials'
 import Footer from './components/Footer'
-import CommunityFloatButton from './/components/CommunityFloatButton'
+import CommunityFloatButton from './components/CommunityFloatButton'
+import { Particulares } from './sections/Particulares'
 
 import { supabase } from './lib/supabase'
 import AcademicFair from './sections/AcademicFair'
@@ -39,13 +40,11 @@ const setStoredAccess = (value: boolean) => {
 
 function App() {
   const [session, setSession] = useState<Session | null>(null)
-
   const [localAccess, setLocalAccess] = useState(getStoredAccess)
-
   const [isCheckingSession, setIsCheckingSession] = useState(true)
 
   const [activeSection, setActiveSection] = useState<
-    'comunidad' | 'mercado' | 'ayuda' | 'cursos' | 'testimonios'
+    'comunidad' | 'mercado' | 'ayuda' | 'cursos' | 'testimonios' | 'particulares'
   >('ayuda')
 
   useEffect(() => {
@@ -105,7 +104,6 @@ function App() {
 
   const signOut = async () => {
     await supabase.auth.signOut()
-
     setStoredAccess(false)
     setSession(null)
     setLocalAccess(false)
@@ -118,7 +116,6 @@ function App() {
           <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-emerald-700">
             Kinase
           </p>
-
           <h1 className="text-3xl font-black text-slate-950">
             Preparando tu espacio de estudio...
           </h1>
@@ -140,33 +137,33 @@ function App() {
     <main className="min-h-screen bg-stone-50 text-slate-950">
       <Navbar onLogout={signOut} />
 
-      {/* HERO */}
-      <section
-        id="inicio"
-        className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 px-6 pb-24 pt-36 text-white"
-      >
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute left-0 top-0 h-96 w-96 rounded-full bg-emerald-500 blur-3xl" />
-          <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-cyan-500 blur-3xl" />
-        </div>
+      {activeSection === 'ayuda' && (
+        <section
+          id="inicio"
+          className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 px-6 pb-24 pt-36 text-white"
+        >
+          <div className="absolute inset-0 opacity-20">
+            <div className="absolute left-0 top-0 h-96 w-96 rounded-full bg-emerald-500 blur-3xl" />
+            <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-cyan-500 blur-3xl" />
+          </div>
 
-        <div className="relative mx-auto max-w-7xl">
-          <p className="mb-4 text-sm font-black uppercase tracking-[0.25em] text-emerald-300">
-            Bienvenido a Kinase
-          </p>
+          <div className="relative mx-auto max-w-7xl">
+            <p className="mb-4 text-sm font-black uppercase tracking-[0.25em] text-emerald-300">
+              Bienvenido a Kinase
+            </p>
 
-          <h1 className="max-w-5xl text-5xl font-black leading-tight md:text-7xl">
-            La comunidad universitaria donde aprendés, compartís y crecés.
-          </h1>
+            <h1 className="max-w-5xl text-5xl font-black leading-tight md:text-7xl">
+              La comunidad universitaria donde aprendés, compartís y crecés.
+            </h1>
 
-          <p className="mt-8 max-w-3xl text-lg leading-8 text-slate-300">
-            Coaching académico, comunidad universitaria, marketplace de recursos
-            y herramientas creadas para ayudarte a avanzar más rápido en la facultad.
-          </p>
-        </div>
-      </section>
+            <p className="mt-8 max-w-3xl text-lg leading-8 text-slate-300">
+              Coaching académico, comunidad universitaria, marketplace de recursos
+              y herramientas creadas para ayudarte a avanzar más rápido en la facultad.
+            </p>
+          </div>
+        </section>
+      )}
 
-      {/* NAV */}
       <nav className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 px-6 py-4 backdrop-blur">
         <div className="mx-auto flex max-w-7xl gap-3 overflow-x-auto">
 
@@ -179,6 +176,17 @@ function App() {
             }`}
           >
             Coaching Académico
+          </button>
+
+          <button
+            onClick={() => setActiveSection('particulares')}
+            className={`rounded-xl px-5 py-3 font-black transition-all whitespace-nowrap ${
+              activeSection === 'particulares'
+                ? 'bg-emerald-700 text-white shadow-lg'
+                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+            }`}
+          >
+            Particulares
           </button>
 
           <button
@@ -228,58 +236,54 @@ function App() {
         </div>
       </nav>
 
-      {/* CONTENT */}
-      <section className="min-h-screen w-full">
+      <section className="w-full">
 
-        {/* AYUDA */}
         {activeSection === 'ayuda' && (
           <div className="min-h-screen animate-in fade-in duration-300">
             <About /> 
-          
-             <CommunityFloatButton />
-          </div>
-        )}
-
-        {/* COMUNIDAD */}
-        {activeSection === 'comunidad' && (
-          <div className="min-h-screen bg-stone-50 animate-in fade-in duration-300">
-            <CommunityMarketplace />
-             <CommunityFloatButton />
-          </div>
-        )}
-
-        {/* FERIA */}
-        {activeSection === 'mercado' && (
-          <div className="min-h-screen bg-stone-50 animate-in fade-in duration-300">
-              <AcademicFair />
             <CommunityFloatButton />
           </div>
         )}
 
-        {/* CURSOS */}
+        {activeSection === 'particulares' && (
+          <div className="min-h-screen bg-stone-50 animate-in fade-in duration-300">
+            <Particulares />
+            <CommunityFloatButton />
+          </div>
+        )}
+
+        {activeSection === 'comunidad' && (
+          <div className="min-h-screen bg-stone-50 animate-in fade-in duration-300">
+            <CommunityMarketplace />
+            <CommunityFloatButton />
+          </div>
+        )}
+
+        {activeSection === 'mercado' && (
+          <div className="min-h-screen bg-stone-50 animate-in fade-in duration-300">
+            <AcademicFair />
+            <CommunityFloatButton />
+          </div>
+        )}
+
         {activeSection === 'cursos' && (
           <div className="min-h-screen animate-in fade-in duration-300">
-             <TestSection />
-             <Courses />
-              <CommunityFloatButton />
+            <TestSection />
+            <Courses />
+            <CommunityFloatButton />
           </div>
         )}
         
-        {/* TESTIMONIOS */}
         {activeSection === 'testimonios' && (
           <div className="min-h-screen animate-in fade-in duration-300">
             <Testimonials />
-             <CommunityFloatButton />
-           
+            <CommunityFloatButton />
           </div>
         )}
 
       </section>
 
-      {/* FEATURES */}
       <Features />
-
-      {/* FOOTER */}
       <Footer />
     </main>
   )

@@ -12,7 +12,7 @@ const courses = [
     badge: "Más popular",
     // 👇 PEGA AQUÍ TU LINK DE PAGO ASOCIADO A ESTE CURSO
     mpLink: "https://mpago.la/197rt9r" 
-  },              
+  },               
   {
     title: "Metodología de estudio",
     description: "Sesiones personalizadas para ordenar materias, detectar bloqueos y sostener una rutina de estudio realista.",
