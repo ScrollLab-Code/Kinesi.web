@@ -2,7 +2,7 @@ import { useState } from "react"
 import type { ChangeEvent, FormEvent } from "react"
 
 // Reemplazá con el número al que van a llegar las consultas (ej: 54 9 299 + tu número)
-const WHATSAPP_NUMBER = "54 9 2996232195"
+const WHATSAPP_NUMBER = "5492996232195"
 
 // Cada opción tiene un peso: 0 (peor) a 3 (mejor)
 const questions = [
