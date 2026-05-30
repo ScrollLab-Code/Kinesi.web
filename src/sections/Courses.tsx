@@ -4,40 +4,41 @@ import { useState } from "react"
 const courses = [
   {
     title: "Gestion del tiempo",
-    description:
-      "Metodos y estructuras horarias diseñadas para organizar calendarios, maximizar el rendimiento por bloque y eliminar la procastinacion.",
+    description: "Metodos y estructuras horarias diseñadas para organizar calendarios, maximizar el rendimiento por bloque y eliminar la procastinacion.",
     previousPrice: "$37.000",
     price: "$12.000",
     duration: "30 minutos",
     features: ["Metodos de gestión del tiempo", "Estructuración de horarios", "Técnicas anti-procrastinación"],
     badge: "Más popular",
-  },
+    // 👇 PEGA AQUÍ TU LINK DE PAGO ASOCIADO A ESTE CURSO
+    mpLink: "https://mpago.la/197rt9r" 
+  },              
   {
     title: "Metodología de estudio",
-    description:
-      "Sesiones personalizadas para ordenar materias, detectar bloqueos y sostener una rutina de estudio realista.",
+    description: "Sesiones personalizadas para ordenar materias, detectar bloqueos y sostener una rutina de estudio realista.",
     previousPrice: "$30.500",
     price: "$15.000",
     duration: "1 hora",
     features: ["Plan semanal personalizado", "3 sesiones por semana", "Seguimiento de avance", "Corrección de hábitos"],
     badge: "Tendencia",
+    mpLink: "https://mpago.la/tu_link_metodologia"
   },
   {
     title: "Regulacion emocional",
-    description:
-      "Anclaje emocional,revaluacion cognitiva, condicinamiento clasico y efecto primado",
+    description: "Anclaje emocional,revaluacion cognitiva, condicinamiento clasico y efecto primado",
     price: "$25.000",
     duration: "1 Hora, 30 minutos",
     features: ["Técnicas de regulación emocional", "Manejo de ansiedad y estrés académico", "Estrategias para mantener la motivación"],
+    mpLink: "https://mpago.la/tu_link_regulacion"
   },
   {
     title: "Preparacion de estancia evaluativas",
-    description:
-      "Sesiones personalizadas para preparar exámenes y evaluaciones.",
+    description: "Sesiones personalizadas para preparar exámenes y evaluaciones.",
     previousPrice: "$30.000",
     price: "$15.000",
     duration: "3 horas",
     features: ["Estrategias para preparar exámenes", "Técnicas de estudio efectivas", "Simulaciones de evaluaciones"],
+    mpLink: "https://mpago.la/tu_link_examenes"
   },
   {
     title: "Procesamiento de bloqueos",
@@ -46,6 +47,7 @@ const courses = [
     duration: "2 horas",
     features: ["Identificación de bloqueos académicos", "Técnicas para superar bloqueos mentales", "Estrategias para mantener la motivación"],
     badge: "interesante",
+    mpLink: "https://mpago.la/tu_link_bloqueos"
   },
   {
     title: "ordenamiento de materias",
@@ -53,11 +55,11 @@ const courses = [
     price: "$15.000",
     duration: "2 horas",
     features: ["Organización de materias", "Estructuración de horarios de estudio", "Técnicas para mantener la consistencia en el estudio"],
+    mpLink: "https://mpago.la/tu_link_ordenamiento"
   },
   {
     title: "Soporte familiar",
-    description:
-      "Destinado para padres y familiares de estudiantes universitarios, este servicio ofrece orientación y estrategias para apoyar el proceso académico de sus hijos, fomentando un ambiente de estudio positivo y efectivo.",
+    description: "Destinado para padres y familiares de estudiantes universitarios, este servicio ofrece orientación y estrategias para apoyar el proceso académico de sus hijos, fomentando un ambiente de estudio positivo y efectivo.",
     price: "...",
     duration: "2 horas",
     features: ["orientación para padres de estudiantes universitarios", "estrategias para apoyar el estudio desde casa", "fomento de hábitos de estudio saludables"],
@@ -65,16 +67,14 @@ const courses = [
   },
   {
     title: "Comunicacion y oratoria",
-    description:
-      "Desarrollo de hablidades blandas, oratoria especifica para exposición para trabajos practicos y examenes.",
+    description: "Desarrollo de hablidades blandas, oratoria específica para exposición para trabajos practicos y examenes.",
     price: "...",
     duration: "2 horas",
     features: ["Técnicas de comunicación efectiva", "Oratoria para presentaciones académicas", "Manejo de nervios y ansiedad"],
   },
   {
     title: "IA para el estudiante",
-    description:
-      "Darle la capacidad al estudiante estudiar inteligentemente entorno a las nuevas tecnologías.",
+    description: "Darle la capacidad al estudiante estudiar inteligentemente entorno a las nuevas tecnologías.",
     price: "En desarrollo",
     duration: "...",
     features: ["Whatsapp para estudiantes", "Asistente de estudio personalizado directo de whatsapp", "Recomendaciones de recursos con IA", "Alertas de fechas importantes"],
@@ -85,12 +85,16 @@ const courses = [
 export default function Courses() {
   const [selectedCourse, setSelectedCourse] = useState<number | null>(null)
 
-  // Función para manejar la lógica de pago
   const handlePayment = (course: typeof courses[0], e: React.MouseEvent) => {
-    e.stopPropagation() // Evita que se abra/cierre el acordeón al hacer clic en el botón
+    e.stopPropagation()
     
-    // Aquí conectarías con tu API, Mercado Pago, Stripe, WhatsApp, etc.
-    alert(`Iniciando checkout para: ${course.title} por un valor de ${course.price}`)
+    if (course.mpLink) {
+      // Abre el checkout oficial de Mercado Pago en otra pestaña de manera limpia
+      window.open(course.mpLink, "_blank", "noopener,noreferrer")
+    } else {
+      // Si el curso está en desarrollo o requiere consulta, redirige a WhatsApp o tu sección de contacto
+      window.open("https://wa.me/tu_numero_de_whatsapp?text=Hola! Quiero consultar por el servicio de " + course.title, "_blank")
+    }
   }
 
   return (
@@ -101,12 +105,10 @@ export default function Courses() {
             <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-emerald-700">
               Servicios de ayuda académica
             </p>
-
             <h2 className="text-4xl font-black leading-tight text-slate-950 md:text-5xl">
               Planes profesionales de tutoría y asesoramiento.
             </h2>
           </div>
-
           <p className="text-lg leading-8 text-slate-600">
             Elige el plan que se adapte a tu necesidad: desde sesiones puntuales hasta acompañamiento integral para todo el semestre.
           </p>
@@ -114,7 +116,6 @@ export default function Courses() {
 
         <div className="grid gap-6 lg:grid-cols-3">
           {courses.map((course, index) => {
-            // Validamos si el precio es un valor numérico real o texto de "En desarrollo"
             const isPurchasable = course.price !== "..." && course.price !== "En desarrollo"
 
             return (
@@ -146,11 +147,9 @@ export default function Courses() {
                   <h3 className="mb-2 text-2xl font-black text-slate-950">
                     {course.title}
                   </h3>
-
                   <p className="mb-5 text-sm text-slate-600">
                     {course.duration}
                   </p>
-
                   <p className="mb-6 leading-7 text-slate-600 text-sm">
                     {course.description}
                   </p>
@@ -185,7 +184,6 @@ export default function Courses() {
                           {course.previousPrice}
                         </span>
                       )}
-
                       <span className={`${isPurchasable ? "text-3xl font-black" : "text-lg font-bold text-slate-500"} text-slate-950`}>
                         {course.price}
                       </span>
@@ -204,21 +202,15 @@ export default function Courses() {
                   </button>
                 </div>
               </motion.article>
-            )
+            );
           })}
         </div>
-
+        
+        {/* Sección del diagnóstico */}
         <div className="mt-16 rounded-xl bg-gradient-to-r from-emerald-50 to-emerald-100/50 border border-emerald-200 p-8 text-center">
-          <h3 className="mb-2 text-2xl font-black text-emerald-900">
-            ¿No estás seguro qué plan necesitas?
-          </h3>
-          <p className="mb-6 text-emerald-800">
-            Realiza un diagnóstico gratuito y te recomendaremos el mejor plan para ti.
-          </p>
-          <a
-            href="#diagnostico"
-            className="inline-block rounded-lg bg-emerald-700 px-8 py-3 font-black text-white transition hover:bg-emerald-800"
-          >
+          <h3 className="mb-2 text-2xl font-black text-emerald-900">¿No estás seguro qué plan necesitas?</h3>
+          <p className="mb-6 text-emerald-800">Realiza un diagnóstico gratuito y te recomendaremos el mejor plan para ti.</p>
+          <a href="#diagnostico" className="inline-block rounded-lg bg-emerald-700 px-8 py-3 font-black text-white transition hover:bg-emerald-800">
             Diagnóstico gratis
           </a>
         </div>

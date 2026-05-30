@@ -108,21 +108,6 @@ export default function FooterInfo() {
             >
               Instagram — 
             </a>
-
-            <a
-              href="tel:+5492990000000"
-              className="block hover:text-emerald-700 transition"
-            >
-              
-            </a>
-
-            <a
-              href="tel:+5492991111111"
-              className="block hover:text-emerald-700 transition"
-            >
-              
-            </a>
-
           </div>
 
         </div>
