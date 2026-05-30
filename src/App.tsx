@@ -245,16 +245,19 @@ function App() {
           </div>
         )}
 
-        {activeSection === 'particulares' && (
-          <div className="min-h-screen bg-stone-50 animate-in fade-in duration-300">
-            <Particulares />
-            <CommunityFloatButton />
-          </div>
-        )}
+        
 
         {activeSection === 'comunidad' && (
           <div className="min-h-screen bg-stone-50 animate-in fade-in duration-300">
             <CommunityMarketplace />
+            <CommunityFloatButton />
+          </div>
+        )}
+        
+        
+        {activeSection === 'particulares' && (
+          <div className="min-h-screen bg-stone-50 animate-in fade-in duration-300">
+            <Particulares />
             <CommunityFloatButton />
           </div>
         )}
