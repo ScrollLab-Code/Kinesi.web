@@ -40,14 +40,15 @@ export default function Hero({ onAuthenticated }: HeroProps) {
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session) {
-        onAuthenticated?.()
-      }
-    })
-    return () => subscription.unsubscribe()
-  }, [onAuthenticated])
+ useEffect(() => {
+  const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
+    if (session) {
+      onAuthenticated?.()
+    }
+  })
+  return () => subscription.unsubscribe()
+}, [onAuthenticated])
+   
 
   useEffect(() => {
     const timer = window.setInterval(() => {

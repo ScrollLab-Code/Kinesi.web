@@ -10,8 +10,6 @@ import Courses from './sections/Courses'
 import Testimonials from './sections/Testimonials'
 import Footer from './components/Footer'
 import CommunityFloatButton from './/components/CommunityFloatButton'
-import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
-
 
 import { supabase } from './lib/supabase'
 import AcademicFair from './sections/AcademicFair'
