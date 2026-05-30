@@ -12,26 +12,14 @@ type Post = {
   comments: number
 }
 
-const initialPosts: Post[] = []
-
 const tags = ["Todos", "Medicina", "Ingenieria", "Recursos"]
 
-const FAIR_WHATSAPP = "5492942344488"
-
-type CommunityMarketplaceProps = {
-  onOpenFair?: () => void
-}
-
-export default function CommunityMarketplace({
-  onOpenFair,
-}: CommunityMarketplaceProps) {
+export default function CommunityMarketplace() {
   const [activeTag, setActiveTag] = useState("Todos")
-  const [posts, setPosts] = useState(initialPosts)
+  const [posts, setPosts] = useState<Post[]>([])
   const [draft, setDraft] = useState("")
   const [isLoadingPosts, setIsLoadingPosts] = useState(true)
   const [databaseMessage, setDatabaseMessage] = useState("")
-
-  console.log("CommunityMarketplace cargado")
 
   useEffect(() => {
     const loadPosts = async () => {
@@ -46,7 +34,6 @@ export default function CommunityMarketplace({
         setDatabaseMessage(
           "El foro está en modo demo hasta crear la tabla community_posts en Supabase."
         )
-
         setIsLoadingPosts(false)
         return
       }
@@ -64,24 +51,22 @@ export default function CommunityMarketplace({
 
   const filteredPosts = useMemo(() => {
     if (activeTag === "Todos") return posts
-
     return posts.filter((post) => post.tag === activeTag)
   }, [activeTag, posts])
 
   const publishPost = async () => {
     const cleanDraft = draft.trim()
-
     if (!cleanDraft) return
 
     const {
-  data: { session },
-} = await supabase.auth.getSession()
+      data: { session },
+    } = await supabase.auth.getSession()
 
-const user = session?.user
+    const user = session?.user
+
     const newPost = {
       title: cleanDraft,
-      body:
-        "Nueva duda publicada por un estudiante. La comunidad puede responder, votar y pedir apoyo experto.",
+      body: "Nueva duda publicada por un estudiante. La comunidad puede responder, votar y pedir apoyo experto.",
       tag: activeTag === "Todos" ? "Recursos" : activeTag,
       author:
         user?.user_metadata?.name ||
@@ -104,7 +89,6 @@ const user = session?.user
       )
     } else {
       setPosts((current) => [data, ...current])
-
       setDatabaseMessage("")
       setDraft("")
       setActiveTag("Todos")
@@ -112,16 +96,13 @@ const user = session?.user
   }
 
   const upvote = async (id: number) => {
-    const post = posts.find((currentPost) => currentPost.id === id)
-
+    const post = posts.find((p) => p.id === id)
     if (!post) return
 
     const nextVotes = post.votes + 1
 
     setPosts((current) =>
-      current.map((p) =>
-        p.id === id ? { ...p, votes: nextVotes } : p
-      )
+      current.map((p) => (p.id === id ? { ...p, votes: nextVotes } : p))
     )
 
     const { error } = await supabase
@@ -133,11 +114,8 @@ const user = session?.user
       setDatabaseMessage(
         "El voto falló en el servidor. Revisa los permisos UPDATE en Supabase."
       )
-
       setPosts((current) =>
-        current.map((p) =>
-          p.id === id ? { ...p, votes: post.votes } : p
-        )
+        current.map((p) => (p.id === id ? { ...p, votes: post.votes } : p))
       )
     }
   }
@@ -147,297 +125,124 @@ const user = session?.user
       id="comunidad"
       className="min-h-screen bg-gradient-to-b from-stone-50 to-white px-6 py-24"
     >
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-3xl">
 
         {/* Header */}
-        <div className="mb-14 grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
-          <div>
-            <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-emerald-700">
-              Comunidad
-            </p>
-
-            <h2 className="text-4xl font-black leading-tight text-slate-950 md:text-5xl">
-              Un espacio para compartir dudas, recursos y ayudarnos entre estudiantes.
-            </h2>
-          </div>
-
-          <p className="text-lg leading-8 text-slate-600">
-            Publicá dudas, encontrá estudiantes de tu carrera,
-            descubrí recursos útiles y accedé a ayuda académica personalizada.
+        <div className="mb-14">
+          <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-emerald-700">
+            Comunidad
           </p>
+          <h2 className="text-4xl font-black leading-tight text-slate-950 md:text-5xl">
+            Un espacio para compartir dudas, recursos y ayudarnos entre estudiantes.
+          </h2>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
+        {/* Crear publicación */}
+        <div className="mb-8 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+          {databaseMessage && (
+            <p className="mb-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold leading-6 text-amber-900">
+              {databaseMessage}
+            </p>
+          )}
 
-          {/* FEED */}
-          <div>
+          <textarea
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            placeholder="Publica una duda: parcial, materia, tema complicado o recurso..."
+            className="min-h-32 w-full resize-none rounded-2xl border border-slate-200 bg-stone-50 p-5 outline-none transition focus:border-emerald-600 focus:ring-4 focus:ring-emerald-100"
+          />
 
-            {/* Crear publicación */}
-            <div className="mb-8 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-
-              {databaseMessage && (
-                <p className="mb-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold leading-6 text-amber-900">
-                  {databaseMessage}
-                </p>
-              )}
-
-              <textarea
-                value={draft}
-                onChange={(event) => setDraft(event.target.value)}
-                placeholder="Publica una duda: parcial, materia, tema complicado o recurso..."
-                className="min-h-32 w-full resize-none rounded-2xl border border-slate-200 bg-stone-50 p-5 outline-none transition focus:border-emerald-600 focus:ring-4 focus:ring-emerald-100"
-              />
-
-              <div className="mt-4 flex justify-end">
-                <button
-                  type="button"
-                  onClick={publishPost}
-                  className="rounded-2xl bg-emerald-700 px-6 py-3 font-black text-white transition hover:scale-[1.02] hover:bg-slate-950"
-                >
-                  Publicar duda
-                </button>
-              </div>
-            </div>
-
-            {/* Tags */}
-            <div className="mb-6 flex flex-wrap gap-2">
-              {tags.map((tag) => (
-                <button
-                  key={tag}
-                  type="button"
-                  onClick={() => setActiveTag(tag)}
-                  className={`rounded-xl px-4 py-2 text-sm font-black transition ${
-                    activeTag === tag
-                      ? "bg-slate-950 text-white"
-                      : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                  }`}
-                >
-                  {tag}
-                </button>
-              ))}
-            </div>
-
-            {/* Posts */}
-            <div className="space-y-4">
-
-              {isLoadingPosts && (
-                <div className="rounded-3xl border border-slate-200 bg-white p-6 font-bold text-slate-500 shadow-sm">
-                  Cargando publicaciones...
-                </div>
-              )}
-
-              {!isLoadingPosts && filteredPosts.length === 0 && (
-                <div className="rounded-3xl border border-slate-200 bg-white p-10 text-center text-slate-500 shadow-sm">
-                  No hay publicaciones todavía.
-                </div>
-              )}
-
-              {filteredPosts.map((post, index) => (
-                <motion.article
-                  key={post.id}
-                  initial={{ opacity: 0, y: 18 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{
-                    duration: 0.35,
-                    delay: index * 0.04,
-                  }}
-                  viewport={{ once: true }}
-                  className="grid grid-cols-[70px_1fr] gap-4 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm"
-                >
-
-                  {/* votos */}
-                  <div className="flex flex-col items-center rounded-2xl bg-slate-100 py-4">
-                    <button
-                      type="button"
-                      onClick={() => upvote(post.id)}
-                      className="text-xl font-black text-slate-600 transition hover:text-emerald-700"
-                    >
-                      ▲
-                    </button>
-
-                    <span className="text-xl font-black text-slate-950">
-                      {post.votes}
-                    </span>
-                  </div>
-
-                  {/* contenido */}
-                  <div>
-
-                    <div className="mb-3 flex flex-wrap items-center gap-2 text-sm text-slate-500">
-                      <span className="rounded-xl bg-emerald-50 px-3 py-1 font-black text-emerald-700">
-                        {post.tag}
-                      </span>
-
-                      <span>Publicado por {post.author}</span>
-                    </div>
-
-                    <h3 className="mb-3 text-2xl font-black text-slate-950">
-                      {post.title}
-                    </h3>
-
-                    <p className="mb-5 leading-7 text-slate-600">
-                      {post.body}
-                    </p>
-
-                    <div className="flex flex-wrap gap-4 text-sm font-bold text-slate-500">
-                      <button className="hover:text-slate-950">
-                        {post.comments} comentarios
-                      </button>
-
-                      <button className="hover:text-slate-950">
-                        Guardar
-                      </button>
-
-                      <button className="hover:text-slate-950">
-                        Pedir experto
-                      </button>
-                    </div>
-
-                  </div>
-                </motion.article>
-              ))}
-            </div>
+          <div className="mt-4 flex justify-end">
+            <button
+              type="button"
+              onClick={publishPost}
+              className="rounded-2xl bg-emerald-700 px-6 py-3 font-black text-white transition hover:scale-[1.02] hover:bg-slate-950"
+            >
+              Publicar duda
+            </button>
           </div>
+        </div>
 
-          {/* SIDEBAR */}
-          <aside className="lg:sticky lg:top-24 lg:self-start">
+        {/* Tags */}
+        <div className="mb-6 flex flex-wrap gap-2">
+          {tags.map((tag) => (
+            <button
+              key={tag}
+              type="button"
+              onClick={() => setActiveTag(tag)}
+              className={`rounded-xl px-4 py-2 text-sm font-black transition ${
+                activeTag === tag
+                  ? "bg-slate-950 text-white"
+                  : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+              }`}
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
 
-            <div className="overflow-hidden rounded-3xl border border-emerald-200 bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 p-6 text-white shadow-2xl">
+        {/* Posts */}
+        <div className="space-y-4">
+          {isLoadingPosts && (
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 font-bold text-slate-500 shadow-sm">
+              Cargando publicaciones...
+            </div>
+          )}
 
-              <div className="mb-6">
-                <p className="mb-2 text-sm font-black uppercase tracking-[0.22em] text-emerald-300">
-                  Feria universitaria
-                </p>
+          {!isLoadingPosts && filteredPosts.length === 0 && (
+            <div className="rounded-3xl border border-slate-200 bg-white p-10 text-center text-slate-500 shadow-sm">
+              No hay publicaciones todavía.
+            </div>
+          )}
 
-                <h3 className="mb-4 text-3xl font-black leading-tight">
-                  Compra, vende y comparte recursos académicos.
+          {filteredPosts.map((post, index) => (
+            <motion.article
+              key={post.id}
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, delay: index * 0.04 }}
+              viewport={{ once: true }}
+              className="grid grid-cols-[70px_1fr] gap-4 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm"
+            >
+              {/* Votos */}
+              <div className="flex flex-col items-center rounded-2xl bg-slate-100 py-4">
+                <button
+                  type="button"
+                  onClick={() => upvote(post.id)}
+                  className="text-xl font-black text-slate-600 transition hover:text-emerald-700"
+                >
+                  ▲
+                </button>
+                <span className="text-xl font-black text-slate-950">
+                  {post.votes}
+                </span>
+              </div>
+
+              {/* Contenido */}
+              <div>
+                <div className="mb-3 flex flex-wrap items-center gap-2 text-sm text-slate-500">
+                  <span className="rounded-xl bg-emerald-50 px-3 py-1 font-black text-emerald-700">
+                    {post.tag}
+                  </span>
+                  <span>Publicado por {post.author}</span>
+                </div>
+
+                <h3 className="mb-3 text-2xl font-black text-slate-950">
+                  {post.title}
                 </h3>
 
-                <p className="leading-7 text-slate-300">
-                  Publicá apuntes, parciales, resúmenes,
-                  plantillas y material universitario creado por estudiantes reales.
-                </p>
-              </div>
+                <p className="mb-5 leading-7 text-slate-600">{post.body}</p>
 
-              {/* stats */}
-              <div className="mb-6 grid grid-cols-3 gap-3">
-
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-center backdrop-blur">
-                  <p className="text-2xl font-black text-emerald-300">
-                    190+
-                  </p>
-
-                  <p className="text-xs text-slate-400">
-                    ventas
-                  </p>
-                </div>
-
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-center backdrop-blur">
-                  <p className="text-2xl font-black text-emerald-300">
-                    4.8
-                  </p>
-
-                  <p className="text-xs text-slate-400">
-                    rating
-                  </p>
-                </div>
-
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-center backdrop-blur">
-                  <p className="text-2xl font-black text-emerald-300">
-                    +500
-                  </p>
-
-                  <p className="text-xs text-slate-400">
-                    estudiantes
-                  </p>
+                <div className="flex flex-wrap gap-4 text-sm font-bold text-slate-500">
+                  <button className="hover:text-slate-950">
+                    {post.comments} comentarios
+                  </button>
+                  <button className="hover:text-slate-950">Guardar</button>
+                  <button className="hover:text-slate-950">Pedir experto</button>
                 </div>
               </div>
-
-              {/* beneficios */}
-              <div className="mb-6 space-y-3">
-
-                <div className="flex items-center gap-3 rounded-2xl bg-white/5 p-3">
-                  <span className="text-xl">📚</span>
-
-                  <p className="text-sm font-semibold text-slate-200">
-                    Subí apuntes y resúmenes
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-3 rounded-2xl bg-white/5 p-3">
-                  <span className="text-xl">💸</span>
-
-                  <p className="text-sm font-semibold text-slate-200">
-                    Ganá dinero con tu material
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-3 rounded-2xl bg-white/5 p-3">
-                  <span className="text-xl">🛡️</span>
-
-                  <p className="text-sm font-semibold text-slate-200">
-                    Publicaciones revisadas manualmente
-                  </p>
-                </div>
-
-              </div>
-
-              {/* botones */}
-              <div className="space-y-3">
-
-                <button
-                  type="button"
-                  onClick={() => onOpenFair?.()}
-                  className="w-full rounded-2xl bg-emerald-500 px-5 py-4 text-lg font-black text-white transition hover:scale-[1.02] hover:bg-emerald-400"
-                >
-                  Explorar feria
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    const mensaje = encodeURIComponent(`
-🎓 NUEVA PUBLICACIÓN PARA LA FERIA
-
-📌 Nombre del recurso:
-✏️ Descripción:
-
-🏫 Carrera:
-📚 Materia:
-
-💰 Precio:
-📎 Link/Drive del material:
-
-👤 Nombre del vendedor:
-📱 Contacto:
-
-📝 Información extra:
-                    `)
-
-                    window.open(
-                      `https://wa.me/${FAIR_WHATSAPP}?text=${mensaje}`,
-                      "_blank"
-                    )
-                  }}
-                  className="w-full rounded-2xl border border-emerald-400/30 bg-white/10 px-5 py-4 text-lg font-black text-emerald-200 backdrop-blur transition hover:bg-white/20"
-                >
-                  Publicar recurso
-                </button>
-
-              </div>
-
-              {/* footer */}
-              <div className="mt-6 rounded-2xl border border-emerald-400/20 bg-emerald-500/10 p-4">
-
-                <p className="text-sm leading-6 text-emerald-100">
-                  Todas las publicaciones pasan por revisión antes
-                  de aparecer en la comunidad para mantener calidad
-                  y evitar spam.
-                </p>
-
-              </div>
-            </div>
-          </aside>
+            </motion.article>
+          ))}
         </div>
       </div>
     </section>

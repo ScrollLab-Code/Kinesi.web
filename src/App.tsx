@@ -234,7 +234,8 @@ function App() {
         {/* AYUDA */}
         {activeSection === 'ayuda' && (
           <div className="min-h-screen animate-in fade-in duration-300">
-            <About />
+            <About /> 
+          
              <CommunityFloatButton />
           </div>
         )}
@@ -242,7 +243,7 @@ function App() {
         {/* COMUNIDAD */}
         {activeSection === 'comunidad' && (
           <div className="min-h-screen bg-stone-50 animate-in fade-in duration-300">
-            <AcademicFair />
+            <CommunityMarketplace />
              <CommunityFloatButton />
           </div>
         )}
@@ -250,7 +251,7 @@ function App() {
         {/* FERIA */}
         {activeSection === 'mercado' && (
           <div className="min-h-screen bg-stone-50 animate-in fade-in duration-300">
-            <CommunityMarketplace />
+              <AcademicFair />
             <CommunityFloatButton />
           </div>
         )}
@@ -258,8 +259,8 @@ function App() {
         {/* CURSOS */}
         {activeSection === 'cursos' && (
           <div className="min-h-screen animate-in fade-in duration-300">
-            <Courses />
              <TestSection />
+             <Courses />
               <CommunityFloatButton />
           </div>
         )}
