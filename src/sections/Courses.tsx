@@ -6,7 +6,7 @@ const courses = [
     title: "Gestion del tiempo",
     description: "Metodos y estructuras horarias diseñadas para organizar calendarios, maximizar el rendimiento por bloque y eliminar la procastinacion.",
     previousPrice: "$37.000",
-    price: "$12.000",
+    price: "$15.000",
     duration: "30 minutos",
     features: ["Metodos de gestión del tiempo", "Estructuración de horarios", "Técnicas anti-procrastinación"],
     badge: "Más popular",
