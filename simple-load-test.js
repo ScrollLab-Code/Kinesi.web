@@ -2,20 +2,30 @@
  * SIMPLE LOAD TEST - Node.js
  * Sin dependencias externas, ejecutable inmediatamente
  * 
- * Uso: node simple-load-test.js [usuarios] [duracion]
- * Ej: node simple-load-test.js 1000 60
+ * Uso: node simple-load-test.js [usuarios] [duracion] [URL]
+ * Ej: node simple-load-test.js 1000 60 https://kinase.com
+ * Ej: node simple-load-test.js 1000 60 http://localhost:5173
  */
 
-const https = require('https');
-const http = require('http');
+import https from 'https';
+import http from 'http';
 
 // ============================================================================
 // CONFIGURACIÓN
 // ============================================================================
-const BASE_URL = process.env.BASE_URL || 'https://kinase.com';
+let BASE_URL = process.argv[4] || process.env.BASE_URL || 'https://kinase.com';
 const NUM_USERS = parseInt(process.argv[2]) || 100;
 const DURATION_SEC = parseInt(process.argv[3]) || 30;
 const BATCH_SIZE = 50; // Requests simultáneos
+
+// Validar URL
+if (!BASE_URL.startsWith('http')) {
+  BASE_URL = 'https://' + BASE_URL;
+}
+
+console.log(`\n📍 URL a testear: ${BASE_URL}`);
+console.log(`👥 Usuarios simulados: ${NUM_USERS}`);
+console.log(`⏱️  Duración: ${DURATION_SEC}s\n`);
 
 // ============================================================================
 // MÉTRICAS
