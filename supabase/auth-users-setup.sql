@@ -1,85 +1,108 @@
 /**
- * AUTH USERS SETUP
- * Crea tabla de usuarios públicos vinculada con auth.users
- * Deshabilita requisito de confirmación de email
+ * AUTH USERS SETUP - KINASE
+ * Ejecutar en Supabase SQL Editor.
+ *
+ * Este script sincroniza auth.users con public.users y es tolerante a setups
+ * anteriores que hayan creado la columna nombre en vez de name.
  */
 
--- 1. CREAR TABLA PÚBLICA DE USUARIOS
-CREATE TABLE IF NOT EXISTS public.users (
-  id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
-  email TEXT NOT NULL UNIQUE,
-  name TEXT,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
+create table if not exists public.users (
+  id uuid primary key references auth.users(id) on delete cascade,
+  email text not null unique,
+  name text,
+  role text not null default 'user',
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
 );
 
--- 2. HABILITAR RLS EN TABLA DE USUARIOS
-ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
+alter table public.users add column if not exists email text;
+alter table public.users add column if not exists name text;
+alter table public.users add column if not exists role text not null default 'user';
+alter table public.users add column if not exists created_at timestamptz not null default now();
+alter table public.users add column if not exists updated_at timestamptz not null default now();
 
--- 3. POLÍTICAS RLS PARA USUARIOS
--- Cualquiera puede leer su propio perfil
-DROP POLICY IF EXISTS "Users can read their own profile" ON public.users;
-CREATE POLICY "Users can read their own profile"
-ON public.users
-FOR SELECT
-TO authenticated
-USING (auth.uid() = id);
+do $$
+begin
+  if exists (
+    select 1
+    from information_schema.columns
+    where table_schema = 'public'
+      and table_name = 'users'
+      and column_name = 'nombre'
+  ) then
+    alter table public.users alter column nombre drop not null;
+    execute 'update public.users set name = coalesce(name, nullif(nombre, '''')) where name is null';
+  end if;
+end $$;
 
--- Cualquiera puede actualizar su propio perfil
-DROP POLICY IF EXISTS "Users can update their own profile" ON public.users;
-CREATE POLICY "Users can update their own profile"
-ON public.users
-FOR UPDATE
-TO authenticated
-USING (auth.uid() = id)
-WITH CHECK (auth.uid() = id);
+alter table public.users enable row level security;
 
--- 4. FUNCIÓN Y TRIGGER PARA SINCRONIZAR USUARIOS NUEVOS
-CREATE OR REPLACE FUNCTION public.handle_new_user()
-RETURNS TRIGGER AS $$
-BEGIN
-  INSERT INTO public.users (id, email, name)
-  VALUES (NEW.id, NEW.email, NEW.raw_user_meta_data->>'name')
-  ON CONFLICT (id) DO UPDATE SET
-    email = NEW.email,
-    name = COALESCE(NEW.raw_user_meta_data->>'name', public.users.name);
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+drop policy if exists "Users can read their own profile" on public.users;
+create policy "Users can read their own profile"
+on public.users
+for select
+to authenticated
+using (auth.uid() = id);
 
--- ELIMINAR TRIGGER SI EXISTE
-DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+drop policy if exists "Users can update their own profile" on public.users;
+create policy "Users can update their own profile"
+on public.users
+for update
+to authenticated
+using (auth.uid() = id)
+with check (auth.uid() = id);
 
--- CREAR TRIGGER
-CREATE TRIGGER on_auth_user_created
-AFTER INSERT ON auth.users
-FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+create or replace function public.handle_new_user()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  display_name text;
+begin
+  display_name := coalesce(
+    new.raw_user_meta_data->>'name',
+    new.raw_user_meta_data->>'full_name',
+    split_part(new.email, '@', 1)
+  );
 
--- 5. CREAR INDEX PARA PERFORMANCE
-CREATE INDEX IF NOT EXISTS idx_users_email ON public.users(email);
-CREATE INDEX IF NOT EXISTS idx_users_created_at ON public.users(created_at);
+  insert into public.users (id, email, name)
+  values (new.id, new.email, display_name)
+  on conflict (id) do update set
+    email = excluded.email,
+    name = coalesce(excluded.name, public.users.name),
+    updated_at = now();
 
--- 6. HABILITAR REALTIME PARA TABLA DE USUARIOS
-ALTER PUBLICATION supabase_realtime ADD TABLE public.users;
+  return new;
+end;
+$$;
 
--- Insertar usuarios existentes si los hay
-INSERT INTO public.users (id, email, name)
-SELECT id, email, raw_user_meta_data->>'name' as name
-FROM auth.users
-ON CONFLICT DO NOTHING;
+drop trigger if exists on_auth_user_created on auth.users;
+create trigger on_auth_user_created
+after insert on auth.users
+for each row execute function public.handle_new_user();
 
--- 7. CREAR VIEW DE USUARIOS ACTIVOS (OPCIONAL)
-CREATE OR REPLACE VIEW public.active_users AS
-SELECT 
-  u.id,
-  u.email,
-  u.name,
-  u.created_at,
-  u.updated_at
-FROM public.users u
-WHERE u.created_at >= NOW() - INTERVAL '90 days';
+create index if not exists idx_users_email on public.users(email);
+create index if not exists idx_users_created_at on public.users(created_at);
 
--- PERMITIR LECTURA A ANON Y AUTHENTICATED
-GRANT SELECT ON public.active_users TO anon, authenticated;
-GRANT SELECT, INSERT, UPDATE, DELETE ON public.users TO authenticated;
-GRANT SELECT ON public.users TO anon;
+insert into public.users (id, email, name)
+select
+  id,
+  email,
+  coalesce(raw_user_meta_data->>'name', raw_user_meta_data->>'full_name', split_part(email, '@', 1))
+from auth.users
+on conflict (id) do update set
+  email = excluded.email,
+  name = coalesce(excluded.name, public.users.name),
+  updated_at = now();
+
+drop view if exists public.active_users;
+
+create view public.active_users as
+select id, email, name, created_at, updated_at
+from public.users
+where created_at >= now() - interval '90 days';
+
+grant select on public.active_users to anon, authenticated;
+grant select, insert, update on public.users to authenticated;

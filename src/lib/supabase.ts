@@ -1,7 +1,23 @@
 import { createClient } from '@supabase/supabase-js'
 
-// PEGA TUS CREDENCIALES REALES AQUÍ DIRECTAMENTE:
-const supabaseUrl = 'https://qjsdteqivrimvffmfafh.supabase.co' 
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqc2R0ZXFpdnJpbXZmZm1mYWZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMTYzNjMsImV4cCI6MjA5NDY5MjM2M30.udSHZndC03NW71uUAHfpqf5_tm0QNJRyie3P2D5tQU4'
+const normalizeSupabaseUrl = (value: string) => {
+  const cleanValue = value.trim().replace(/\/$/, '')
+  if (!cleanValue) return cleanValue
+  return cleanValue.startsWith('http') ? cleanValue : `https://${cleanValue}`
+}
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+const supabaseUrl = normalizeSupabaseUrl(import.meta.env.VITE_SUPABASE_URL ?? '')
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY ?? ''
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error('Faltan VITE_SUPABASE_URL o VITE_SUPABASE_ANON_KEY')
+}
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true,
+    flowType: 'pkce',
+  },
+})

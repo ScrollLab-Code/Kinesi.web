@@ -16,31 +16,8 @@ import { supabase } from './lib/supabase'
 import AcademicFair from './sections/AcademicFair'
 import TestSection from './sections/TestSection'
 
-const accessKey = 'kinase_student_access'
-
-const getStoredAccess = () => {
-  try {
-    return window.localStorage.getItem(accessKey) === 'true'
-  } catch {
-    return false
-  }
-}
-
-const setStoredAccess = (value: boolean) => {
-  try {
-    if (value) {
-      window.localStorage.setItem(accessKey, 'true')
-    } else {
-      window.localStorage.removeItem(accessKey)
-    }
-  } catch {
-    // ignore
-  }
-}
-
 function App() {
   const [session, setSession] = useState<Session | null>(null)
-  const [localAccess, setLocalAccess] = useState(getStoredAccess)
   const [isCheckingSession, setIsCheckingSession] = useState(true)
 
   const [activeSection, setActiveSection] = useState<
@@ -58,8 +35,23 @@ function App() {
 
     const loadingFallback = window.setTimeout(finishLoading, 1800)
 
-    supabase.auth
-      .getSession()
+    const syncSession = async () => {
+      const url = new URL(window.location.href)
+      const authCode = url.searchParams.get('code')
+
+      if (url.pathname === '/auth/callback' && authCode) {
+        const { error } = await supabase.auth.exchangeCodeForSession(authCode)
+        if (error) {
+          throw error
+        }
+
+        window.history.replaceState({}, document.title, '/')
+      }
+
+      return supabase.auth.getSession()
+    }
+
+    syncSession()
       .then(({ data }) => {
         if (isMounted) {
           setSession(data.session)
@@ -81,12 +73,6 @@ function App() {
       if (!isMounted) return
 
       setSession(activeSession)
-
-      if (activeSession) {
-        setStoredAccess(true)
-        setLocalAccess(true)
-      }
-
       setIsCheckingSession(false)
     })
 
@@ -98,15 +84,14 @@ function App() {
   }, [])
 
   const unlockApp = () => {
-    setStoredAccess(true)
-    setLocalAccess(true)
+    supabase.auth.getSession().then(({ data }) => {
+      setSession(data.session)
+    })
   }
 
   const signOut = async () => {
     await supabase.auth.signOut()
-    setStoredAccess(false)
     setSession(null)
-    setLocalAccess(false)
   }
 
   if (isCheckingSession) {
@@ -124,7 +109,7 @@ function App() {
     )
   }
 
-  if (!session && !localAccess) {
+  if (!session) {
     return (
       <main>
         <Navbar />

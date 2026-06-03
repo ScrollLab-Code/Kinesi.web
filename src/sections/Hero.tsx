@@ -27,6 +27,8 @@ type HeroProps = {
   onAuthenticated?: () => void
 }
 
+const getAuthRedirectUrl = () => `${window.location.origin}/auth/callback`
+
 export default function Hero({ onAuthenticated }: HeroProps) {
   const [tipIndex, setTipIndex] = useState(0)
   const [formMode, setFormMode] = useState<"login" | "register">("login")
@@ -65,7 +67,7 @@ export default function Hero({ onAuthenticated }: HeroProps) {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}${window.location.pathname}`,
+          redirectTo: getAuthRedirectUrl(),
         }
       })
       if (error) throw error
@@ -78,7 +80,7 @@ export default function Hero({ onAuthenticated }: HeroProps) {
 
   const handleAuth = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const cleanEmail = email.trim()
+    const cleanEmail = email.trim().toLowerCase()
     const cleanName = name.trim()
 
     setAuthStatus("")
@@ -87,6 +89,18 @@ export default function Hero({ onAuthenticated }: HeroProps) {
     if (!cleanEmail || !password) {
       setIsError(true)
       setAuthStatus("Por favor, completa todos los campos del formulario.")
+      return
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {
+      setIsError(true)
+      setAuthStatus("Por favor, ingresa un email valido.")
+      return
+    }
+
+    if (password.length < 6) {
+      setIsError(true)
+      setAuthStatus("La contrasena debe tener al menos 6 caracteres.")
       return
     }
 
@@ -101,10 +115,17 @@ export default function Hero({ onAuthenticated }: HeroProps) {
         })
 
         if (loginError) {
-          // Si el código de error indica que el usuario no existe o las credenciales son inválidas
-          if (loginError.status === 400 || loginError.message.toLowerCase().includes("invalid login")) {
+          const errorMessage = loginError.message.toLowerCase()
+
+          if (errorMessage.includes("email not confirmed")) {
             setIsError(true)
-            setAuthStatus("El email no es una cuenta activa. Por favor verifique los datos o cree una cuenta nueva abajo.")
+            setAuthStatus("Tu email todavia no esta confirmado. Revisa tu correo y abri el link de activacion.")
+          } else if (loginError.status === 400 || errorMessage.includes("invalid login")) {
+            setIsError(true)
+            setAuthStatus("Email o contrasena incorrectos. Si recien te registraste, confirma primero el correo.")
+          } else if (loginError.status === 429) {
+            setIsError(true)
+            setAuthStatus("Demasiados intentos. Espera un momento y volve a probar.")
           } else {
             setIsError(true)
             setAuthStatus(loginError.message)
@@ -130,13 +151,15 @@ export default function Hero({ onAuthenticated }: HeroProps) {
           email: cleanEmail,
           password: password,
           options: {
-            emailRedirectTo: `${window.location.origin}${window.location.pathname}`,
+            emailRedirectTo: getAuthRedirectUrl(),
             data: { name: cleanName }
           }
         })
 
         if (signUpError) throw signUpError
-        setAuthStatus("¡Cuenta creada con éxito! Te enviamos un correo de activación para validar tu perfil por primera vez.")
+        setFormMode("login")
+        setPassword("")
+        setAuthStatus("Cuenta creada. Te enviamos un correo de activacion; abrilo y vas a entrar automaticamente.")
       }
     } catch (error) {
       setIsError(true)
