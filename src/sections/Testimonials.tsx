@@ -1,24 +1,37 @@
-import { motion } from "framer-motion"
+import { useState } from 'react';
+import { supabase } from '../lib/supabase';
+import { motion } from 'framer-motion'; // Si lo seguís usando
 
 const testimonials = [
   {
-    name: "Martina",
-    career: "Medicina",
-    text: "Me ayudo a ordenar los parciales y a estudiar con menos ansiedad. La diferencia fue tener un plan y alguien que lo revise.",
+    name: 'Martina',
+    career: 'Medicina',
+    text: 'Me ayudo a ordenar los parciales y a estudiar con menos ansiedad. La diferencia fue tener un plan y alguien que lo revise.',
   },
-  {
-    name: "Tomas",
-    career: "Ingenieria",
-    text: "Use el foro para dudas puntuales y despues contrate una mentoria para preparar matematica. Llegue mucho mas firme.",
-  },
-  {
-    name: "Lucia",
-    career: "Abogacia",
-    text: "El seguimiento me saco de estudiar todo a ultimo momento. Ahora se que hacer cada semana.",
-  },
-]
+  
+];
 
 export default function Testimonials() {
+  const [name, setName] = useState('');
+  const [career, setCareer] = useState('');
+  const [text, setText] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const { data, error } = await supabase.from('testimonios').insert([
+      { name, career, text },
+    ]);
+    if (error) {
+      console.error('Error al enviar el testimonio:', error);
+    } else {
+      // Limpiar campos o dar feedback al usuario
+      setName('');
+      setCareer('');
+      setText('');
+      alert('Testimonio enviado con éxito');
+    }
+  };
+
   return (
     <section id="testimonios" className="bg-white py-24 px-6">
       <div className="mx-auto max-w-7xl">
@@ -31,6 +44,38 @@ export default function Testimonials() {
             La promesa es simple: estudiar mejor, con menos caos.
           </h2>
         </div>
+
+        <form onSubmit={handleSubmit} className="mb-14">
+          <div className="grid gap-4 md:grid-cols-2">
+            <input
+              type="text"
+              placeholder="Nombre"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="rounded border p-3"
+              required
+            />
+            <input
+              type="text"
+              placeholder="Carrera"
+              value={career}
+              onChange={(e) => setCareer(e.target.value)}
+              className="rounded border p-3"
+              required
+            />
+          </div>
+          <textarea
+            placeholder="Tu testimonio"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            className="rounded border p-3 mt-4 w-full"
+        
+            required
+          />
+          <button type="submit" className="mt-4 bg-emerald-700 text-white px-6 py-3 rounded hover:bg-emerald-800">
+            Enviar Testimonio
+          </button>
+        </form>
 
         <div className="grid gap-6 lg:grid-cols-3">
           {testimonials.map((testimonial, index) => (
@@ -50,11 +95,8 @@ export default function Testimonials() {
               <p className="text-slate-500">{testimonial.career}</p>
             </motion.article>
           ))}
-          
         </div>
       </div>
     </section>
-  )
-  
-  
+  );
 }
