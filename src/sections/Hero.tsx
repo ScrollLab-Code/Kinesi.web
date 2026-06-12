@@ -201,7 +201,7 @@ export default function Hero({ onAuthenticated }: HeroProps) {
 
             <form onSubmit={handleAuth} className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm md:p-6">
               
-              <p className="mb-2 text-xs font-black uppercase tracking-wider text-slate-400">Inicia sesión con:</p>
+              <p className="mb-2 text-xs font-black uppercase tracking-wider text-slate-400">Inicia sesion con:</p>
               
               <button
                 type="button"
