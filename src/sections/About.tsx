@@ -23,6 +23,10 @@ export default function About() {
             Muchos estudiantes tienen acceso a contenido infinito. El problema real es no saber por dónde empezar, perder consistencia o quedarse solo cuando se traba una materia.
           </p>
 
+          <p className="mb-5 text-lg leading-8 text-slate-600">
+            Kinase también suma un espacio para particulares: mentorías one‑on‑one, tutorías por materia y un plan de estudio adaptado a tus tiempos. Esto te ayuda a avanzar con seguridad, aun cuando las parciales se acercan.
+          </p>
+
           <p className="mb-6 text-lg leading-8 text-slate-600">
             Por eso Kinase combina tres cosas:
           </p>
@@ -47,6 +51,13 @@ export default function About() {
               <div>
                 <h4 className="font-black text-slate-950 mb-1">Seguimiento personalizado</h4>
                 <p className="text-slate-600">Diagnóstico, plan semanal y control de avance.</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-4">
+              <div className="mt-1 text-2xl">🧑‍🏫</div>
+              <div>
+                <h4 className="font-black text-slate-950 mb-1">Clases particulares</h4>
+                <p className="text-slate-600">Tutorías individuales para resolver dudas, practicar ejercicios clave y preparar parciales con foco en tus necesidades.</p>
               </div>
             </div>
           </div>

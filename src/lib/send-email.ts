@@ -16,6 +16,14 @@ type LeadPayload = {
   answers?: string
 }
 
+type TestimonialPayload = {
+  name: string
+  career: string
+  testimonial: string
+  email?: string
+  phone?: string
+}
+
 const defaultResendFrom = 'onboarding@resend.dev'
 const defaultResendTo = 'Giacomassi.nqn@gmail.com'
 
@@ -52,6 +60,27 @@ const parseLeadPayload = (body: unknown): LeadPayload | null => {
   }
 }
 
+const parseTestimonialPayload = (body: unknown): TestimonialPayload | null => {
+  if (!body || typeof body !== 'object') return null
+
+  const record = body as Record<string, unknown>
+  const name = toCleanString(record.name)
+  const career = toCleanString(record.career)
+  const testimonial = toCleanString(record.testimonial)
+  const email = toCleanString(record.email) || undefined
+  const phone = toCleanString(record.phone) || undefined
+
+  if (!name || !career || !testimonial) return null
+
+  return {
+    name,
+    career,
+    testimonial,
+    email,
+    phone,
+  }
+}
+
 const buildEmailText = (lead: LeadPayload) => {
   return [
     'Nuevo lead',
@@ -66,6 +95,20 @@ const buildEmailText = (lead: LeadPayload) => {
     '',
     'Respuestas:',
     lead.answers ?? '-',
+  ].join('\n')
+}
+
+const buildTestimonialText = (testimonial: TestimonialPayload) => {
+  return [
+    'Nuevo testimonio recibido',
+    '',
+    `Nombre: ${testimonial.name}`,
+    `Carrera: ${testimonial.career}`,
+    `Email: ${testimonial.email ?? '-'}`,
+    `Telefono: ${testimonial.phone ?? '-'}`,
+    '',
+    'Testimonio:',
+    testimonial.testimonial,
   ].join('\n')
 }
 
@@ -118,13 +161,17 @@ export const handleSendEmail = async (
 
   const payload = await readJsonBody(req)
   const lead = parseLeadPayload(payload)
+  const testimonial = parseTestimonialPayload(payload)
 
-  if (!lead) {
+  if (!lead && !testimonial) {
     return Response.json(
       { error: 'Faltan datos del formulario para enviar el email.' },
       { status: 400 }
     )
   }
+
+  const emailText = lead ? buildEmailText(lead) : buildTestimonialText(testimonial)
+  const subject = lead ? 'Nuevo diagnostico recibido' : 'Nuevo testimonio recibido'
 
   try {
     const resend = new Resend(resendApiKey)
@@ -132,8 +179,8 @@ export const handleSendEmail = async (
     const data = await resend.emails.send({
       from: resendFrom,
       to: resendTo,
-      subject: 'Nuevo diagnostico recibido',
-      text: buildEmailText(lead),
+      subject,
+      text: emailText,
     })
 
     return Response.json({
