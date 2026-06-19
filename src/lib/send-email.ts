@@ -170,7 +170,7 @@ export const handleSendEmail = async (
     )
   }
 
-  const emailText = lead ? buildEmailText(lead) : buildTestimonialText(testimonial)
+  const emailText = lead ? buildEmailText(lead) : buildTestimonialText(testimonial!)
   const subject = lead ? 'Nuevo diagnostico recibido' : 'Nuevo testimonio recibido'
 
   try {
