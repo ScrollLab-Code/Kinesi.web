@@ -74,11 +74,6 @@ export default function Hero({ onAuthenticated }: HeroProps) {
 
     setIsLoading(true)
     setAuthStatus("")
-    activateLocalAccess(
-      accessMode === "email"
-        ? "Acceso demo activado. Si Supabase tarda, ya podés entrar."
-        : "Acceso demo activado. Si el SMS tarda, ya podés entrar."
-    )
 
     try {
       const redirectTo = `${window.location.origin}${window.location.pathname}`
@@ -102,6 +97,12 @@ export default function Hero({ onAuthenticated }: HeroProps) {
 
       if (error) throw error
 
+      activateLocalAccess(
+        accessMode === "email"
+          ? "Acceso demo activado. Si Supabase tarda, ya podés entrar."
+          : "Acceso demo activado. Si el SMS tarda, ya podés entrar."
+      )
+
       setAuthStatus(
         accessMode === "email"
           ? "Te enviamos el acceso por email. Ya podés usar la plataforma."
@@ -110,8 +111,8 @@ export default function Hero({ onAuthenticated }: HeroProps) {
     } catch (error) {
       setAuthStatus(
         error instanceof Error
-          ? `${error.message}. El acceso demo ya quedó activo.`
-          : "No se pudo validar con Supabase, pero el acceso demo ya quedó activo."
+          ? `${error.message}. No se activó el acceso demo.`
+          : "No se pudo validar con Supabase. Intentá de nuevo más tarde."
       )
     } finally {
       setIsLoading(false)
