@@ -11,115 +11,191 @@ type AnatomyPart = {
   insertion?: string
   irrigation?: string
   innervation?: string
+  sourceBook?: string
 }
 
 const anatomyData: AnatomyPart[] = [
-  // Skeletal Layer
+  // Skeletal Layer (Base: Latarjet - Ruiz Liard)
   {
     id: "clavicula",
     name: "Clavícula",
     layer: "skeletal",
-    details: "Hueso largo con forma de 'S' itálica que conecta el miembro superior al tronco.",
-    origin: "Extremo esternal se articula con el manubrio del esternón.",
-    insertion: "Extremo acromial se articula con el acromion de la escápula.",
+    details: "Hueso largo en forma de 'S' itálica que se extiende horizontalmente entre el esternón y la escápula. Presenta dos caras (superior e inferior), dos bordes (anterior y posterior) y dos extremos (esternal y acromial).",
+    origin: "Extremo esternal se articula con la escotadura clavicular del esternón y el primer cartílago costal.",
+    insertion: "Extremo acromial se articula con la carilla articular del acromion.",
+    sourceBook: "Latarjet - Ruiz Liard, Tomo 1"
   },
   {
     id: "escapula",
     name: "Escápula (Omóplato)",
     layer: "skeletal",
-    details: "Hueso plano, triangular, situado en la parte posterior y superior del tórax.",
-    origin: "Fosa supraespinosa, infraespinosa y subescapular.",
-    insertion: "Se articula con la cabeza del húmero en la cavidad glenoidea.",
+    details: "Hueso plano y triangular localizado en la parte posterior y superior del tórax, a la altura de las primeras 7 costillas. Presenta una espina posterior que termina en el acromion y una apófisis coracoides anterior.",
+    origin: "Fosa subescapular (cara anterior), fosa supraespinosa e infraespinosa (cara posterior).",
+    insertion: "Cavidad glenoidea recibe la cabeza del húmero formando la articulación glenohumeral.",
+    sourceBook: "Latarjet - Ruiz Liard, Tomo 1"
   },
   {
     id: "humero",
     name: "Húmero",
     layer: "skeletal",
-    details: "Hueso más largo y grande del miembro superior. Se articula con la escápula y los huesos del antebrazo.",
-    origin: "Cabeza del húmero, cuello anatómico y quirúrgico, troquíter y troquín.",
-    insertion: "Epífisis distal (cóndilo y tróclea) se articula con radio y cúbito.",
+    details: "Hueso largo de la región del brazo. Su epífisis proximal presenta la cabeza humeral, los tubérculos mayor (troquiter) y menor (troquín) separados por el surco intertubercular. Su diáfisis contiene el canal del nervio radial.",
+    origin: "Cabezas y cuellos anatómico y quirúrgico en la epífisis proximal.",
+    insertion: "La tróclea humeral distal se articula con el cúbito y el cóndilo (capítulo) con el radio.",
+    sourceBook: "Latarjet - Ruiz Liard, Tomo 1"
   },
   {
     id: "radio",
     name: "Radio",
     layer: "skeletal",
-    details: "Hueso lateral del antebrazo (lado del pulgar). Participa activamente en la pronosupinación.",
-    origin: "Cabeza del radio se articula con la cúpula radial y el cúbito.",
-    insertion: "Apófisis estiloides del radio se articula con los huesos del carpo.",
+    details: "Hueso largo lateral del antebrazo. Presenta en su epífisis proximal la cabeza del radio (con la cúpula articular) y el cuello. Su epífisis distal es ancha y presenta la apófisis estiloides lateral.",
+    origin: "Cabeza del radio se articula con la escotadura radial del cúbito y el capítulo humeral.",
+    insertion: "Apófisis estiloides del radio sirve de inserción al ligamento colateral radial de la muñeca.",
+    sourceBook: "Latarjet - Ruiz Liard, Tomo 1"
   },
   {
     id: "cubito",
     name: "Cúbito (Ulna)",
     layer: "skeletal",
-    details: "Hueso medial del antebrazo, paralelo al radio.",
-    origin: "Olécranon y apófisis coronoides.",
-    insertion: "Cabeza del cúbito y apófisis estiloides en la porción distal.",
+    details: "Hueso largo y medial del antebrazo, paralelo al radio. Su epífisis proximal presenta la escotadura troclear delimitada por el olécranon superior y la apófisis coronoides inferior.",
+    origin: "Cara anterior de la apófisis coronoides y el olécranon.",
+    insertion: "Epífisis distal presenta la cabeza del cúbito y la apófisis estiloides medial.",
+    sourceBook: "Latarjet - Ruiz Liard, Tomo 1"
   },
-  // Muscular Layer
+  {
+    id: "carpo",
+    name: "Huesos del Carpo (Fila Proximal)",
+    layer: "skeletal",
+    details: "Grupo de 4 huesos cortos que componen la fila proximal del carpo de lateral a medial: Escafoides, Semilunar, Piramidal y Pisiforme. Forman la base ósea de la articulación radiocarpiana.",
+    origin: "El escafoides y semilunar se articulan directamente con la carilla articular inferior del radio.",
+    insertion: "El pisiforme presta inserción al tendón del músculo flexor cubital del carpo (cubital anterior).",
+    sourceBook: "Latarjet - Ruiz Liard, Tomo 1"
+  },
+  {
+    id: "carpo_distal",
+    name: "Huesos del Carpo (Fila Distal)",
+    layer: "skeletal",
+    details: "Grupo de 4 huesos cortos que componen la fila distal de lateral a medial: Trapecio, Trapezoide, Grande (Capitato) y Ganchoso (Hamato). Articulan con las bases de los metacarpianos.",
+    origin: "El trapecio presenta una articulación por encaje recíproco (silla de montar) con el primer metacarpiano (pulgar).",
+    insertion: "El gancho del hueso ganchoso delimita el canal carpiano medialmente.",
+    sourceBook: "Latarjet - Ruiz Liard, Tomo 1"
+  },
+  // Muscular Layer (Base: Latarjet - Ruiz Liard)
   {
     id: "deltoides",
     name: "Músculo Deltoides",
     layer: "muscular",
-    details: "Músculo triangular que recubre la articulación del hombro. Principal abductor del brazo.",
-    origin: "Clavícula (tercio lateral), acromion y espina de la escápula.",
-    insertion: "Tuberosidad deltoidea del húmero (V deltoidea).",
-    innervation: "Nervio axilar (C5-C6).",
+    details: "Músculo plano y grueso de forma semiconoidea que recubre la cara lateral de la articulación del hombro. Es el principal abductor del brazo hasta los 90 grados.",
+    origin: "Borde anterior del tercio lateral de la clavícula, acromion y espina de la escápula.",
+    insertion: "Tuberosidad deltoidea (V deltoidea) en la cara lateral del húmero.",
+    innervation: "Nervio axilar (C5-C6) procedente del fascículo posterior.",
+    sourceBook: "Latarjet - Ruiz Liard, Tomo 1"
   },
   {
     id: "biceps",
     name: "Músculo Bíceps Braquial",
     layer: "muscular",
-    details: "Músculo de la región anterior del brazo con dos cabezas (larga y corta). Principal flexor y supinador del antebrazo.",
-    origin: "Cabeza corta: apófisis coracoides; Cabeza larga: tubérculo supraglenoideo de la escápula.",
-    insertion: "Tuberosidad del radio y aponeurosis bicipital.",
+    details: "Músculo biarticular del compartimento anterior del brazo. Consta de dos cabezas proximales. Es el flexor del antebrazo y un potente supinador cuando el codo está en flexión.",
+    origin: "Cabeza corta: Apófisis coracoides de la escápula. Cabeza larga: Tubérculo supraglenoideo de la escápula (intracapsular).",
+    insertion: "Tuberosidad del radio (tuberosidad bicipital) mediante un tendón fuerte.",
     innervation: "Nervio musculocutáneo (C5-C6).",
+    sourceBook: "Latarjet - Ruiz Liard, Tomo 1"
+  },
+  {
+    id: "coracobraquial",
+    name: "Músculo Coracobraquial",
+    layer: "muscular",
+    details: "Músculo alargado del compartimento anterior del brazo, atravesado oblicuamente por el nervio musculocutáneo (perforado de Casserius).",
+    origin: "Apófisis coracoides de la escápula en tendón común con la cabeza corta del bíceps.",
+    insertion: "Tercio medio de la cara medial de la diáfisis humeral.",
+    innervation: "Nervio musculocutáneo (C5-C6).",
+    sourceBook: "Latarjet - Ruiz Liard, Tomo 1"
+  },
+  {
+    id: "braquial",
+    name: "Músculo Braquial (Anterior)",
+    layer: "muscular",
+    details: "Músculo ancho y aplanado situado por detrás del bíceps braquial. Es el flexor más potente del antebrazo en la articulación del codo.",
+    origin: "Dos tercios distales de las caras anterior, medial y lateral del húmero.",
+    insertion: "Tuberosidad del cúbito y cara anterior de la apófisis coronoides.",
+    innervation: "Nervio musculocutáneo (C5-C6).",
+    sourceBook: "Latarjet - Ruiz Liard, Tomo 1"
   },
   {
     id: "triceps",
     name: "Músculo Tríceps Braquial",
     layer: "muscular",
-    details: "Único músculo de la región posterior del brazo con tres cabezas. Principal extensor del antebrazo.",
-    origin: "Cabeza larga: tubérculo infraglenoideo; Cabeza lateral y medial: caras posteriores del húmero.",
-    insertion: "Olécranon del cúbito.",
+    details: "Único músculo del compartimento posterior del brazo. Consta de tres cabezas (larga, lateral y medial). Es el principal extensor del antebrazo en la articulación del codo.",
+    origin: "Cabeza larga: Tubérculo infraglenoideo de la escápula. Cabeza lateral: Cara posterior del húmero (arriba del surco radial). Cabeza medial: Cara posterior del húmero (debajo del surco radial).",
+    insertion: "Cara superior del olécranon del cúbito.",
     innervation: "Nervio radial (C6-C8).",
+    sourceBook: "Latarjet - Ruiz Liard, Tomo 1"
   },
   {
     id: "braquiorradial",
-    name: "Músculo Braquiorradial",
+    name: "Músculo Braquiorradial (Supinador Largo)",
     layer: "muscular",
-    details: "Músculo superficial de la región lateral del antebrazo. Flexor del antebrazo sobre el brazo.",
-    origin: "Cresta supracondílea lateral del húmero.",
-    insertion: "Cara lateral de la apófisis estiloides del radio.",
-    innervation: "Nervio radial (C5-C7).",
+    details: "Músculo superficial de la región lateral del antebrazo. Forma el límite lateral de la fosa del codo y del canal del pulso.",
+    origin: "Borde supracondíleo lateral del húmero.",
+    insertion: "Base de la apófisis estiloides del radio.",
+    innervation: "Nervio radial (C5-C6).",
+    sourceBook: "Latarjet - Ruiz Liard, Tomo 1"
   },
-  // Neurovascular Layer
+  // Neurovascular Layer (Base: Latarjet - Ruiz Liard)
   {
     id: "arteria_braquial",
-    name: "Arteria Braquial (Humeral)",
+    name: "Arteria Braquial",
     layer: "neurovascular",
-    details: "Principal tronco arterial del brazo, continuación de la arteria axilar.",
-    irrigation: "Irriga toda la musculatura anterior y posterior del brazo mediante ramas profundas.",
+    details: "Continuación de la arteria axilar por debajo del borde inferior del músculo redondo mayor. Discurre en el conducto braquial (conducto de Cruveilhier) medial al húmero.",
+    irrigation: "Ramas colaterales: Arteria colateral cubital superior e inferior, y arteria braquial profunda (colateral humeral externa).",
+    sourceBook: "Latarjet - Ruiz Liard, Tomo 1"
+  },
+  {
+    id: "arteria_radial",
+    name: "Arteria Radial",
+    layer: "neurovascular",
+    details: "Rama de bifurcación lateral de la arteria braquial en la fosa del codo. En la muñeca, discurre por el canal del pulso antes de rodear el carpo hacia la tabaquera anatómica.",
+    irrigation: "Irriga el compartimento lateral del antebrazo y forma el arco palmar profundo al unirse con la rama palmar profunda cubital.",
+    sourceBook: "Latarjet - Ruiz Liard, Tomo 1"
+  },
+  {
+    id: "arteria_cubital",
+    name: "Arteria Cubital (Ulnar)",
+    layer: "neurovascular",
+    details: "Rama de bifurcación medial de la arteria braquial en la fosa del codo. Acompaña al nervio cubital en el conducto cubital (conducto de Guyon) en la muñeca.",
+    irrigation: "Origina las arterias interóseas y forma el arco palmar superficial.",
+    sourceBook: "Latarjet - Ruiz Liard, Tomo 1"
   },
   {
     id: "nervio_radial",
     name: "Nervio Radial",
     layer: "neurovascular",
-    details: "Nervio del fascículo posterior del plexo braquial. Inerva los extensores del brazo y antebrazo.",
-    innervation: "Provee inervación motora al tríceps, braquiorradial y extensores del carpo.",
+    details: "Rama terminal del fascículo posterior del plexo braquial. Pasa por el espacio axilar inferior (trígono humerotricipital o de Avelino Gutiérrez) hacia el canal del nervio radial en el húmero.",
+    innervation: "Inervación motora: Compartimento posterior del brazo (tríceps) y del antebrazo (extensores/supinadores).",
+    sourceBook: "Latarjet - Ruiz Liard, Tomo 1"
   },
   {
     id: "nervio_mediano",
     name: "Nervio Mediano",
     layer: "neurovascular",
-    details: "Nervio formado por la unión de fascículos lateral y medial del plexo braquial. Pasa por el túnel carpiano.",
-    innervation: "Inerva los músculos pronadores y la mayoría de los flexores del compartimento anterior del antebrazo.",
+    details: "Origen por dos raíces (medial y lateral) en el plexo braquial. Desciende por el conducto braquial y la fosa del codo medial a la arteria braquial, ingresando al antebrazo por el músculo pronador redondo.",
+    innervation: "Inerva los músculos flexores del antebrazo y los pronadores, excepto el flexor cubital del carpo.",
+    sourceBook: "Latarjet - Ruiz Liard, Tomo 1"
   },
   {
     id: "nervio_cubital",
-    name: "Nervio Cubital (Ulnar)",
+    name: "Nervio Cubital",
     layer: "neurovascular",
-    details: "Nervio que transcurre medialmente por el canal epitrócleo-olecraniano (codo).",
-    innervation: "Inerva músculos intrínsecos de la mano y flexor común profundo de los dedos.",
+    details: "Rama terminal del fascículo medial del plexo braquial. Desciende por la región medial del brazo, perfora el tabique intermuscular y pasa por el surco del nervio cubital (canal epitrócleo-olecraniano) en el codo.",
+    innervation: "Inerva la mayor parte de la musculatura intrínseca de la mano y el músculo flexor cubital del carpo en el antebrazo.",
+    sourceBook: "Latarjet - Ruiz Liard, Tomo 1"
+  },
+  {
+    id: "nervio_musculocutaneo",
+    name: "Nervio Musculocutáneo",
+    layer: "neurovascular",
+    details: "Rama terminal del fascículo lateral del plexo braquial. Perfora el músculo coracobraquial (perforado de Casserius) y discurre entre el bíceps y el braquial.",
+    innervation: "Inervación motora para los flexores anteriores del brazo (bíceps, coracobraquial y braquial).",
+    sourceBook: "Latarjet - Ruiz Liard, Tomo 1"
   }
 ]
 
@@ -163,7 +239,6 @@ export default function AnatomyExplorer() {
       }
       setQuizTotal(prev => prev + 1)
       
-      // Delay next question slightly
       setTimeout(() => {
         generateNewTarget(activeLayer)
         setLastCorrect(null)
@@ -179,14 +254,14 @@ export default function AnatomyExplorer() {
         <div className="mb-8 grid gap-4 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
           <div>
             <p className="mb-2 text-xs font-black uppercase tracking-[0.2em] text-emerald-800">
-              Mesa de Disección Virtual
+              Mesa de Disección Virtual - Libro de Referencia: Latarjet
             </p>
             <h2 className="text-3xl font-black leading-tight text-slate-900 md:text-4xl tracking-tight">
               Explorador Anatómico Interactivo
             </h2>
           </div>
           <p className="text-sm leading-relaxed text-slate-500">
-            Alterna entre las distintas capas estructurales del miembro superior. Coloca el cursor para ver inserciones y vasos, o activa el modo de autoevaluación para simular una mesa de examen práctico.
+            Alterna entre las distintas capas estructurales del miembro superior basadas estrictamente en la Nomenclatura del tratado de Anatomía Humana de Latarjet - Ruiz Liard.
           </p>
         </div>
 
@@ -205,7 +280,6 @@ export default function AnatomyExplorer() {
                   setActiveLayer(tab.id as Layer)
                   setQuizMode(false)
                   setHoveredPart(null)
-                  // Select first item of new layer as default
                   const firstOfLayer = anatomyData.find(p => p.layer === tab.id)
                   if (firstOfLayer) setSelectedPart(firstOfLayer)
                 }}
@@ -233,13 +307,10 @@ export default function AnatomyExplorer() {
           </button>
         </div>
 
-        {/* Main Canvas and Details Layout */}
         <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
           
-          {/* Interactive SVG Canvas */}
           <div className="relative rounded-2xl border border-slate-200 dark:border-[#1d3330] bg-white p-6 shadow-sm flex items-center justify-center min-h-[450px]">
             
-            {/* Banner status info in quiz mode */}
             {quizMode && quizTarget && (
               <div className="absolute top-4 left-4 right-4 bg-slate-900 text-white p-3.5 rounded-xl flex justify-between items-center text-xs shadow-md border border-slate-800 z-10">
                 <div>
@@ -253,21 +324,18 @@ export default function AnatomyExplorer() {
               </div>
             )}
 
-            {/* Hover card status indicator */}
             {!quizMode && hoveredPart && (
               <div className="absolute top-4 left-4 bg-emerald-800 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm">
                 🔍 {hoveredPart.name}
               </div>
             )}
 
-            {/* Vector Arm Drawing */}
             <svg 
               className="w-full max-w-[280px] h-auto drop-shadow-sm select-none"
               viewBox="0 0 200 400" 
               fill="none" 
               xmlns="http://www.w3.org/2000/svg"
             >
-              {/* Outer arm skin background guide path */}
               <path 
                 d="M30 40 C35 15, 120 12, 125 40 C130 70, 160 120, 165 170 C170 210, 120 380, 110 390 C100 400, 75 400, 65 380 C55 350, 45 220, 35 170 C28 120, 25 70, 30 40 Z" 
                 fill="#f1f5f9" 
@@ -277,16 +345,15 @@ export default function AnatomyExplorer() {
                 strokeDasharray="4 4"
               />
 
-              {/* Dynamic SVGs based on layer */}
               {activeLayer === "skeletal" && (
                 <>
-                  {/* Clavicula path */}
+                  {/* Clavicula */}
                   <path 
                     d="M45 42 Q80 25 115 42" 
                     strokeWidth="12" 
                     strokeLinecap="round"
                     className={`cursor-pointer transition-all ${
-                      (hoveredPart?.id === "clavicula" || selectedPart.id === "clavicula") ? "stroke-emerald-600" : "stroke-slate-350 stroke-slate-300 dark:stroke-slate-700"
+                      (hoveredPart?.id === "clavicula" || selectedPart.id === "clavicula") ? "stroke-emerald-600" : "stroke-slate-300 dark:stroke-slate-700"
                     }`}
                     onMouseEnter={() => setHoveredPart(anatomyData[0])}
                     onMouseLeave={() => setHoveredPart(null)}
@@ -296,7 +363,7 @@ export default function AnatomyExplorer() {
                   <path 
                     d="M36 55 L32 95 L72 90 Z" 
                     className={`cursor-pointer transition-all ${
-                      (hoveredPart?.id === "escapula" || selectedPart.id === "escapula") ? "fill-emerald-600" : "fill-slate-350 fill-slate-300 dark:fill-slate-700"
+                      (hoveredPart?.id === "escapula" || selectedPart.id === "escapula") ? "fill-emerald-600" : "fill-slate-300 dark:fill-slate-700"
                     }`}
                     onMouseEnter={() => setHoveredPart(anatomyData[1])}
                     onMouseLeave={() => setHoveredPart(null)}
@@ -308,7 +375,7 @@ export default function AnatomyExplorer() {
                     strokeWidth="14" 
                     strokeLinecap="round"
                     className={`cursor-pointer transition-all ${
-                      (hoveredPart?.id === "humero" || selectedPart.id === "humero") ? "stroke-emerald-600" : "stroke-slate-350 stroke-slate-300 dark:stroke-slate-700"
+                      (hoveredPart?.id === "humero" || selectedPart.id === "humero") ? "stroke-emerald-600" : "stroke-slate-300 dark:stroke-slate-700"
                     }`}
                     onMouseEnter={() => setHoveredPart(anatomyData[2])}
                     onMouseLeave={() => setHoveredPart(null)}
@@ -320,7 +387,7 @@ export default function AnatomyExplorer() {
                     strokeWidth="8" 
                     strokeLinecap="round"
                     className={`cursor-pointer transition-all ${
-                      (hoveredPart?.id === "radio" || selectedPart.id === "radio") ? "stroke-emerald-600" : "stroke-slate-350 stroke-slate-300 dark:stroke-slate-700"
+                      (hoveredPart?.id === "radio" || selectedPart.id === "radio") ? "stroke-emerald-600" : "stroke-slate-300 dark:stroke-slate-700"
                     }`}
                     onMouseEnter={() => setHoveredPart(anatomyData[3])}
                     onMouseLeave={() => setHoveredPart(null)}
@@ -332,11 +399,31 @@ export default function AnatomyExplorer() {
                     strokeWidth="6" 
                     strokeLinecap="round"
                     className={`cursor-pointer transition-all ${
-                      (hoveredPart?.id === "cubito" || selectedPart.id === "cubito") ? "stroke-emerald-600" : "stroke-slate-350 stroke-slate-300 dark:stroke-slate-700"
+                      (hoveredPart?.id === "cubito" || selectedPart.id === "cubito") ? "stroke-emerald-600" : "stroke-slate-300 dark:stroke-slate-700"
                     }`}
                     onMouseEnter={() => setHoveredPart(anatomyData[4])}
                     onMouseLeave={() => setHoveredPart(null)}
                     onClick={() => handlePartClick(anatomyData[4])}
+                  />
+                  {/* Huesos del Carpo Fila Proximal (represented as circular group bottom right) */}
+                  <circle 
+                    cx="100" cy="358" r="8"
+                    className={`cursor-pointer transition-all ${
+                      (hoveredPart?.id === "carpo" || selectedPart.id === "carpo") ? "fill-emerald-600" : "fill-slate-400 dark:fill-slate-600"
+                    }`}
+                    onMouseEnter={() => setHoveredPart(anatomyData[5])}
+                    onMouseLeave={() => setHoveredPart(null)}
+                    onClick={() => handlePartClick(anatomyData[5])}
+                  />
+                  {/* Huesos del Carpo Fila Distal */}
+                  <circle 
+                    cx="112" cy="365" r="7"
+                    className={`cursor-pointer transition-all ${
+                      (hoveredPart?.id === "carpo_distal" || selectedPart.id === "carpo_distal") ? "fill-emerald-600" : "fill-slate-400 dark:fill-slate-600"
+                    }`}
+                    onMouseEnter={() => setHoveredPart(anatomyData[6])}
+                    onMouseLeave={() => setHoveredPart(null)}
+                    onClick={() => handlePartClick(anatomyData[6])}
                   />
                 </>
               )}
@@ -349,9 +436,9 @@ export default function AnatomyExplorer() {
                     className={`cursor-pointer transition-all ${
                       (hoveredPart?.id === "deltoides" || selectedPart.id === "deltoides") ? "fill-emerald-600" : "fill-slate-400/80 dark:fill-slate-800"
                     }`}
-                    onMouseEnter={() => setHoveredPart(anatomyData[5])}
+                    onMouseEnter={() => setHoveredPart(anatomyData[7])}
                     onMouseLeave={() => setHoveredPart(null)}
-                    onClick={() => handlePartClick(anatomyData[5])}
+                    onClick={() => handlePartClick(anatomyData[7])}
                   />
                   {/* Biceps */}
                   <path 
@@ -359,9 +446,30 @@ export default function AnatomyExplorer() {
                     className={`cursor-pointer transition-all ${
                       (hoveredPart?.id === "biceps" || selectedPart.id === "biceps") ? "fill-emerald-600" : "fill-slate-400/80 dark:fill-slate-800"
                     }`}
-                    onMouseEnter={() => setHoveredPart(anatomyData[6])}
+                    onMouseEnter={() => setHoveredPart(anatomyData[8])}
                     onMouseLeave={() => setHoveredPart(null)}
-                    onClick={() => handlePartClick(anatomyData[6])}
+                    onClick={() => handlePartClick(anatomyData[8])}
+                  />
+                  {/* Coracobraquial (deep muscle guide line) */}
+                  <line 
+                    x1="65" y1="80" x2="72" y2="130"
+                    strokeWidth="4"
+                    className={`cursor-pointer transition-all ${
+                      (hoveredPart?.id === "coracobraquial" || selectedPart.id === "coracobraquial") ? "stroke-emerald-600" : "stroke-slate-500/50"
+                    }`}
+                    onMouseEnter={() => setHoveredPart(anatomyData[9])}
+                    onMouseLeave={() => setHoveredPart(null)}
+                    onClick={() => handlePartClick(anatomyData[9])}
+                  />
+                  {/* Braquial Anterior */}
+                  <path 
+                    d="M64 150 L84 155 L78 190 Z"
+                    className={`cursor-pointer transition-all ${
+                      (hoveredPart?.id === "braquial" || selectedPart.id === "braquial") ? "fill-emerald-600" : "fill-slate-500/60 dark:fill-slate-800/80"
+                    }`}
+                    onMouseEnter={() => setHoveredPart(anatomyData[10])}
+                    onMouseLeave={() => setHoveredPart(null)}
+                    onClick={() => handlePartClick(anatomyData[10])}
                   />
                   {/* Triceps */}
                   <path 
@@ -369,9 +477,9 @@ export default function AnatomyExplorer() {
                     className={`cursor-pointer transition-all ${
                       (hoveredPart?.id === "triceps" || selectedPart.id === "triceps") ? "fill-emerald-600" : "fill-slate-400/80 dark:fill-slate-800"
                     }`}
-                    onMouseEnter={() => setHoveredPart(anatomyData[7])}
+                    onMouseEnter={() => setHoveredPart(anatomyData[11])}
                     onMouseLeave={() => setHoveredPart(null)}
-                    onClick={() => handlePartClick(anatomyData[7])}
+                    onClick={() => handlePartClick(anatomyData[11])}
                   />
                   {/* Braquiorradial */}
                   <path 
@@ -379,9 +487,9 @@ export default function AnatomyExplorer() {
                     className={`cursor-pointer transition-all ${
                       (hoveredPart?.id === "braquiorradial" || selectedPart.id === "braquiorradial") ? "fill-emerald-600" : "fill-slate-400/80 dark:fill-slate-800"
                     }`}
-                    onMouseEnter={() => setHoveredPart(anatomyData[8])}
+                    onMouseEnter={() => setHoveredPart(anatomyData[12])}
                     onMouseLeave={() => setHoveredPart(null)}
-                    onClick={() => handlePartClick(anatomyData[8])}
+                    onClick={() => handlePartClick(anatomyData[12])}
                   />
                 </>
               )}
@@ -396,9 +504,33 @@ export default function AnatomyExplorer() {
                     className={`cursor-pointer fill-none transition-all ${
                       (hoveredPart?.id === "arteria_braquial" || selectedPart.id === "arteria_braquial") ? "stroke-red-500" : "stroke-red-800/40"
                     }`}
-                    onMouseEnter={() => setHoveredPart(anatomyData[9])}
+                    onMouseEnter={() => setHoveredPart(anatomyData[13])}
                     onMouseLeave={() => setHoveredPart(null)}
-                    onClick={() => handlePartClick(anatomyData[9])}
+                    onClick={() => handlePartClick(anatomyData[13])}
+                  />
+                  {/* Arteria Radial */}
+                  <path 
+                    d="M94 205 Q115 290 112 355" 
+                    strokeWidth="3.5"
+                    strokeLinecap="round"
+                    className={`cursor-pointer fill-none transition-all ${
+                      (hoveredPart?.id === "arteria_radial" || selectedPart.id === "arteria_radial") ? "stroke-red-500" : "stroke-red-800/40"
+                    }`}
+                    onMouseEnter={() => setHoveredPart(anatomyData[14])}
+                    onMouseLeave={() => setHoveredPart(null)}
+                    onClick={() => handlePartClick(anatomyData[14])}
+                  />
+                  {/* Arteria Cubital */}
+                  <path 
+                    d="M94 205 Q78 280 82 355" 
+                    strokeWidth="3.5"
+                    strokeLinecap="round"
+                    className={`cursor-pointer fill-none transition-all ${
+                      (hoveredPart?.id === "arteria_cubital" || selectedPart.id === "arteria_cubital") ? "stroke-red-500" : "stroke-red-800/40"
+                    }`}
+                    onMouseEnter={() => setHoveredPart(anatomyData[15])}
+                    onMouseLeave={() => setHoveredPart(null)}
+                    onClick={() => handlePartClick(anatomyData[15])}
                   />
                   {/* Nervio Radial */}
                   <path 
@@ -408,9 +540,9 @@ export default function AnatomyExplorer() {
                     className={`cursor-pointer fill-none transition-all ${
                       (hoveredPart?.id === "nervio_radial" || selectedPart.id === "nervio_radial") ? "stroke-yellow-400" : "stroke-yellow-700/30"
                     }`}
-                    onMouseEnter={() => setHoveredPart(anatomyData[10])}
+                    onMouseEnter={() => setHoveredPart(anatomyData[16])}
                     onMouseLeave={() => setHoveredPart(null)}
-                    onClick={() => handlePartClick(anatomyData[10])}
+                    onClick={() => handlePartClick(anatomyData[16])}
                   />
                   {/* Nervio Mediano */}
                   <path 
@@ -420,9 +552,9 @@ export default function AnatomyExplorer() {
                     className={`cursor-pointer fill-none transition-all ${
                       (hoveredPart?.id === "nervio_mediano" || selectedPart.id === "nervio_mediano") ? "stroke-yellow-400" : "stroke-yellow-700/30"
                     }`}
-                    onMouseEnter={() => setHoveredPart(anatomyData[11])}
+                    onMouseEnter={() => setHoveredPart(anatomyData[17])}
                     onMouseLeave={() => setHoveredPart(null)}
-                    onClick={() => handlePartClick(anatomyData[11])}
+                    onClick={() => handlePartClick(anatomyData[17])}
                   />
                   {/* Nervio Cubital */}
                   <path 
@@ -432,15 +564,26 @@ export default function AnatomyExplorer() {
                     className={`cursor-pointer fill-none transition-all ${
                       (hoveredPart?.id === "nervio_cubital" || selectedPart.id === "nervio_cubital") ? "stroke-yellow-400" : "stroke-yellow-700/30"
                     }`}
-                    onMouseEnter={() => setHoveredPart(anatomyData[12])}
+                    onMouseEnter={() => setHoveredPart(anatomyData[18])}
                     onMouseLeave={() => setHoveredPart(null)}
-                    onClick={() => handlePartClick(anatomyData[12])}
+                    onClick={() => handlePartClick(anatomyData[18])}
+                  />
+                  {/* Nervio Musculocutaneo */}
+                  <path 
+                    d="M70 72 Q60 110 65 145" 
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    className={`cursor-pointer fill-none transition-all ${
+                      (hoveredPart?.id === "nervio_musculocutaneo" || selectedPart.id === "nervio_musculocutaneo") ? "stroke-yellow-400" : "stroke-yellow-700/30"
+                    }`}
+                    onMouseEnter={() => setHoveredPart(anatomyData[19])}
+                    onMouseLeave={() => setHoveredPart(null)}
+                    onClick={() => handlePartClick(anatomyData[19])}
                   />
                 </>
               )}
             </svg>
 
-            {/* Quiz visual indicator for validation */}
             {quizMode && lastCorrect !== null && (
               <div className={`absolute bottom-4 left-4 right-4 p-3 rounded-lg text-xs font-bold text-white text-center shadow-md ${
                 lastCorrect ? "bg-emerald-600" : "bg-rose-600"
@@ -450,52 +593,53 @@ export default function AnatomyExplorer() {
             )}
           </div>
 
-          {/* Technical anatomy info side-panel */}
-          <aside className="rounded-xl border border-slate-200 dark:border-[#1d3330] bg-white p-5 shadow-sm space-y-4">
-            <div>
-              <p className="text-[10px] font-black uppercase tracking-wider text-emerald-800">Capa seleccionada</p>
-              <h3 className="text-xl font-bold text-slate-900 mt-0.5">{selectedPart.name}</h3>
-            </div>
-
-            <div className="space-y-3.5 text-xs text-slate-600 leading-normal">
+          <div className="rounded-xl border border-slate-200 dark:border-[#1d3330] bg-white p-5 shadow-sm space-y-4 flex flex-col justify-between">
+            <div className="space-y-4">
               <div>
-                <span className="block font-bold text-slate-800">Descripción técnica:</span>
-                <p className="mt-1 text-slate-500">{selectedPart.details}</p>
+                <p className="text-[10px] font-black uppercase tracking-wider text-emerald-800 dark:text-emerald-400">Tratado: {selectedPart.sourceBook}</p>
+                <h3 className="text-xl font-bold text-slate-900 mt-0.5">{selectedPart.name}</h3>
               </div>
 
-              {selectedPart.origin && (
+              <div className="space-y-3.5 text-xs text-slate-650 text-slate-600 leading-normal">
                 <div>
-                  <span className="block font-bold text-slate-800">Orígenes / Inserción proximal:</span>
-                  <p className="mt-0.5 text-slate-500">{selectedPart.origin}</p>
+                  <span className="block font-bold text-slate-800">Descripción detallada:</span>
+                  <p className="mt-1 text-slate-500">{selectedPart.details}</p>
                 </div>
-              )}
 
-              {selectedPart.insertion && (
-                <div>
-                  <span className="block font-bold text-slate-800">Inserciones / Inserción distal:</span>
-                  <p className="mt-0.5 text-slate-500">{selectedPart.insertion}</p>
-                </div>
-              )}
+                {selectedPart.origin && (
+                  <div>
+                    <span className="block font-bold text-slate-800">Origen anatómico:</span>
+                    <p className="mt-0.5 text-slate-500">{selectedPart.origin}</p>
+                  </div>
+                )}
 
-              {selectedPart.innervation && (
-                <div>
-                  <span className="block font-bold text-slate-800">Inervación:</span>
-                  <p className="mt-0.5 text-slate-500">{selectedPart.innervation}</p>
-                </div>
-              )}
+                {selectedPart.insertion && (
+                  <div>
+                    <span className="block font-bold text-slate-800">Inserción ósea / distal:</span>
+                    <p className="mt-0.5 text-slate-500">{selectedPart.insertion}</p>
+                  </div>
+                )}
 
-              {selectedPart.irrigation && (
-                <div>
-                  <span className="block font-bold text-slate-800">Irrigación principal:</span>
-                  <p className="mt-0.5 text-slate-500">{selectedPart.irrigation}</p>
-                </div>
-              )}
+                {selectedPart.innervation && (
+                  <div>
+                    <span className="block font-bold text-slate-800">Inervación principal:</span>
+                    <p className="mt-0.5 text-slate-500">{selectedPart.innervation}</p>
+                  </div>
+                )}
+
+                {selectedPart.irrigation && (
+                  <div>
+                    <span className="block font-bold text-slate-800">Irrigación principal:</span>
+                    <p className="mt-0.5 text-slate-500">{selectedPart.irrigation}</p>
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="bg-stone-50/50 p-3 rounded-lg border border-slate-100 text-[10px] text-slate-400 leading-normal">
-              💡 <strong>Tip de Anatomía:</strong> Recuerda que en los exámenes prácticos (gymkanas) suelen colocar alfileres de distintos colores para diferenciar arterias de nervios del canal bicipital.
+              📖 <strong>Referencia Latarjet:</strong> Anatomía descriptiva y topográfica del miembro superior.
             </div>
-          </aside>
+          </div>
         </div>
       </div>
     </section>

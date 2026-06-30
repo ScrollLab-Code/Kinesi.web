@@ -13,27 +13,27 @@ type Stage = {
 const stages: Stage[] = [
   {
     id: 1,
-    image: "https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&w=800&q=80",
-    title: "Identificación Histológica Muestra A",
-    pointerLocation: "Señala la hilera de células epiteliales cúbicas con núcleos redondos centrales.",
-    correctAnswers: ["epitelio simple cubico", "epitelio cubico simple", "epitelio cubico"],
-    hint: "Observa la forma de los núcleos y la cantidad de capas celulares que recubren el conducto."
+    image: "https://images.unsplash.com/photo-1579154204601-01588f351166?auto=format&fit=crop&w=800&q=80",
+    title: "Identificación Ósea - Codo Anterior",
+    pointerLocation: "Señala la carilla articular cilíndrica del radio (Cúpula) que se articula con el cóndilo humeral.",
+    correctAnswers: ["cabeza del radio", "cupula del radio", "cúpula del radio", "radio", "cúpula radial"],
+    hint: "Es la porción superior del radio, que forma parte de la articulación radiocubital proximal."
   },
   {
     id: 2,
     image: "https://images.unsplash.com/photo-1530026405186-ed1ea0ac7a63?auto=format&fit=crop&w=800&q=80",
-    title: "Identificación Anatómica Muestra B",
-    pointerLocation: "Señala el vaso que discurre medial al bíceps y desciende por el canal bicipital interno.",
-    correctAnswers: ["arteria braquial", "arteria humeral", "braquial", "humeral"],
-    hint: "Es la continuación directa del tronco axilar después del borde inferior del redondo mayor."
+    title: "Identificación Vascular - Canal del Pulso",
+    pointerLocation: "Señala el vaso que discurre lateralmente por la cara anterior de la muñeca.",
+    correctAnswers: ["arteria radial", "radial", "canal del pulso"],
+    hint: "Es una de las ramas de bifurcación de la arteria braquial, útil para la palpación del pulso."
   },
   {
     id: 3,
-    image: "https://images.unsplash.com/photo-1579154204601-01588f351166?auto=format&fit=crop&w=800&q=80",
-    title: "Identificación Histológica Muestra C",
-    pointerLocation: "Señala la estructura encapsulada con abundantes nódulos linfoides y senos subcapsulares.",
-    correctAnswers: ["ganglio linfatico", "ganglio", "linfatico"],
-    hint: "Es un órgano linfoide secundario intercalado en el trayecto de los vasos linfáticos."
+    image: "https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&w=800&q=80",
+    title: "Identificación Tendinosa - Fosa del Codo",
+    pointerLocation: "Señala el tendón de inserción distal que se fija en la tuberosidad del radio.",
+    correctAnswers: ["tendon del biceps", "biceps", "biceps braquial", "tendón del bíceps"],
+    hint: "Es el tendón del principal músculo supinador y flexor de la cara anterior del brazo."
   }
 ]
 
@@ -55,7 +55,7 @@ export default function GymkanaSimulator() {
     const timer = setInterval(() => {
       setTimeLeft(prev => {
         if (prev <= 1) {
-          handleNextStage(true) // Time out acts as submitting wrong answer
+          handleNextStage(true)
           return 30
         }
         return prev - 1
@@ -93,9 +93,9 @@ export default function GymkanaSimulator() {
 
   const getSemaphore = () => {
     const pct = (score / stages.length) * 100
-    if (pct <= 40) return { status: "Rojo", label: "Insuficiente - Repasar Prácticos", color: "bg-rose-600 shadow-[0_0_12px_#e11d48]" }
-    if (pct <= 80) return { status: "Amarillo", label: "Aprobado - Refinar Nombres", color: "bg-amber-500 shadow-[0_0_12px_#f59e0b]" }
-    return { status: "Verde", label: "Excelente - Promedio Sobresaliente", color: "bg-emerald-500 shadow-[0_0_12px_#10b981]" }
+    if (pct <= 40) return { status: "Rojo", label: "Insuficiente - Repasar Latarjet", color: "bg-rose-600 shadow-[0_0_12px_#e11d48]" }
+    if (pct <= 80) return { status: "Amarillo", label: "Aprobado - Ajustar Nomenclatura", color: "bg-amber-500 shadow-[0_0_12px_#f59e0b]" }
+    return { status: "Verde", label: "Excelente - Dominio Anatómico", color: "bg-emerald-500 shadow-[0_0_12px_#10b981]" }
   }
 
   const result = getSemaphore()
@@ -106,7 +106,6 @@ export default function GymkanaSimulator() {
         <div className="mx-auto max-w-xl">
           <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm text-center">
             
-            {/* Visual Traffic Light Indicator */}
             <div className="mb-4 flex flex-col items-center">
               <p className="text-[10px] font-black uppercase tracking-wider text-slate-400 mb-2">Resultado Final Gymkana</p>
               <div className="flex gap-4 bg-slate-900 px-4 py-2.5 rounded-full border border-slate-800 shadow-inner">
@@ -148,7 +147,7 @@ export default function GymkanaSimulator() {
               }}
               className="w-full rounded-lg bg-emerald-800 py-2.5 text-xs font-bold text-white transition hover:bg-slate-900"
             >
-              Reiniciar Simulación de Examen
+              Reiniciar Simulación
             </button>
           </div>
         </div>
@@ -160,7 +159,6 @@ export default function GymkanaSimulator() {
     <section className="bg-stone-50 py-12 px-6">
       <div className="mx-auto max-w-2xl">
         
-        {/* Header Status */}
         <div className="mb-6 flex justify-between items-center bg-slate-900 text-white p-3.5 rounded-xl text-xs border border-slate-800 shadow-md">
           <div>
             <p className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider">Circuito de Examen:</p>
@@ -175,7 +173,6 @@ export default function GymkanaSimulator() {
           </div>
         </div>
 
-        {/* Prepared Slide Canvas */}
         <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm space-y-4">
           <div className="relative rounded-lg overflow-hidden border border-slate-100 bg-black aspect-video flex items-center justify-center">
             <img 
@@ -183,7 +180,6 @@ export default function GymkanaSimulator() {
               alt={stage.title} 
               className="w-full h-full object-cover opacity-90"
             />
-            {/* Visual exam Pin/Pointer overlay indicator */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
               <div className="h-4.5 w-4.5 rounded-full border-2 border-white bg-rose-600 animate-ping absolute" />
               <div className="h-4.5 w-4.5 rounded-full border-2 border-white bg-rose-600 shadow-lg relative z-10 flex items-center justify-center text-[8px] text-white font-bold">
@@ -196,17 +192,16 @@ export default function GymkanaSimulator() {
           <div className="text-xs space-y-2">
             <h3 className="font-bold text-slate-900 text-sm">{stage.title}</h3>
             <p className="text-slate-500 leading-normal bg-stone-50 p-2.5 rounded-lg border border-slate-100">
-              📍 <strong>Consigna:</strong> Escribe la nomenclatura oficial de la estructura indicada por el alfiler <strong>"A"</strong>.
+              📍 <strong>Consigna:</strong> Identifique la estructura anatómica señalada por el indicador <strong>"A"</strong>.
             </p>
           </div>
 
-          {/* Form action input */}
           <div className="space-y-3 pt-2">
             <input 
               type="text"
               value={userAnswer}
               onChange={(e) => setUserAnswer(e.target.value)}
-              placeholder="Ej. arteria braquial (sin acentos)"
+              placeholder="Ej. arteria radial (nomenclatura Latarjet)"
               className="w-full rounded-lg border border-slate-200 bg-stone-50 px-4 py-2.5 outline-none focus:border-emerald-600 focus:bg-white text-xs font-semibold text-slate-800"
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && userAnswer.trim()) handleNextStage()
@@ -218,14 +213,14 @@ export default function GymkanaSimulator() {
                 onClick={() => setShowHint(true)}
                 className="rounded-lg border border-slate-200 px-4 py-2 text-xs font-bold text-slate-600 hover:border-slate-800 transition"
               >
-                Pista (Ver Referencia)
+                Pista / Referencia
               </button>
               <button 
                 onClick={() => handleNextStage()}
                 disabled={!userAnswer.trim()}
                 className="rounded-lg bg-emerald-800 px-5 py-2 text-xs font-bold text-white transition hover:bg-slate-900 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed"
               >
-                Confirmar Estación
+                Siguiente Estación
               </button>
             </div>
 

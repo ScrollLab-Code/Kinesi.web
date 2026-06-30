@@ -82,7 +82,7 @@ const createAcademicHelpMessage = (lead: Lead) =>
   ].join("\n")
 
 const createAcademicHelpWhatsAppLink = (message: string) => {
-  return `https://wa.me/5491133334449?text=${encodeURIComponent(message)}`
+  return `https://wa.me/5492996232195?text=${encodeURIComponent(message)}`
 }
 
 export default function TestSection() {

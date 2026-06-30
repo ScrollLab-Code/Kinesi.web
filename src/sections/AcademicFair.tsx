@@ -237,7 +237,7 @@ export default function AcademicFair() {
     const requestMessage = createSellerRequestMessage(sellerForm)
 
     // Open WhatsApp securely to review material proposal
-    const teamPhone = "5491133334449" // Demo central team number
+    const teamPhone = "5492996232195" // Demo central team number
     window.open(createWhatsAppLink(teamPhone, requestMessage), "_blank", "noopener,noreferrer")
     
     setSellerMessage("Propuesta generada. Se abrió WhatsApp para enviarla a los moderadores de Kinase.")
