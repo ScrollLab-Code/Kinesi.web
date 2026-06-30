@@ -25,9 +25,22 @@ type Testimonial = {
   text: string
 }
 
+const LOCAL_STORAGE_KEY_TESTIMONIALS = "kinase_testimonials_v1"
+
 export default function Testimonials() {
   const [showForm, setShowForm] = useState(false)
-  const [testimonials, setTestimonials] = useState<Testimonial[]>(initialTestimonials)
+  const [testimonials, setTestimonials] = useState<Testimonial[]>(() => {
+    const local = localStorage.getItem(LOCAL_STORAGE_KEY_TESTIMONIALS)
+    if (local) {
+      try {
+        return JSON.parse(local)
+      } catch (e) {
+        return initialTestimonials
+      }
+    }
+    return initialTestimonials
+  })
+  
   const [formData, setFormData] = useState({
     name: "",
     career: "",
@@ -61,6 +74,12 @@ export default function Testimonials() {
 
     setIsSending(true)
 
+    const newTestimonial: Testimonial = {
+      name: formData.name,
+      career: formData.career,
+      text: formData.testimonial,
+    }
+
     try {
       const response = await fetch("/api/send-email", {
         method: "POST",
@@ -81,28 +100,24 @@ export default function Testimonials() {
         throw new Error(data?.error || "Error al enviar el testimonio.")
       }
 
-      setTestimonials((prev) => [
-        {
-          name: formData.name,
-          career: formData.career,
-          text: formData.testimonial,
-        },
-        ...prev,
-      ])
+      setTestimonials((prev) => {
+        const next = [newTestimonial, ...prev]
+        localStorage.setItem(LOCAL_STORAGE_KEY_TESTIMONIALS, JSON.stringify(next))
+        return next
+      })
       setResponseMessage(
         "¡Gracias por tu testimonio! Se ha registrado para ser publicado en la plataforma."
       )
       setFormData({ name: "", career: "", email: "", testimonial: "" })
       setShowForm(false)
     } catch (error) {
-      // Local demo support if API is not active
-      const simulated: Testimonial = {
-        name: formData.name,
-        career: formData.career,
-        text: formData.testimonial,
-      }
-      setTestimonials((prev) => [simulated, ...prev])
-      setResponseMessage("Gracias (Modo Demo: testimonio registrado localmente).")
+      // Local demo persistence fallback
+      setTestimonials((prev) => {
+        const next = [newTestimonial, ...prev]
+        localStorage.setItem(LOCAL_STORAGE_KEY_TESTIMONIALS, JSON.stringify(next))
+        return next
+      })
+      setResponseMessage("Gracias (Modo Demo: testimonio registrado localmente de forma segura).")
       setFormData({ name: "", career: "", email: "", testimonial: "" })
       setShowForm(false)
     } finally {

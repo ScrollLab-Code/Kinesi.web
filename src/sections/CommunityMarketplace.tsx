@@ -20,6 +20,7 @@ type Post = {
 }
 
 const tags = ["Todos", "Anatomía", "Histología", "Fisiología", "Química & Biofísica", "Biología Celular"]
+const LOCAL_STORAGE_KEY = "kinase_community_posts_v1"
 
 type AcademicTestimonialsProps = {
   onOpenFair?: () => void
@@ -38,30 +39,62 @@ export default function CommunityMarketplace({ onOpenFair }: AcademicTestimonial
   const [expandedCommentsPostId, setExpandedCommentsPostId] = useState<number | null>(null)
   const [commentDrafts, setCommentDrafts] = useState<Record<number, string>>({})
 
+  // Helper to update state and persist changes to localStorage
+  const updatePostsState = (newPosts: Post[] | ((prev: Post[]) => Post[])) => {
+    setPosts(prev => {
+      const next = typeof newPosts === "function" ? newPosts(prev) : newPosts
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(next))
+      return next
+    })
+  }
+
   useEffect(() => {
     const loadPosts = async () => {
       setIsLoadingPosts(true)
+      
+      // Load local state first for instant persistence
+      const localData = localStorage.getItem(LOCAL_STORAGE_KEY)
+      let initialLoadedPosts: Post[] = []
+      if (localData) {
+        try {
+          initialLoadedPosts = JSON.parse(localData)
+        } catch (e) {
+          initialLoadedPosts = []
+        }
+      }
+
       const { data, error } = await supabase
         .from("community_posts")
         .select("id,title,body,tag,author,votes")
         .order("created_at", { ascending: false })
 
       if (error) {
-        // Fallback to empty list as requested by user to keep it clean, showing only welcome message
-        setPosts([])
-        setDatabaseMessage("Muro de Experiencias cargado (Modo Demo).")
+        setPosts(initialLoadedPosts)
+        setDatabaseMessage("Muro de Experiencias cargado (Modo Demo local).")
         setIsLoadingPosts(false)
         return
       }
 
       if (data) {
-        // Hydrate posts with simulated comments list
-        const hydrated: Post[] = data.map((p: any) => ({
-          ...p,
-          commentsCount: 0,
-          commentsList: []
-        }))
-        setPosts(hydrated)
+        // Merge Supabase entries with local storage states (retaining comments and local upvotes)
+        const merged: Post[] = data.map((p: any) => {
+          const matchedLocal = initialLoadedPosts.find(lp => lp.id === p.id)
+          return {
+            ...p,
+            votes: matchedLocal ? Math.max(matchedLocal.votes, p.votes) : p.votes,
+            commentsCount: matchedLocal ? matchedLocal.commentsCount : 0,
+            commentsList: matchedLocal ? matchedLocal.commentsList : []
+          }
+        })
+        
+        // Retain strictly local posts that don't exist on remote db yet
+        const strictlyLocal = initialLoadedPosts.filter(lp => !data.some((p: any) => p.id === lp.id))
+        const finalPosts = [...strictlyLocal, ...merged]
+        
+        setPosts(finalPosts)
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(finalPosts))
+      } else {
+        setPosts(initialLoadedPosts)
       }
       setDatabaseMessage("")
       setIsLoadingPosts(false)
@@ -96,15 +129,15 @@ export default function CommunityMarketplace({ onOpenFair }: AcademicTestimonial
       .single()
 
     if (error) {
-      // Secure local state simulation
+      // Fallback local save
       const simulatedPost: Post = {
         id: Date.now(),
         ...newPost,
         commentsCount: 0,
         commentsList: []
       }
-      setPosts((current) => [simulatedPost, ...current])
-      setDatabaseMessage("Tu experiencia se publicó localmente en el navegador.")
+      updatePostsState((current) => [simulatedPost, ...current])
+      setDatabaseMessage("Tu experiencia se guardó localmente en el navegador.")
       setDraftTitle("")
       setDraftBody("")
     } else {
@@ -113,7 +146,7 @@ export default function CommunityMarketplace({ onOpenFair }: AcademicTestimonial
         commentsCount: 0,
         commentsList: []
       }
-      setPosts((current) => [hydrated, ...current])
+      updatePostsState((current) => [hydrated, ...current])
       setDatabaseMessage("¡Experiencia publicada con éxito!")
       setDraftTitle("")
       setDraftBody("")
@@ -126,12 +159,12 @@ export default function CommunityMarketplace({ onOpenFair }: AcademicTestimonial
 
     const nextVotes = post.votes + 1
 
-    // Optimistic Update
-    setPosts((current) =>
+    // Optimistic local update (saves to localStorage instantly)
+    updatePostsState((current) =>
       current.map((p) => (p.id === id ? { ...p, votes: nextVotes } : p))
     )
 
-    if (id > 1000000000) return // local post, skip remote call
+    if (id > 1000000000) return // Simulated local post
 
     const { error } = await supabase
       .from("community_posts")
@@ -139,7 +172,8 @@ export default function CommunityMarketplace({ onOpenFair }: AcademicTestimonial
       .eq("id", id)
 
     if (error) {
-      setPosts((current) =>
+      // Rollback
+      updatePostsState((current) =>
         current.map((p) => (p.id === id ? { ...p, votes: post.votes } : p))
       )
     }
@@ -150,7 +184,7 @@ export default function CommunityMarketplace({ onOpenFair }: AcademicTestimonial
     const cleanText = draftText.trim()
     if (!cleanText) return
 
-    setPosts((current) =>
+    updatePostsState((current) =>
       current.map((post) => {
         if (post.id === postId) {
           const updatedComments = [
@@ -264,7 +298,7 @@ export default function CommunityMarketplace({ onOpenFair }: AcademicTestimonial
 
             {/* Feed de Experiencias */}
             <div className="space-y-4">
-              {isLoadingPosts && (
+              {isLoadingPosts && posts.length === 0 && (
                 <div className="rounded-xl border border-slate-200 bg-white p-6 text-center text-xs font-bold text-slate-400">
                   Cargando publicaciones...
                 </div>
@@ -284,7 +318,7 @@ export default function CommunityMarketplace({ onOpenFair }: AcademicTestimonial
                   className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
                 >
                   <div className="mb-2 flex flex-wrap items-center gap-2 text-xs text-slate-500">
-                    <span className="rounded bg-emerald-50 border border-emerald-100 px-2 py-0.5 font-bold text-emerald-850">
+                    <span className="rounded bg-emerald-50 border border-emerald-100 px-2 py-0.5 font-bold text-emerald-855 text-emerald-800">
                       {post.tag}
                     </span>
                     <span>Compartido por <strong>{post.author}</strong></span>
@@ -299,7 +333,6 @@ export default function CommunityMarketplace({ onOpenFair }: AcademicTestimonial
                   </p>
 
                   <div className="flex gap-4 items-center text-xs font-semibold text-slate-500 pt-3 border-t border-slate-100">
-                    {/* Like button styled with heart */}
                     <button 
                       onClick={() => handleLike(post.id)}
                       className="flex items-center gap-1 hover:text-rose-600 transition"
