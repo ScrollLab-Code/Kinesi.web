@@ -149,9 +149,9 @@ export default function Hero({ onAuthenticated }: HeroProps) {
 
           <form
             onSubmit={createAccount}
-            className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm space-y-4"
+            className="glass-card rounded-2xl p-6 clinical-shadow space-y-5 transition-all duration-300"
           >
-            <div className="grid grid-cols-2 rounded-lg bg-slate-100 p-1">
+            <div className="grid grid-cols-2 rounded-lg bg-slate-100 dark:bg-[#0d1615] p-1 border border-slate-200 dark:border-[#1d3330]">
               <button
                 type="button"
                 onClick={() => setAccessMode("email")}
@@ -247,8 +247,8 @@ export default function Hero({ onAuthenticated }: HeroProps) {
         </div>
 
         <div className="space-y-4">
-          <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h3 className="text-sm font-bold text-slate-900 mb-3 border-b border-slate-100 pb-2">
+          <div className="glass-card rounded-2xl p-5 clinical-shadow transition-all duration-300">
+            <h3 className="text-sm font-bold text-slate-900 mb-3 border-b border-slate-100 dark:border-[#1d3330] pb-2">
               Cómo funciona el acompañamiento médico
             </h3>
             <div className="space-y-3">
@@ -261,8 +261,8 @@ export default function Hero({ onAuthenticated }: HeroProps) {
             </div>
           </div>
 
-          <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-            <div className="flex items-center justify-between gap-3 border-b border-slate-100 pb-2 mb-3">
+          <div className="glass-card rounded-2xl p-5 clinical-shadow transition-all duration-300">
+            <div className="flex items-center justify-between gap-3 border-b border-slate-100 dark:border-[#1d3330] pb-2 mb-3">
               <h4 className="text-sm font-bold text-slate-900">Plan de Regularidad</h4>
               <span className="rounded bg-emerald-50 border border-emerald-100 px-2 py-0.5 text-[9px] font-bold text-emerald-850">
                 Frecuencia Semanal
@@ -278,8 +278,8 @@ export default function Hero({ onAuthenticated }: HeroProps) {
             </div>
           </div>
 
-          <div className="rounded-xl border border-emerald-250 bg-emerald-800 p-5 text-white shadow-sm">
-            <p className="text-[10px] font-black uppercase tracking-wider text-emerald-300 mb-1.5">
+          <div className="rounded-2xl border border-emerald-900 bg-gradient-to-br from-emerald-850 to-emerald-950 dark:from-[#0a2622] dark:to-[#05110f] p-5 text-white clinical-shadow transition-all duration-300">
+            <p className="text-[10px] font-black uppercase tracking-wider text-emerald-300 dark:text-emerald-400 mb-1.5">
               Consejo Clínico de la Semana
             </p>
             <p className="text-xs font-medium leading-relaxed italic text-slate-100">

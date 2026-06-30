@@ -257,8 +257,8 @@ export default function AcademicFair() {
             </h2>
           </div>
 
-          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-            <p className="text-sm leading-relaxed text-slate-600">
+          <div className="glass-card rounded-2xl p-5 clinical-shadow">
+            <p className="text-sm leading-relaxed text-slate-655 text-slate-600">
               Un catálogo seguro organizado por materias de la carrera. Cada apunte cuenta con la verificación de estudiantes avanzados que ya rindieron y aprobaron las asignaturas correspondientes.
             </p>
           </div>
@@ -272,7 +272,7 @@ export default function AcademicFair() {
           ].map(([value, label]) => (
             <div
               key={label}
-              className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
+              className="glass-card rounded-2xl p-5 clinical-shadow transition-all duration-300"
             >
               <p className="text-xl font-bold text-slate-900">{value}</p>
               <p className="mt-0.5 text-xs font-bold uppercase tracking-[0.05em] text-slate-400">
@@ -284,7 +284,7 @@ export default function AcademicFair() {
 
         <div className="grid gap-8 lg:grid-cols-[1.4fr_0.6fr]">
           <div>
-            <div className="mb-5 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <div className="mb-5 glass-card rounded-2xl p-5 clinical-shadow">
               <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
                 <input
                   value={query}
@@ -345,10 +345,10 @@ export default function AcademicFair() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: Math.min(index * 0.04, 0.2) }}
                   viewport={{ once: true }}
-                  className={`rounded-xl border bg-white p-4 shadow-sm transition hover:shadow-md flex flex-col justify-between ${
+                  className={`glass-card rounded-2xl p-5 clinical-shadow transition-all duration-300 flex flex-col justify-between hover:scale-[1.01] ${
                     selectedResource.id === resource.id
-                      ? "border-emerald-600 ring-2 ring-emerald-50"
-                      : "border-slate-200"
+                      ? "border-emerald-500 ring-2 ring-emerald-500/20"
+                      : "border-slate-200 dark:border-[#1d3330]"
                   }`}
                 >
                   <div>
@@ -426,7 +426,7 @@ export default function AcademicFair() {
           <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
             <div
               id="resource-detail"
-              className="scroll-mt-24 rounded-xl border border-slate-900 bg-slate-950 p-5 text-white shadow-sm"
+              className="scroll-mt-24 rounded-2xl border border-teal-900 bg-gradient-to-br from-[#0c2420] to-[#040e0d] dark:from-[#0a2622] dark:to-[#05110f] p-5 text-white clinical-shadow transition-all duration-300"
             >
               <p className="mb-2 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-400">
                 Ficha de Material
@@ -482,7 +482,7 @@ export default function AcademicFair() {
               </a>
             </div>
 
-            <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <div className="glass-card rounded-2xl p-5 clinical-shadow">
               <h4 className="text-xs font-bold text-slate-700 mb-3">Guardados en esta sesión</h4>
               <div className="space-y-2">
                 {savedResources.map((resource) => (

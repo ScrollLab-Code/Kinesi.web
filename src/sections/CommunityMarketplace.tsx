@@ -213,14 +213,14 @@ export default function CommunityMarketplace({ onOpenFair }: AcademicTestimonial
       <div className="mx-auto max-w-7xl">
         
         {/* Welcome and encouragement banner */}
-        <div className="mb-10 rounded-2xl border border-teal-150 bg-gradient-to-br from-teal-50 to-emerald-50/50 p-6 md:p-8 shadow-sm">
-          <p className="mb-2 text-xs font-black uppercase tracking-[0.2em] text-emerald-800">
+        <div className="mb-10 glass-card rounded-2xl border border-teal-100 dark:border-[#1d3330] bg-gradient-to-br from-teal-50/30 to-emerald-50/10 dark:from-[#0a2622]/20 dark:to-transparent p-6 md:p-8 clinical-shadow">
+          <p className="mb-2 text-xs font-black uppercase tracking-[0.2em] text-emerald-800 dark:text-emerald-400">
             Muro de Experiencias Kinase
           </p>
-          <h2 className="text-2xl font-black text-slate-900 tracking-tight">
+          <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
             ¡Bienvenidos al espacio de cursada colectiva!
           </h2>
-          <p className="mt-2 text-sm leading-relaxed text-slate-650 text-slate-600 max-w-3xl">
+          <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-350 max-w-3xl">
             Te invitamos a compartir tus relatos reales de cursada, cómo aprobaste las materias filtro de tu facultad, tus técnicas de estudio médico preferidas y las cátedras que recomiendas. Puedes interactuar con tus compañeros dando likes y comentando las publicaciones para resolver dudas.
           </p>
         </div>
@@ -228,7 +228,7 @@ export default function CommunityMarketplace({ onOpenFair }: AcademicTestimonial
         <div className="grid gap-8 lg:grid-cols-[1.4fr_0.6fr]">
           <div className="space-y-6">
             {/* Formulario de publicación */}
-            <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div className="glass-card rounded-2xl p-5 clinical-shadow">
               <h3 className="mb-3.5 text-sm font-bold text-slate-800">Comparte tu experiencia en Kinase y tu Facultad</h3>
               {databaseMessage && (
                 <p className="mb-4 rounded-lg bg-emerald-50 border border-emerald-100 p-2.5 text-xs font-semibold text-emerald-800">
@@ -315,7 +315,7 @@ export default function CommunityMarketplace({ onOpenFair }: AcademicTestimonial
                   key={post.id}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
+                  className="glass-card rounded-2xl p-5 clinical-shadow transition-all duration-300"
                 >
                   <div className="mb-2 flex flex-wrap items-center gap-2 text-xs text-slate-500">
                     <span className="rounded bg-emerald-50 border border-emerald-100 px-2 py-0.5 font-bold text-emerald-855 text-emerald-800">
@@ -395,7 +395,7 @@ export default function CommunityMarketplace({ onOpenFair }: AcademicTestimonial
 
           {/* Sidebar */}
           <aside className="lg:sticky lg:top-24 lg:self-start space-y-4">
-            <div className="rounded-xl border border-teal-900 bg-teal-950 p-5 text-white shadow-sm">
+            <div className="rounded-2xl border border-teal-900 bg-gradient-to-br from-teal-950 to-emerald-950 dark:from-[#0a2622] dark:to-[#05110f] p-5 text-white clinical-shadow transition-all duration-300">
               <p className="mb-2 text-[10px] font-black uppercase tracking-[0.2em] text-teal-300">
                 Feria de Materiales
               </p>
