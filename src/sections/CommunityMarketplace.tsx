@@ -34,9 +34,9 @@ export default function CommunityMarketplace({ onOpenFair }: AcademicTestimonial
   const [isLoadingPosts, setIsLoadingPosts] = useState(true)
   const [databaseMessage, setDatabaseMessage] = useState("")
 
-  // State to track which post has its comments expanded
+  // State to track which post has its comments expanded and its comment input draft
   const [expandedCommentsPostId, setExpandedCommentsPostId] = useState<number | null>(null)
-  const [newCommentText, setNewCommentText] = useState("")
+  const [commentDrafts, setCommentDrafts] = useState<Record<number, string>>({})
 
   useEffect(() => {
     const loadPosts = async () => {
@@ -146,7 +146,8 @@ export default function CommunityMarketplace({ onOpenFair }: AcademicTestimonial
   }
 
   const addComment = (postId: number) => {
-    const cleanText = newCommentText.trim()
+    const draftText = commentDrafts[postId] || ""
+    const cleanText = draftText.trim()
     if (!cleanText) return
 
     setPosts((current) =>
@@ -170,7 +171,7 @@ export default function CommunityMarketplace({ onOpenFair }: AcademicTestimonial
       })
     )
 
-    setNewCommentText("")
+    setCommentDrafts((prev) => ({ ...prev, [postId]: "" }))
   }
 
   return (
@@ -338,8 +339,8 @@ export default function CommunityMarketplace({ onOpenFair }: AcademicTestimonial
                       <div className="flex gap-2 items-center pt-2">
                         <input
                           type="text"
-                          value={newCommentText}
-                          onChange={(e) => setNewCommentText(e.target.value)}
+                          value={commentDrafts[post.id] || ""}
+                          onChange={(e) => setCommentDrafts((prev) => ({ ...prev, [post.id]: e.target.value }))}
                           placeholder="Añade tu respuesta o duda..."
                           className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs outline-none focus:border-emerald-600"
                         />
