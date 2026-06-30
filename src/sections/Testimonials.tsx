@@ -7,16 +7,7 @@ const initialTestimonials = [
     career: "Medicina",
     text: "Me ayudo a ordenar los parciales y a estudiar con menos ansiedad. La diferencia fue tener un plan y alguien que lo revise.",
   },
-  {
-    name: "Tomas",
-    career: "Ingenieria",
-    text: "Use el foro para dudas puntuales y despues contrate una mentoria para preparar matematica. Llegue mucho mas firme.",
-  },
-  {
-    name: "Lucia",
-    career: "Abogacia",
-    text: "El seguimiento me saco de estudiar todo a ultimo momento. Ahora se que hacer cada semana.",
-  },
+ 
 ]
 
 type Testimonial = {
