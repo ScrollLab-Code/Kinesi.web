@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import type { FormEvent } from "react"
 import { supabase } from "../lib/supabase"
+import logo from "../assets/logo.svg"
+
 
 const studyTips = [
   "En Anatomía, asocia cada accidente óseo con su inserción muscular y pedículo vascular inmediato.",
@@ -118,9 +120,7 @@ export default function Hero({ onAuthenticated }: HeroProps) {
       <div className="mx-auto max-w-7xl px-6 w-full grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
         <div className="max-w-xl">
           <div className="mb-6">
-            <span className="text-xs font-black uppercase tracking-[0.3em] text-emerald-800">
-              Kinase Academy
-            </span>
+            <img src={logo} alt="KINASE ACADEMY Logo" className="h-10 w-auto mb-4" />
             <h1 className="mt-2 text-4xl font-black leading-tight text-slate-950 md:text-5xl tracking-tight">
               Afronta la carrera de medicina con un plan de estudio sólido.
             </h1>

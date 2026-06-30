@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import logo from "../assets/logo.svg"
 
 type NavbarProps = {
   onLogout?: () => void
@@ -30,11 +31,11 @@ export default function Navbar({ onLogout }: NavbarProps) {
   return (
     <>
       {/* Top bar - Medical Logo and session actions */}
-      <header className="fixed top-0 w-full bg-white/95 backdrop-blur-md border-b border-slate-200 z-40 py-3 px-6 shadow-sm">
+      <header className="fixed top-0 w-full bg-white/95 backdrop-blur-md border-b border-slate-200 z-40 py-2.5 px-6 shadow-sm">
         <div className="flex items-center justify-between max-w-7xl mx-auto">
-          <h1 className="text-lg font-black tracking-wider text-slate-900 flex items-center gap-1.5">
-            <span className="text-emerald-800 text-xl">🩺</span> KINASE <span className="text-emerald-800 font-normal text-xs tracking-widest hidden sm:inline">ACADEMY</span>
-          </h1>
+          <div className="flex items-center gap-2">
+            <img src={logo} alt="KINASE ACADEMY Logo" className="h-8 md:h-9 w-auto" />
+          </div>
           {onLogout ? (
             <button
               type="button"
@@ -55,7 +56,7 @@ export default function Navbar({ onLogout }: NavbarProps) {
       </header>
 
       {/* Spacers for fixed elements */}
-      <div className="h-14" /> {/* Top spacer adjusted */}
+      <div className="h-14" /> {/* Top spacer */}
     </>
   )
 }
