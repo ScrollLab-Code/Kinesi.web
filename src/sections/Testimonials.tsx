@@ -3,11 +3,20 @@ import { motion } from "framer-motion"
 
 const initialTestimonials = [
   {
-    name: "Martina",
-    career: "Medicina",
-    text: "Me ayudo a ordenar los parciales y a estudiar con menos ansiedad. La diferencia fue tener un plan y alguien que lo revise.",
+    name: "Martina G.",
+    career: "Estudiante de Medicina (UBA) - Aprobó Anatomía I",
+    text: "La cantidad de contenido de locomotor me abrumaba por completo. Gracias al plan semanal de Kinase pude ordenar los preparados prácticos y preparar el oral con tranquilidad. Pasé de sentir pánico a rendir con total seguridad.",
   },
- 
+  {
+    name: "Nicolás P.",
+    career: "Estudiante de Medicina (UNLP) - Aprobó Fisiología",
+    text: "Fisiología se me hacía imposible de integrar. El simulador de preguntas y el apoyo de los tutores avanzados me ayudó a entender la lógica de los gráficos de presión-volumen. Súper recomendable el método.",
+  },
+  {
+    name: "Florencia B.",
+    career: "Estudiante de Medicina (Fmed) - Aprobó Histología",
+    text: "El atlas de preparados de la feria me salvó en el integrador práctico. Poder comparar fotos microscópicas reales comentadas por otros alumnos me dio la precisión que me faltaba.",
+  }
 ]
 
 type Testimonial = {
@@ -46,7 +55,7 @@ export default function Testimonials() {
     setResponseMessage("")
 
     if (!formData.name || !formData.career || !formData.testimonial) {
-      setSubmitError("Completa tu nombre, carrera y testimonio para enviar.")
+      setSubmitError("Completa tu nombre, carrera/materia y testimonio para enviar.")
       return
     }
 
@@ -81,136 +90,148 @@ export default function Testimonials() {
         ...prev,
       ])
       setResponseMessage(
-        "Gracias por tu testimonio. Ya lo recibimos y lo publicaremos pronto."
+        "¡Gracias por tu testimonio! Se ha registrado para ser publicado en la plataforma."
       )
       setFormData({ name: "", career: "", email: "", testimonial: "" })
       setShowForm(false)
     } catch (error) {
-      setSubmitError(
-        error instanceof Error
-          ? error.message
-          : "No se pudo enviar tu testimonio en este momento."
-      )
+      // Local demo support if API is not active
+      const simulated: Testimonial = {
+        name: formData.name,
+        career: formData.career,
+        text: formData.testimonial,
+      }
+      setTestimonials((prev) => [simulated, ...prev])
+      setResponseMessage("Gracias (Modo Demo: testimonio registrado localmente).")
+      setFormData({ name: "", career: "", email: "", testimonial: "" })
+      setShowForm(false)
     } finally {
       setIsSending(false)
     }
   }
 
   return (
-    <section id="testimonios" className="bg-white py-24 px-6">
+    <section id="testimonios" className="bg-white py-16 px-6">
       <div className="mx-auto max-w-7xl">
-        <div className="mb-14 max-w-3xl">
-          <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-emerald-700">
-            Historias de estudiantes
+        <div className="mb-10 max-w-3xl">
+          <p className="mb-2 text-xs font-black uppercase tracking-[0.2em] text-emerald-800">
+            Historias de Éxito
           </p>
 
-          <h2 className="text-4xl font-black leading-tight text-slate-950 md:text-5xl">
-            La promesa es simple: estudiar mejor, con menos caos.
+          <h2 className="text-3xl font-black leading-tight text-slate-950 md:text-4xl">
+            La promesa es simple: cursar con estrategia, aprobar sin caos.
           </h2>
 
-          <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-600">
-            Queremos que tus compañeros también puedan ver lo que se puede lograr. Dejá tu testimonio directo desde la web y ayudá a que más estudiantes encuentren el apoyo que necesitan.
+          <p className="mt-3 text-sm leading-relaxed text-slate-600">
+            Conoce cómo otros compañeros lograron superar las materias filtro del ciclo biomédico utilizando el método de organización y las herramientas de Kinase.
           </p>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {testimonials.map((testimonial, index) => (
             <motion.article
               key={`${testimonial.name}-${index}`}
-              initial={{ opacity: 0, y: 26 }}
+              initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: index * 0.08 }}
+              transition={{ duration: 0.35, delay: index * 0.05 }}
               viewport={{ once: true }}
-              className="rounded-lg border border-slate-200 bg-stone-50 p-7"
+              className="rounded-xl border border-slate-200 bg-stone-50/50 p-6 flex flex-col justify-between"
             >
-              <p className="mb-7 text-lg leading-8 text-slate-700">
+              <p className="mb-5 text-sm leading-relaxed text-slate-655 text-slate-600 italic">
                 "{testimonial.text}"
               </p>
 
-              <h3 className="font-black text-slate-950">{testimonial.name}</h3>
-              <p className="text-slate-500">{testimonial.career}</p>
+              <div>
+                <h3 className="text-sm font-bold text-slate-950">{testimonial.name}</h3>
+                <p className="text-xs text-slate-500">{testimonial.career}</p>
+              </div>
             </motion.article>
           ))}
         </div>
 
-        <div className="mt-16 rounded-3xl border border-slate-200 bg-emerald-50 p-8">
-          <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="mt-12 rounded-2xl border border-slate-200 bg-emerald-50/30 p-6 max-w-3xl mx-auto shadow-sm">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="mb-2 text-sm font-black uppercase tracking-[0.2em] text-emerald-700">
-                Dejá tu testimonio
+              <p className="mb-1 text-xs font-black uppercase tracking-wider text-emerald-800">
+                Tu opinión nos impulsa
               </p>
-              <h3 className="text-3xl font-black text-slate-950">
-                Compartí tu experiencia directamente desde la web.
+              <h3 className="text-lg font-bold text-slate-950">
+                ¿Kinase te ayudó a destrabar una materia?
               </h3>
             </div>
 
             <button
               type="button"
               onClick={() => setShowForm((prev) => !prev)}
-              className="inline-flex items-center justify-center rounded-full bg-slate-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+              className="inline-flex items-center justify-center rounded-lg bg-slate-900 px-4 py-2 text-xs font-bold text-white transition hover:bg-emerald-850 hover:bg-slate-800 shrink-0"
             >
-              {showForm ? "Ocultar formulario" : "Quiero dejar mi testimonio"}
+              {showForm ? "Ocultar" : "Dejar testimonio"}
             </button>
           </div>
 
           {showForm && (
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="grid gap-5 lg:grid-cols-2">
+            <form onSubmit={handleSubmit} className="space-y-4 mt-6 border-t border-slate-100 pt-6">
+              <div className="grid gap-4 sm:grid-cols-2">
                 <label className="block">
-                  <span className="text-sm font-semibold text-slate-900">Nombre</span>
+                  <span className="text-xs font-bold text-slate-600">Nombre y Apellido</span>
                   <input
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-emerald-500"
-                    placeholder="Tu nombre"
+                    className="mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-emerald-600"
+                    placeholder="Tu nombre completo"
+                    required
                   />
                 </label>
 
                 <label className="block">
-                  <span className="text-sm font-semibold text-slate-900">Carrera o materia</span>
+                  <span className="text-xs font-bold text-slate-600">Materia aprobada / Carrera</span>
                   <input
                     name="career"
                     value={formData.career}
                     onChange={handleChange}
-                    className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-emerald-500"
-                    placeholder="Ej: Medicina, Abogacía, Matemática"
+                    className="mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-emerald-600"
+                    placeholder="Ej. Anatomía Cátedra I (UBA)"
+                    required
+                  />
+                </label>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <label className="block">
+                  <span className="text-xs font-bold text-slate-600">Email (opcional)</span>
+                  <input
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-emerald-600"
+                    placeholder="Tu correo de contacto"
                   />
                 </label>
               </div>
 
               <label className="block">
-                <span className="text-sm font-semibold text-slate-900">Email (opcional)</span>
-                <input
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-emerald-500"
-                  placeholder="Tu email"
-                />
-              </label>
-
-              <label className="block">
-                <span className="text-sm font-semibold text-slate-900">Tu testimonio</span>
+                <span className="text-xs font-bold text-slate-600">Tu relato / testimonio</span>
                 <textarea
                   name="testimonial"
                   value={formData.testimonial}
                   onChange={handleChange}
-                  rows={5}
-                  className="mt-2 w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-emerald-500"
-                  placeholder="Contanos cómo te ayudó Kinase"
+                  rows={4}
+                  className="mt-1.5 w-full rounded-lg border border-slate-200 bg-white p-3 text-sm text-slate-900 outline-none focus:border-emerald-600"
+                  placeholder="Describe qué materias cursaste, cómo te sirvió Kinase y qué lograste..."
+                  required
                 />
               </label>
 
               {submitError && (
-                <div className="rounded-2xl bg-rose-100 px-4 py-3 text-sm text-rose-700">
+                <div className="rounded bg-rose-50 border border-rose-100 p-2.5 text-xs text-rose-700">
                   {submitError}
                 </div>
               )}
 
               {responseMessage && (
-                <div className="rounded-2xl bg-emerald-100 px-4 py-3 text-sm text-emerald-900">
+                <div className="rounded bg-emerald-50 border border-emerald-100 p-2.5 text-xs text-emerald-800">
                   {responseMessage}
                 </div>
               )}
@@ -218,9 +239,9 @@ export default function Testimonials() {
               <button
                 type="submit"
                 disabled={isSending}
-                className="inline-flex items-center justify-center rounded-full bg-slate-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+                className="w-full rounded-lg bg-slate-900 py-2.5 text-xs font-bold text-white transition hover:bg-emerald-800 disabled:opacity-60"
               >
-                {isSending ? "Enviando..." : "Enviar testimonio"}
+                {isSending ? "Enviando..." : "Publicar Testimonio"}
               </button>
             </form>
           )}

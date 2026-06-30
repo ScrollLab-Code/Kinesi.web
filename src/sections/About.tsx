@@ -3,83 +3,72 @@ import videoPresentacion from "../assets/video presentacion.mp4"
 
 export default function About() {
   return (
-    <section id="ayuda" className="bg-gradient-to-br from-white via-slate-50 to-emerald-50 py-24 px-6">
+    <section id="ayuda" className="bg-white py-16 px-6 border-b border-slate-100">
       <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-2 lg:items-center">
         <motion.div
-          initial={{ opacity: 0, x: -28 }}
+          initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.55 }}
+          transition={{ duration: 0.4 }}
           viewport={{ once: true }}
         >
-          <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-emerald-700">
-            Por qué Kinase
+          <p className="mb-2 text-xs font-black uppercase tracking-[0.2em] text-emerald-800">
+            Metodología Kinase
           </p>
 
-          <h2 className="mb-6 text-4xl font-black leading-tight text-slate-950 md:text-5xl">
-            El contenido no lo es todo. El apoyo real transforma resultados.
+          <h2 className="mb-5 text-3xl font-black leading-tight text-slate-900 md:text-4xl">
+            Estudiar medicina no es memorizar mil hojas. Es saber priorizar.
           </h2>
 
-          <p className="mb-5 text-lg leading-8 text-slate-600">
-            Muchos estudiantes tienen acceso a contenido infinito. El problema real es no saber por dónde empezar, perder consistencia o quedarse solo cuando se traba una materia.
+          <p className="mb-4 text-sm leading-relaxed text-slate-650 text-slate-600">
+            Muchos alumnos encaran Anatomía o Fisiología intentando leer de corrido tomos enteros. El resultado suele ser quedarse sin tiempo, perder regularidad o paralizarse en el examen práctico frente al preparado.
           </p>
 
-          <p className="mb-5 text-lg leading-8 text-slate-600">
-            Kinase también suma un espacio para particulares: mentorías one‑on‑one, tutorías por materia y un plan de estudio adaptado a tus tiempos. Esto te ayuda a avanzar con seguridad, aun cuando las parciales se acercan.
+          <p className="mb-4 text-sm leading-relaxed text-slate-650 text-slate-600">
+            Nuestro sistema combina material verificado (feria), resolución colectiva de dudas de cursada (muro de experiencias) y coaching individual para planificar tu semana. Así llegas al parcial con repasos activos y simulacros orales hechos.
           </p>
 
-          <p className="mb-6 text-lg leading-8 text-slate-600">
-            Por eso Kinase combina tres cosas:
-          </p>
-
-          <div className="space-y-4">
-            <div className="flex items-start gap-4">
-              <div className="mt-1 text-2xl">💬</div>
+          <div className="space-y-3.5 pt-2">
+            <div className="flex items-start gap-3">
+              <div className="mt-0.5 text-lg">🩺</div>
               <div>
-                <h4 className="font-black text-slate-950 mb-1">Comunidad real</h4>
-                <p className="text-slate-600">Foro donde otros estudiantes responden y apoyan.</p>
+                <h4 className="text-sm font-bold text-slate-900">Enfoque Clínico y Práctico</h4>
+                <p className="text-xs text-slate-500">Orientación directa sobre qué material priorizar según la cátedra asignada.</p>
               </div>
             </div>
-            <div className="flex items-start gap-4">
-              <div className="mt-1 text-2xl">📚</div>
+            <div className="flex items-start gap-3">
+              <div className="mt-0.5 text-lg">📅</div>
               <div>
-                <h4 className="font-black text-slate-950 mb-1">Feria academica</h4>
-                <p className="text-slate-600">Por y para estudiantes.</p>
+                <h4 className="text-sm font-bold text-slate-900">Planificación Semanal Inversa</h4>
+                <p className="text-xs text-slate-500">Establecemos hitos claros de lectura para que no te quedes atrás en los cronogramas oficiales.</p>
               </div>
             </div>
-            <div className="flex items-start gap-4">
-              <div className="mt-1 text-2xl">📊</div>
+            <div className="flex items-start gap-3">
+              <div className="mt-0.5 text-lg">🗣️</div>
               <div>
-                <h4 className="font-black text-slate-950 mb-1">Seguimiento personalizado</h4>
-                <p className="text-slate-600">Diagnóstico, plan semanal y control de avance.</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <div className="mt-1 text-2xl">🧑‍🏫</div>
-              <div>
-                <h4 className="font-black text-slate-950 mb-1">Clases particulares</h4>
-                <p className="text-slate-600">Tutorías individuales para resolver dudas, practicar ejercicios clave y preparar parciales con foco en tus necesidades.</p>
+                <h4 className="text-sm font-bold text-slate-900">Simulacros de Examen Oral</h4>
+                <p className="text-xs text-slate-500">Prácticas de oratoria técnica para convencer al tribunal docente con fluidez y rigor científico.</p>
               </div>
             </div>
           </div>
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, x: 28 }}
+          initial={{ opacity: 0, x: 20 }}
           whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.55 }}
+          transition={{ duration: 0.4 }}
           viewport={{ once: true }}
-          className="rounded-2xl border-2 border-emerald-300 bg-white p-4 shadow-xl overflow-hidden"
+          className="rounded-xl border border-slate-200 bg-slate-50 p-3 shadow-sm overflow-hidden"
         >
           <video
             controls
-            className="aspect-video w-full rounded-xl bg-black object-cover"
+            className="aspect-video w-full rounded-lg bg-black object-cover"
             src={videoPresentacion}
           >
             Tu navegador no soporta video en HTML5.
           </video>
-          <div className="mt-6 p-4 bg-emerald-50 rounded-lg text-center">
-            <p className="text-sm text-slate-700">
-              <span className="font-black text-emerald-700">Mira cómo funciona</span> la plataforma y conoce nuestro método de acompañamiento.
+          <div className="mt-4 p-3 bg-emerald-50/50 rounded-lg text-center border border-emerald-100">
+            <p className="text-xs text-slate-700">
+              <span className="font-bold text-emerald-800">Conoce el método:</span> visualiza cómo organizamos tu espacio de estudio y el seguimiento uno a uno.
             </p>
           </div>
         </motion.div>

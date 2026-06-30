@@ -1,34 +1,37 @@
 import { useState } from "react"
 import type { ChangeEvent, FormEvent } from "react"
 
-const academicHelpWhatsAppLink =
-  "https://chat.whatsapp.com/LBElkQFM83KAeytkBYFfU9?s=sh&p=a&mlu=3"
 
 const questions = [
   {
-    question: "Que es lo que mas te cuesta al estudiar?",
+    question: "¿Qué es lo que más te cuesta al estudiar Anatomía, Histología o Fisiología?",
     options: [
-      "Organizarme",
-      "Concentrarme",
-      "Dejar todo para ultimo momento",
-      "Entender los temas",
+      "Organizar la gran cantidad de páginas y apuntes",
+      "Memorizar detalles y preparados prácticos",
+      "Expresarme con fluidez y vocabulario técnico en el examen oral",
+      "Mantener el ritmo de lectura del cronograma semanal",
     ],
   },
   {
-    question: "Cuantas horas estudias por dia aproximadamente?",
-    options: ["Menos de 1 hora", "1 a 2 horas", "3 a 5 horas", "Mas de 5 horas"],
+    question: "¿Cuántas horas promedio le dedicas al estudio de medicina por día?",
+    options: ["Menos de 2 horas", "2 a 4 horas", "5 a 7 horas", "Más de 7 horas"],
   },
   {
-    question: "Como llegas normalmente a un examen?",
-    options: ["Muy nervioso", "Desorganizado", "Normal", "Seguro"],
-  },
-  {
-    question: "Que te gustaria comprar o recibir?",
+    question: "¿Cómo llegas normalmente a una mesa de examen oral o práctico?",
     options: [
-      "Mentoria personalizada",
-      "Plan de estudio",
-      "Preparacion de parcial",
-      "Recursos y plantillas",
+      "Muy nervioso, con miedo a quedarme en blanco en el preparado",
+      "Desorganizado, con temas importantes sin leer del todo",
+      "Con dudas en la correlación clínica o fisiológica",
+      "Seguro del vocabulario y los esquemas clave",
+    ],
+  },
+  {
+    question: "¿Qué tipo de apoyo académico crees que destrabaría tu rendimiento?",
+    options: [
+      "Simulacros uno a uno de examen oral con tutores avanzados",
+      "Plan de estudio semanal y seguimiento de avance",
+      "Resúmenes validados, atlas explicados y flashcards Anki",
+      "Mentoría integral y control de hábitos",
     ],
   },
 ]
@@ -45,21 +48,17 @@ type Lead = {
 
 const createAcademicHelpMessage = (lead: Lead) =>
   [
-    "Nueva solicitud de ayuda academica desde Kinase.",
+    "Nueva solicitud de ayuda académica (Kinase Medicina).",
     `Nombre: ${lead.name} ${lead.lastname}`,
     `Email: ${lead.email}`,
     `WhatsApp: ${lead.phone}`,
-    `Carrera o materia: ${lead.career}`,
-    `Resultado: ${lead.result}`,
-    `Respuestas: ${lead.answers}`,
+    `Carrera/Materia: ${lead.career}`,
+    `Diagnóstico: ${lead.result}`,
+    `Respuestas detalladas: ${lead.answers}`,
   ].join("\n")
 
 const createAcademicHelpWhatsAppLink = (message: string) => {
-  if (academicHelpWhatsAppLink.includes("REEMPLAZAR_LINK_DEL_GRUPO")) {
-    return `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`
-  }
-
-  return academicHelpWhatsAppLink
+  return `https://wa.me/5491133334449?text=${encodeURIComponent(message)}`
 }
 
 export default function TestSection() {
@@ -106,26 +105,26 @@ export default function TestSection() {
   const generateResult = () => {
     const text = answers.join(" ")
 
-    if (text.includes("Organizarme") || text.includes("Desorganizado")) {
+    if (text.includes("Organizar la gran cantidad") || text.includes("Desorganizado")) {
       return {
-        title: "Tu primer salto esta en la organizacion academica",
+        title: "Tu prioridad es el Ordenamiento y Planificación del Volumen",
         description:
-          "Necesitas un plan simple, prioridades claras y seguimiento para no repartir energia en temas que no mueven la nota.",
+          "En medicina, leer todo de corrido no funciona. Necesitas un cronograma inverso que divida el atlas y la teoría en bloques manejables con hitos claros por semana.",
       }
     }
 
-    if (text.includes("Concentrarme") || text.includes("ultimo momento")) {
+    if (text.includes("preparados prácticos") || text.includes("nervioso, con miedo")) {
       return {
-        title: "La constancia esta frenando tu rendimiento",
+        title: "Necesitas Entrenamiento Práctico y Manejo de la Ansiedad",
         description:
-          "Con bloques de estudio, control de avance y una rutina realista podes salir del ciclo de estudiar a ultimo momento.",
+          "El pánico en el preparado o el microscopio se resuelve con simulacros bajo presión. Debes practicar describir la muestra de adentro hacia afuera, con orden histológico u anatómico.",
       }
     }
 
     return {
-      title: "Tenes margen para mejorar con una estrategia personalizada",
+      title: "Tu foco debe estar en la Integración y la Oratoria Médica",
       description:
-        "La plataforma puede ayudarte a combinar comunidad, recursos y acompañamiento experto segun tu carrera y tus examenes.",
+        "Rendir oral requiere precisión en la terminología médica. Te beneficiarás de simulaciones individuales para pulir la argumentación y la seguridad frente al docente.",
     }
   }
 
@@ -167,13 +166,6 @@ export default function TestSection() {
 
     try {
       const message = createAcademicHelpMessage(lead)
-
-      try {
-        await navigator.clipboard?.writeText(message)
-      } catch {
-        // Clipboard can be blocked; WhatsApp still opens with the same data.
-      }
-
       window.open(
         createAcademicHelpWhatsAppLink(message),
         "_blank",
@@ -181,11 +173,7 @@ export default function TestSection() {
       )
       setSent(true)
     } catch (error) {
-      setSubmitError(
-        error instanceof Error
-          ? error.message
-          : "No se pudo abrir WhatsApp."
-      )
+      setSubmitError("Ocurrió un error al intentar enviar tu diagnóstico.")
     } finally {
       setIsSubmitting(false)
     }
@@ -193,40 +181,42 @@ export default function TestSection() {
 
   if (sent) {
     return (
-      <section id="diagnostico" className="bg-gradient-to-br from-emerald-50 to-emerald-100 py-24 px-6">
-        <div className="mx-auto max-w-3xl">
-          <div className="rounded-2xl border-2 border-emerald-300 bg-white p-8 md:p-12 text-center shadow-lg">
-            <div className="mb-6 text-6xl">✓</div>
-            <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-emerald-700">
-              Diagnóstico completo
+      <section id="diagnostico" className="bg-emerald-50/50 py-12 px-6">
+        <div className="mx-auto max-w-2xl">
+          <div className="rounded-xl border border-emerald-200 bg-white p-8 text-center shadow-sm">
+            <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-2xl text-emerald-800">
+              ✓
+            </div>
+            <p className="mb-1 text-xs font-bold uppercase tracking-[0.2em] text-emerald-800">
+              Diagnóstico Enviado
             </p>
 
-            <h2 className="mb-4 text-4xl font-black text-slate-950">
-              Tu análisis académico está listo.
+            <h2 className="mb-3 text-2xl font-bold text-slate-900 font-sans">
+              Tu análisis preliminar está listo
             </h2>
 
-            <p className="mb-8 text-lg leading-8 text-slate-600">
-              Se abrio WhatsApp con tu solicitud para que el equipo revise tu diagnostico y coordine una propuesta personalizada.
+            <p className="mb-6 text-sm leading-relaxed text-slate-600">
+              Se abrió la ventana de comunicación de WhatsApp. Un tutor de medicina evaluará tu situación particular para coordinar una entrevista de acompañamiento sin cargo.
             </p>
 
-            <div className="space-y-3 text-left bg-emerald-50 p-6 rounded-xl mb-8">
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">📧</span>
-                <span className="text-slate-700"><strong>Recibiremos</strong> tu solicitud por WhatsApp</span>
+            <div className="space-y-2.5 text-left bg-stone-50 p-4 rounded-lg mb-6 border border-slate-100 text-xs">
+              <div className="flex items-center gap-2">
+                <span className="text-emerald-700 font-bold">✓</span>
+                <span className="text-slate-700">Recibiremos tus respuestas de cursada.</span>
               </div>
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">💬</span>
-                <span className="text-slate-700"><strong>Te contactaremos</strong> por WhatsApp</span>
+              <div className="flex items-center gap-2">
+                <span className="text-emerald-700 font-bold">✓</span>
+                <span className="text-slate-700">Analizaremos la cátedra y tus bloqueos habituales.</span>
               </div>
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">🎯</span>
-                <span className="text-slate-700"><strong>Haremos</strong> una consulta inicial gratuita</span>
+              <div className="flex items-center gap-2">
+                <span className="text-emerald-700 font-bold">✓</span>
+                <span className="text-slate-700">Coordinaremos una llamada de 15 minutos.</span>
               </div>
             </div>
 
             <a
               href="#inicio"
-              className="inline-block rounded-lg bg-emerald-700 px-8 py-3 font-black text-white transition hover:bg-emerald-800"
+              className="inline-block rounded-lg bg-emerald-850 border border-slate-900 px-6 py-2.5 text-xs font-bold text-slate-900 transition hover:bg-slate-100"
             >
               Volver al inicio
             </a>
@@ -238,109 +228,114 @@ export default function TestSection() {
 
   if (showForm) {
     return (
-      <section id="diagnostico" className="bg-stone-50 py-24 px-6">
-        <div className="mx-auto max-w-3xl">
-          <div className="rounded-2xl border-2 border-emerald-300 bg-white p-8 md:p-10 shadow-lg">
-            <div className="mb-8 text-center">
-              <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-emerald-700">
-                Información de contacto
+      <section id="diagnostico" className="bg-stone-50 py-12 px-6">
+        <div className="mx-auto max-w-2xl">
+          <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div className="mb-6 text-center">
+              <p className="mb-1 text-xs font-bold uppercase tracking-[0.2em] text-emerald-800">
+                Información de Cursada
               </p>
 
-              <h2 className="mb-4 text-4xl font-black text-slate-950">
-                Convierte tu diagnóstico en un plan real.
+              <h2 className="text-2xl font-bold text-slate-900">
+                Coordinar Devolución del Test
               </h2>
 
-              <p className="text-slate-600">
-                Completa tus datos para recibir una propuesta personalizada de acompañamiento académico.
+              <p className="text-xs text-slate-500 mt-1">
+                Completa tus datos de contacto para enviarle tu diagnóstico al tutor de medicina.
               </p>
             </div>
 
-            <form onSubmit={handleSubmit}>
-              <div className="grid gap-4 md:grid-cols-2 mb-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid gap-3 sm:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2">Nombre</label>
+                  <label className="block text-xs font-bold text-slate-600 mb-1">Nombre</label>
                   <input
                     type="text"
                     name="name"
-                    placeholder="Tu nombre"
+                    placeholder="Ej. Martín"
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full rounded-lg border border-slate-300 bg-white p-4 outline-none focus:border-emerald-600 focus:ring-4 focus:ring-emerald-100"
+                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600/20"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2">Apellido</label>
+                  <label className="block text-xs font-bold text-slate-600 mb-1">Apellido</label>
                   <input
                     type="text"
                     name="lastname"
-                    placeholder="Tu apellido"
+                    placeholder="Ej. Gómez"
                     value={formData.lastname}
                     onChange={handleChange}
                     required
-                    className="w-full rounded-lg border border-slate-300 bg-white p-4 outline-none focus:border-emerald-600 focus:ring-4 focus:ring-emerald-100"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2">Email</label>
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="tu@email.com"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="w-full rounded-lg border border-slate-300 bg-white p-4 outline-none focus:border-emerald-600 focus:ring-4 focus:ring-emerald-100"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2">Celular</label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    placeholder="+54 9 11 0000 0000"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    required
-                    className="w-full rounded-lg border border-slate-300 bg-white p-4 outline-none focus:border-emerald-600 focus:ring-4 focus:ring-emerald-100"
+                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600/20"
                   />
                 </div>
               </div>
 
-              <div className="mb-6">
-                <label className="block text-sm font-bold text-slate-700 mb-2">Carrera o materia principal</label>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div>
+                  <label className="block text-xs font-bold text-slate-600 mb-1">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Ej. martin@correo.com"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600/20"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-600 mb-1">Celular / WhatsApp</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    placeholder="Ej. +54 9 11 1234 5678"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    required
+                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600/20"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-600 mb-1">Materia o Cátedra que estás cursando</label>
                 <input
                   type="text"
                   name="career"
-                  placeholder="Ej: Ingeniería en Sistemas, Medicina, etc."
+                  placeholder="Ej. Anatomía Cátedra II - Fmed"
                   value={formData.career}
                   onChange={handleChange}
                   required
-                  className="w-full rounded-lg border border-slate-300 bg-white p-4 outline-none focus:border-emerald-600 focus:ring-4 focus:ring-emerald-100"
+                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600/20"
                 />
               </div>
 
               {submitError && (
-                <p className="mb-6 rounded-lg border border-red-300 bg-red-50 p-4 text-red-700 font-bold">
+                <p className="rounded bg-rose-50 border border-rose-100 p-2.5 text-xs font-semibold text-rose-700">
                   {submitError}
                 </p>
               )}
 
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full rounded-lg bg-emerald-700 py-4 font-black text-white transition hover:bg-emerald-800 disabled:cursor-not-allowed disabled:bg-slate-400 mb-3"
-              >
-                {isSubmitting ? "Abriendo WhatsApp..." : "Enviar por WhatsApp"}
-              </button>
-              
-              <button
-                type="button"
-                onClick={() => setShowForm(false)}
-                className="w-full rounded-lg border-2 border-slate-300 py-4 font-bold text-slate-700 transition hover:border-slate-950"
-              >
-                Volver
-              </button>
+              <div className="grid gap-2 pt-2">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full rounded-lg bg-emerald-800 py-2.5 text-xs font-bold text-white transition hover:bg-slate-900 disabled:bg-slate-400"
+                >
+                  {isSubmitting ? "Generando link..." : "Enviar Diagnóstico por WhatsApp"}
+                </button>
+                
+                <button
+                  type="button"
+                  onClick={() => setShowForm(false)}
+                  className="w-full rounded-lg border border-slate-200 py-2 text-xs font-bold text-slate-600 transition hover:border-slate-800"
+                >
+                  Atrás
+                </button>
+              </div>
             </form>
           </div>
         </div>
@@ -350,46 +345,55 @@ export default function TestSection() {
 
   if (finished) {
     return (
-      <section id="diagnostico" className="bg-gradient-to-br from-white via-emerald-50 to-emerald-100 py-24 px-6">
-        <div className="mx-auto max-w-3xl">
-          <div className="rounded-2xl border-2 border-emerald-300 bg-white p-8 md:p-12 shadow-xl text-center">
-            <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100">
-              <span className="text-4xl">🎯</span>
+      <section id="diagnostico" className="bg-stone-50 py-12 px-6">
+        <div className="mx-auto max-w-2xl">
+          <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm text-center">
+            <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-emerald-50 text-emerald-800 text-lg">
+              🎯
             </div>
 
-            <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-emerald-700">
-              Resultado del diagnóstico
+            <p className="mb-1 text-xs font-bold uppercase tracking-[0.2em] text-emerald-800">
+              Tu Perfil de Aprendizaje
             </p>
 
-            <h2 className="mb-5 text-4xl font-black leading-tight text-slate-950">
+            <h2 className="mb-2 text-xl font-bold text-slate-950">
               {result.title}
             </h2>
 
-            <p className="mb-10 text-lg leading-8 text-slate-600">
+            <p className="mb-6 text-sm leading-relaxed text-slate-600">
               {result.description}
             </p>
 
-            <div className="mb-10 bg-emerald-50 p-6 rounded-xl text-left border border-emerald-200">
-              <p className="text-sm font-bold text-emerald-700 mb-4">🔍 Basado en tu análisis:</p>
-              <div className="space-y-2">
-                {answers.slice(0, 2).map((answer, idx) => (
-                  <div key={idx} className="flex items-center gap-2 text-slate-700">
-                    <span className="text-emerald-600">•</span>
-                    <span className="text-sm">{answer}</span>
+            <div className="mb-6 bg-slate-50 p-4 rounded-lg text-left border border-slate-100 text-xs">
+              <p className="font-bold text-emerald-800 mb-2">Respuestas analizadas:</p>
+              <div className="space-y-1">
+                {answers.map((answer, idx) => (
+                  <div key={idx} className="flex gap-1.5 items-start text-slate-600">
+                    <span className="text-emerald-700 font-bold">•</span>
+                    <span>{answer}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            <button
-              onClick={() => setShowForm(true)}
-              className="inline-block rounded-lg bg-emerald-700 px-8 py-4 font-black text-white transition hover:bg-emerald-800 mb-3"
-            >
-              Recibir propuesta personalizada
-            </button>
-            
-            <div className="mt-6 text-sm text-slate-500">
-              <p>Si prefieres, puedes explorar nuestros <a href="#cursos" className="text-emerald-700 font-bold hover:underline">planes de acompañamiento</a></p>
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={() => setShowForm(true)}
+                className="w-full rounded-lg bg-emerald-800 py-2.5 text-xs font-bold text-white transition hover:bg-slate-900"
+              >
+                Solicitar Entrevista con Tutor
+              </button>
+              <button
+                onClick={() => {
+                  setAnswers([])
+                  setCurrentQuestion(0)
+                  setFinished(false)
+                  setSelected("")
+                }}
+                className="w-full rounded-lg border border-slate-200 py-2 text-xs font-bold text-slate-600 transition hover:border-slate-800"
+              >
+                Recomenzar Cuestionario
+              </button>
             </div>
           </div>
         </div>
@@ -398,55 +402,53 @@ export default function TestSection() {
   }
 
   return (
-    <section id="diagnostico" className="bg-stone-50 py-24 px-6">
-      <div className="mx-auto max-w-3xl">
-        <div className="mb-12 text-center">
-          <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-emerald-700">
-            Evaluación personalizada
+    <section id="diagnostico" className="bg-stone-50 py-12 px-6">
+      <div className="mx-auto max-w-2xl">
+        <div className="mb-6 text-center">
+          <p className="mb-1 text-xs font-bold uppercase tracking-[0.2em] text-emerald-700">
+            Autoevaluación de Cursada
           </p>
 
-          <h2 className="mb-4 text-4xl font-black text-slate-950 md:text-5xl">
-            Descubre qué tipo de ayuda necesitas.
+          <h2 className="text-2xl font-bold text-slate-950">
+            Diagnóstico de Desempeño
           </h2>
 
-          <p className="text-slate-600">
-            4 preguntas para analizar tu situación académica y recomendarte el plan perfecto.
+          <p className="text-xs text-slate-500 mt-1">
+            4 preguntas rápidas diseñadas por médicos y tutores de Kinase para identificar tus puntos débiles.
           </p>
         </div>
 
-        <div className="rounded-2xl border-2 border-emerald-300 bg-white p-8 md:p-10 shadow-lg">
-          {/* Progress Bar */}
-          <div className="mb-8">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-sm font-bold text-slate-600">
+        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+          {/* Progress */}
+          <div className="mb-5">
+            <div className="flex items-center justify-between mb-1.5 text-xs">
+              <span className="font-semibold text-slate-500">
                 Pregunta {currentQuestion + 1} de {questions.length}
               </span>
-              <span className="text-sm font-black text-emerald-700">{Math.round(progress)}%</span>
+              <span className="font-bold text-emerald-800">{Math.round(progress)}%</span>
             </div>
-            <div className="h-3 overflow-hidden rounded-full bg-slate-200">
+            <div className="h-2 overflow-hidden rounded-full bg-slate-100">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-emerald-600 to-emerald-700 transition-all duration-500"
+                className="h-full rounded-full bg-emerald-855 transition-all duration-300 bg-emerald-700"
                 style={{ width: `${progress}%` }}
               />
             </div>
           </div>
 
-          {/* Question */}
-          <h3 className="mb-8 text-2xl font-black leading-snug text-slate-950 md:text-3xl">
+          <h3 className="mb-5 text-base font-bold leading-snug text-slate-900">
             {question.question}
           </h3>
 
-          {/* Options */}
-          <div className="grid gap-3 mb-10">
+          <div className="grid gap-2 mb-6">
             {question.options.map((option) => (
               <button
                 key={option}
                 type="button"
                 onClick={() => setSelected(option)}
-                className={`rounded-lg border-2 p-4 text-left font-bold transition ${
+                className={`rounded-lg border p-3 text-left text-xs font-medium transition ${
                   selected === option
-                    ? "border-emerald-600 bg-emerald-50 text-slate-950 shadow-md"
-                    : "border-slate-200 bg-white text-slate-700 hover:border-emerald-400 hover:bg-emerald-50/30"
+                    ? "border-emerald-700 bg-emerald-50/50 text-slate-950 font-bold"
+                    : "border-slate-200 bg-white text-slate-600 hover:border-emerald-300 hover:bg-emerald-50/10"
                 }`}
               >
                 {option}
@@ -454,22 +456,21 @@ export default function TestSection() {
             ))}
           </div>
 
-          {/* Navigation Buttons */}
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-2 sm:grid-cols-2">
             <button
               onClick={prevQuestion}
               disabled={currentQuestion === 0}
-              className="rounded-lg border-2 border-slate-300 bg-white py-3 font-bold text-slate-700 transition hover:border-slate-950 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="rounded-lg border border-slate-200 bg-white py-2 text-xs font-bold text-slate-600 transition hover:border-slate-800 disabled:opacity-40 disabled:cursor-not-allowed"
             >
-              ← Anterior
+              Anterior
             </button>
 
             <button
               onClick={nextQuestion}
               disabled={!selected}
-              className="rounded-lg bg-emerald-700 py-3 font-black text-white transition hover:bg-emerald-800 disabled:bg-slate-400 disabled:cursor-not-allowed"
+              className="rounded-lg bg-emerald-800 py-2 text-xs font-bold text-white transition hover:bg-slate-900 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed"
             >
-              Siguiente →
+              Siguiente
             </button>
           </div>
         </div>

@@ -7,11 +7,12 @@ html {
 body {
   margin: 0;
   min-width: 320px;
-  background: #fafaf9;
-  color: #020617;
+  background: #fcfcfb;
+  color: #0f172a;
   font-family:
-    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
+    'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 button,
@@ -21,96 +22,39 @@ textarea {
   font: inherit;
 }
 
-.book-wall {
-  background:
-    linear-gradient(90deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.62)),
-    repeating-linear-gradient(
-      90deg,
-      #14532d 0 42px,
-      #166534 42px 48px,
-      #78350f 48px 94px,
-      #92400e 94px 101px,
-      #1e293b 101px 142px,
-      #334155 142px 149px,
-      #7f1d1d 149px 194px,
-      #991b1b 194px 201px
-    );
-  background-size: auto, 340px 100%;
-  animation: shelf-drift 24s linear infinite;
-  opacity: 0.72;
-}
-
-.study-grid {
-  background:
-    radial-gradient(circle at 18% 18%, rgba(16, 185, 129, 0.2), transparent 34%),
-    radial-gradient(circle at 82% 26%, rgba(59, 130, 246, 0.18), transparent 28%),
-    linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px),
-    #020617;
-  background-size: auto, auto, 42px 42px, 42px 42px, auto;
+/* Elegant clinical/academic grid pattern */
+.medical-grid {
+  background-color: #0b1f1e;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(20, 184, 166, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(13, 148, 136, 0.08) 0%, transparent 40%),
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: auto, auto, 40px 40px, 40px 40px;
 }
 
 .study-library {
-  background-image: url("https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1400&q=85");
+  background-image: url("https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1400&q=85");
   background-position: center;
   background-size: cover;
-  transform: scale(1.02);
+  opacity: 0.15;
 }
 
-.book-wall::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    repeating-linear-gradient(
-      0deg,
-      transparent 0 128px,
-      rgba(255, 255, 255, 0.14) 128px 132px,
-      rgba(0, 0, 0, 0.28) 132px 148px
-    );
+/* Custom scrollbar for a cleaner feel */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-.book-stack {
-  display: grid;
-  gap: 8px;
-  perspective: 800px;
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
 }
 
-.book {
-  --i: 0;
-  display: block;
-  width: calc(250px + (var(--i) * 18px));
-  margin-left: calc(var(--i) * -16px);
-  padding: 12px 18px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 6px;
-  background: linear-gradient(90deg, #f8fafc, #dbeafe 55%, #a7f3d0);
-  color: #0f172a;
-  font-weight: 900;
-  box-shadow: 0 18px 28px rgba(0, 0, 0, 0.22);
-  transform: rotateZ(calc((var(--i) - 3) * 1.5deg));
-  animation: book-float 4.8s ease-in-out infinite;
-  animation-delay: calc(var(--i) * -0.25s);
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
 }
 
-@keyframes shelf-drift {
-  from {
-    background-position: 0 0, 0 0;
-  }
-
-  to {
-    background-position: 0 0, 340px 0;
-  }
-}
-
-@keyframes book-float {
-  0%,
-  100% {
-    translate: 0 0;
-  }
-
-  50% {
-    translate: 0 -8px;
-  }
- 
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }

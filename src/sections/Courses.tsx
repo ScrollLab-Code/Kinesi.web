@@ -3,179 +3,151 @@ import { useState } from "react"
 
 const courses = [
   {
-    title: "Gestion del tiempo",
+    title: "Gestión de Volumen de Estudio",
     description:
-      "Metodos y estructuras horarias diseñadas para organizar calendarios, maximizar el rendimiento por bloque y eliminar la procastinacion.",
-    previousPrice: "$37.000",
+      "Técnicas de planificación específicas para manejar la carga teórica masiva de Anatomía, Histología y Fisiología en simultáneo sin saturarte.",
+    previousPrice: "$30.000",
     price: "$12.000",
-    duration: "30 minutos",
-    features: ["Metodos de gestión del tiempo", "Estructuración de horarios", "Técnicas anti-procrastinación"],
+    duration: "1 sesión integradora (1h 30m)",
+    features: ["Organización de cronograma de lecturas", "Estructuración de repasos periódicos", "Método de estudio por capas"],
     badge: "Más popular",
   },
   {
-    title: "Metodología de estudio",
+    title: "Método de Estudio Activo para Medicina",
     description:
-      "Sesiones personalizadas para ordenar materias, detectar bloqueos y sostener una rutina de estudio realista.",
-    previousPrice: "$30.500",
+      "Aprende a usar Active Recall y Repetición Espaciada adaptada a las materias de medicina. Configuración de mazos de Anki y resúmenes activos.",
+    previousPrice: "$35.000",
     price: "$15.000",
-    duration: "1 hora",
-    features: ["Plan semanal personalizado", "3 sesiones por semana", "Seguimiento de avance", "Corrección de hábitos"],
-    badge: "Tendencia",
+    duration: "Taller práctico (2 horas)",
+    features: ["Configuración avanzada de Anki", "Creación de tarjetas eficientes", "Estrategia de autoevaluación continua"],
+    badge: "Recomendado",
   },
   {
-    title: "Regulacion emocional",
+    title: "Regulación Emocional y Ansiedad Pre-Examen",
     description:
-      "Anclaje emocional,revaluacion cognitiva, condicinamiento clasico y efecto primado",
-    price: "$25.000",
-    duration: "1 Hora, 30 minutos",
-    features: ["Técnicas de regulación emocional", "Manejo de ansiedad y estrés académico", "Estrategias para mantener la motivación"],
-  
+      "Herramientas psicológicas y conductuales para afrontar la presión del examen oral (Anatomía) y los exámenes de opción múltiple con tiempo limitado.",
+    price: "$10.000",
+    duration: "Sesión grupal o individual (1h 15m)",
+    features: ["Manejo del pánico escénico en el examen oral", "Técnicas de respiración y enfoque cognitivo", "Prácticas de simulacro de mesa evaluadora"],
   },
   {
-    title: "Preparacion de estancia evaluativas",
+    title: "Preparación de Exámenes Orales (Anatomía)",
     description:
-      "Sesiones personalizadas para preparar exámenes y evaluaciones.",
-    previousPrice: "$30.000",
-    price: "$15.000",
-    duration: "3 horas",
-    features: ["Estrategias para preparar exámenes", "Técnicas de estudio efectivas", "Simulaciones de evaluaciones"],
-   
+      "Simulacros uno a uno frente a tutores avanzados. Práctica de exposición fluida usando preparados anatómicos y vocabulario médico preciso.",
+    previousPrice: "$40.000",
+    price: "$18.000",
+    duration: "Mentoría personalizada (1h 30m)",
+    features: ["Simulación de mesa de examen real", "Feedback inmediato de vocabulario y precisión", "Recomendaciones de postura y manejo del tiempo"],
+    badge: "Premium",
   },
   {
-    title: "Procesamiento de bloqueos",
-    description: "Sesiones personalizadas para ordenar materias, detectar bloqueos y sostener una rutina de estudio realista.",
+    title: "Desbloqueo Académico y Orientación de Cátedra",
+    description: "Para estudiantes trabados en parciales o finales de materias filtro. Análisis del método de estudio fallido y plan de contingencia rápido.",
     price: "$8.000",
-    duration: "2 horas",
-    features: ["Identificación de bloqueos académicos", "Técnicas para superar bloqueos mentales", "Estrategias para mantener la motivación"],
-    badge: "interesante",
+    duration: "Consultoría diagnóstica (1 hora)",
+    features: ["Detección de errores conceptuales y metodológicos", "Plan de 7 días para recuperar el ritmo", "Guía de recursos de apoyo específicos"],
   },
   {
-    title: "ordenamiento de materias",
-    description: "Sesiones personalizadas para organizar y estructurar las materias de estudio.",
+    title: "Organización del Ciclo Clínico",
+    description: "Orientación para alumnos que ingresan al hospital. Cómo balancear guardias, teóricos, rotaciones y horas de sueño de forma saludable.",
     price: "$15.000",
-    duration: "2 horas",
-    features: ["Organización de materias", "Estructuración de horarios de estudio", "Técnicas para mantener la consistencia en el estudio"],
-  
-  },
-  {
-    title: "Soporte familiar",
-    description:
-      "Destinado para padres y familiares de estudiantes universitarios, este servicio ofrece orientación y estrategias para apoyar el proceso académico de sus hijos, fomentando un ambiente de estudio positivo y efectivo.",
-    price: "...",
-    duration: "2 horas",
-    features: ["orientación para padres de estudiantes universitarios", "estrategias para apoyar el estudio desde casa", "fomento de hábitos de estudio saludables"],
-    badge: "En desarrrollo",
-  },
-  {
-    title: "Comunicacion y oratoria",
-    description:
-      "Desarrollo de hablidades blandas, oratoria especifica para exposicion para trabajos practicos y examenes.",
-    price: "...",
-    duration: "2 horas",
-    features: ["Técnicas de comunicación efectiva", "Oratoria para presentaciones académicas", "Manejo de nervios y ansiedad"],
-   
-  },
-   {
-    title: "IA para el estudiante",
-    description:
-      "Darle la capacidad al estudiante estudiar inteligentemente entorno a las nuevas tecnologías.",
-    price: "En desarrollo",
-    duration: "...",
-    features: ["Whatsapp para estudiantes", "Asistente de estudio personalizado directo de whatsapp", "Recomendaciones de recursos con IA", "Alertas de fechas importantes"],
-    badge: "En desarrollo, proxima tendencia.",
-  },
-  
-  
-  
+    duration: "Mentoría individual (1 hora)",
+    features: ["Plan de estudio adaptado al internado", "Optimización de tiempos muertos en el hospital", "Material de apoyo para semiología clínica"],
+    badge: "Clínico",
+  }
 ]
 
 export default function Courses() {
   const [selectedCourse, setSelectedCourse] = useState<number | null>(null)
 
   return (
-    <section id="cursos" className="bg-stone-50 py-24 px-6">
+    <section id="cursos" className="bg-stone-50 py-16 px-6">
       <div className="mx-auto max-w-7xl">
-        <div className="mb-16 grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+        <div className="mb-12 grid gap-6 lg:grid-cols-[1fr_1fr] lg:items-end">
           <div>
-            <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-emerald-700">
-              Servicios de ayuda académica
+            <p className="mb-3 text-xs font-black uppercase tracking-[0.2em] text-emerald-800">
+              Acompañamiento Académico Especializado
             </p>
 
-            <h2 className="text-4xl font-black leading-tight text-slate-950 md:text-5xl">
-              Planes profesionales de tutoría y asesoramiento.
+            <h2 className="text-3xl font-black leading-tight text-slate-950 md:text-4xl">
+              Mentorías y sesiones intensivas para medicina.
             </h2>
           </div>
 
-          <p className="text-lg leading-8 text-slate-600">
-            Elige el plan que se adapte a tu necesidad: desde sesiones puntuales hasta acompañamiento integral para todo el semestre.
+          <p className="text-base leading-relaxed text-slate-600">
+            En medicina, el contenido es enorme pero la clave del éxito está en el método, la oratoria y el manejo de la ansiedad. Elige la sesión que necesitas para destrabar tu cursada.
           </p>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {courses.map((course, index) => (
             <motion.article
               key={course.title}
-              initial={{ opacity: 0, y: 28 }}
+              initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, delay: index * 0.08 }}
+              transition={{ duration: 0.35, delay: index * 0.05 }}
               viewport={{ once: true }}
               onClick={() => setSelectedCourse(selectedCourse === index ? null : index)}
-              className={`rounded-xl border-2 p-7 shadow-sm transition cursor-pointer ${
+              className={`rounded-xl border p-5 shadow-sm transition cursor-pointer flex flex-col justify-between ${
                 selectedCourse === index
-                  ? "border-emerald-600 bg-emerald-50 shadow-lg"
-                  : "border-slate-200 bg-white hover:border-emerald-300 hover:shadow-lg"
+                  ? "border-emerald-600 bg-emerald-50/40 shadow-md"
+                  : "border-slate-200 bg-white hover:border-emerald-400 hover:shadow-md"
               }`}
             >
-              <div className="mb-4 flex items-start justify-between">
-                <span className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-emerald-100 text-lg font-black text-emerald-800">
-                  {index + 1}
-                </span>
-                <span className="rounded-full bg-emerald-700 text-white px-3 py-1 text-xs font-bold">
-                  {course.badge}
-                </span>
+              <div>
+                <div className="mb-4 flex items-start justify-between">
+                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-100/75 text-xs font-black text-emerald-950">
+                    0{index + 1}
+                  </span>
+                  {course.badge && (
+                    <span className="rounded-full bg-emerald-800 text-white px-2.5 py-0.5 text-[10px] font-bold">
+                      {course.badge}
+                    </span>
+                  )}
+                </div>
+
+                <h3 className="mb-1 text-lg font-bold text-slate-950">
+                  {course.title}
+                </h3>
+
+                <p className="mb-3 text-xs font-semibold text-slate-400">
+                  Duración: {course.duration}
+                </p>
+
+                <p className="mb-4 text-xs leading-relaxed text-slate-500">
+                  {course.description}
+                </p>
+
+                {selectedCourse === index && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    className="mb-4 space-y-1.5 border-t border-emerald-100 pt-3.5"
+                  >
+                    <p className="text-[10px] font-bold uppercase text-emerald-800 mb-2">
+                      Lo que obtendrás:
+                    </p>
+                    {course.features.map((feature) => (
+                      <div key={feature} className="flex items-start gap-1.5">
+                        <span className="text-emerald-700 font-bold text-xs">✓</span>
+                        <span className="text-xs text-slate-600 leading-normal">{feature}</span>
+                      </div>
+                    ))}
+                  </motion.div>
+                )}
               </div>
 
-              <h3 className="mb-2 text-2xl font-black text-slate-950">
-                {course.title}
-              </h3>
-
-              <p className="mb-5 text-sm text-slate-600">
-                {course.duration}
-              </p>
-
-              <p className="mb-6 leading-7 text-slate-600 text-sm">
-                {course.description}
-              </p>
-
-              {selectedCourse === index && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  className="mb-6 space-y-2 border-t border-emerald-200 pt-4"
-                >
-                  <p className="text-xs font-bold uppercase text-emerald-700 mb-3">
-                    Incluye:
-                  </p>
-                  {course.features.map((feature) => (
-                    <div key={feature} className="flex items-start gap-2">
-                      <span className="text-emerald-600 font-bold mt-1">✓</span>
-                      <span className="text-sm text-slate-700">{feature}</span>
-                    </div>
-                  ))}
-                </motion.div>
-              )}
-
-              <div className="border-t border-slate-200 pt-5 flex items-center justify-between gap-4">
+              <div className="border-t border-slate-100 pt-4 flex items-center justify-between gap-3 mt-4">
                 <div>
-                  <p className="text-xs text-slate-500 mb-1">A partir de</p>
-                  <div className="flex items-baseline gap-3">
+                  <p className="text-[10px] text-slate-400">Valor único</p>
+                  <div className="flex items-baseline gap-2">
                     {course.previousPrice && (
-                      <span className="text-sm text-slate-500 line-through">
+                      <span className="text-xs text-slate-400 line-through">
                         {course.previousPrice}
                       </span>
                     )}
 
-                    <span className="text-3xl font-black text-slate-950">
+                    <span className="text-xl font-bold text-slate-950">
                       {course.price}
                     </span>
                   </div>
@@ -183,27 +155,27 @@ export default function Courses() {
 
                 <a
                   href="#diagnostico"
-                  className="rounded-lg bg-emerald-700 px-6 py-3 font-black text-white transition hover:bg-emerald-800 text-sm whitespace-nowrap"
+                  className="rounded-lg bg-emerald-800 px-4 py-2 font-bold text-white transition hover:bg-slate-900 text-xs"
                 >
-                  Contratar
+                  Reservar
                 </a>
               </div>
             </motion.article>
           ))}
         </div>
 
-        <div className="mt-16 rounded-xl bg-gradient-to-r from-emerald-50 to-emerald-100/50 border border-emerald-200 p-8 text-center">
-          <h3 className="mb-2 text-2xl font-black text-emerald-900">
-            ¿No estás seguro qué plan necesitas?
+        <div className="mt-12 rounded-xl bg-teal-50 border border-teal-100 p-6 text-center max-w-2xl mx-auto shadow-sm">
+          <h3 className="mb-1 text-lg font-bold text-teal-950">
+            ¿No sabés qué método necesitás?
           </h3>
-          <p className="mb-6 text-emerald-800">
-            Realiza un diagnóstico gratuito y te recomendaremos el mejor plan para ti.
+          <p className="mb-4 text-xs text-slate-600">
+            Realiza el test diagnóstico de forma gratuita. Un tutor senior analizará tus respuestas y te recomendará la mejor estrategia para rendir.
           </p>
           <a
             href="#diagnostico"
-            className="inline-block rounded-lg bg-emerald-700 px-8 py-3 font-black text-white transition hover:bg-emerald-800"
+            className="inline-block rounded-lg bg-emerald-800 px-6 py-2.5 font-bold text-white transition hover:bg-slate-900 text-xs"
           >
-            Diagnóstico gratis
+            Realizar Diagnóstico Gratis
           </a>
         </div>
       </div>

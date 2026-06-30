@@ -4,6 +4,7 @@ import Navbar from './components/Navbar'
 import Hero from './sections/Hero'
 import Features from './sections/Features'
 import CommunityMarketplace from './sections/CommunityMarketplace'
+import AcademicFair from './sections/AcademicFair'
 import TestSection from './sections/TestSection'
 import About from './sections/About'
 import Courses from './sections/Courses'
@@ -29,7 +30,7 @@ const setStoredAccess = (value: boolean) => {
       window.localStorage.removeItem(accessKey)
     }
   } catch {
-    // Local files and some privacy modes can block storage; React state still works.
+    // Local files and privacy modes can block storage
   }
 }
 
@@ -48,7 +49,7 @@ function App() {
       }
     }
 
-    const loadingFallback = window.setTimeout(finishLoading, 1800)
+    const loadingFallback = window.setTimeout(finishLoading, 1500)
 
     supabase.auth
       .getSession()
@@ -102,12 +103,12 @@ function App() {
   if (isCheckingSession) {
     return (
       <main className="grid min-h-screen place-items-center bg-stone-50 px-6 text-center">
-        <div>
-          <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-emerald-700">
-            Kinase
+        <div className="flex flex-col items-center">
+          <p className="mb-2 text-xs font-bold uppercase tracking-[0.25em] text-emerald-800 animate-pulse">
+            Kinase Academy
           </p>
-          <h1 className="text-3xl font-black text-slate-950">
-            Preparando tu espacio de estudio...
+          <h1 className="text-xl font-bold text-slate-800">
+            Cargando entorno médico...
           </h1>
         </div>
       </main>
@@ -116,7 +117,7 @@ function App() {
 
   if (!session && !localAccess) {
     return (
-      <main>
+      <main className="bg-stone-50 min-h-screen">
         <Navbar />
         <Hero onAuthenticated={unlockApp} />
       </main>
@@ -124,75 +125,73 @@ function App() {
   }
 
   return (
-    <main>
+    <main className="min-h-screen bg-stone-50/50 pb-12">
       <Navbar onLogout={signOut} />
 
       <section
         id="inicio"
-        className="bg-stone-50 px-6 pb-16 pt-32 text-slate-950"
+        className="bg-white border-b border-slate-100 px-6 pb-12 pt-24 text-slate-900"
       >
         <div className="mx-auto max-w-7xl">
-          <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-emerald-700">
-            Bienvenido
+          <p className="mb-2 text-xs font-black uppercase tracking-[0.2em] text-emerald-800">
+            Panel del Estudiante
           </p>
 
-          <h1 className="max-w-4xl text-4xl font-black leading-tight md:text-6xl">
-            ¡ya sos parte de kinase! vamos camino hacia el exito.
+          <h1 className="max-w-3xl text-3xl font-black leading-tight text-slate-900 md:text-5xl tracking-tight">
+            Estudia con método, comparte tus experiencias y aprueba con tranquilidad.
           </h1>
         </div>
       </section>
 
-      {/* Navigation Buttons */}
-      <nav className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 z-40">
-        <div className="mx-auto max-w-7xl flex gap-2 overflow-x-auto">
-          <button
-            onClick={() => setActiveSection('ayuda')}
-            className={`px-4 py-2 rounded-lg font-semibold transition-colors whitespace-nowrap ${
-              activeSection === 'ayuda'
-                ? 'bg-emerald-700 text-white'
-                : 'bg-gray-100 text-slate-950 hover:bg-gray-200'
-            }`}
-          >
-            coaching Académico
-          </button>
+      {/* Navigation Tabs */}
+      <nav className="sticky top-16 bg-white/95 backdrop-blur-md border-b border-slate-200 px-6 py-3 z-30 shadow-sm">
+        <div className="mx-auto max-w-7xl flex gap-2 overflow-x-auto scrollbar-none">
           <button
             onClick={() => setActiveSection('comunidad')}
-            className={`px-4 py-2 rounded-lg font-semibold transition-colors whitespace-nowrap ${
+            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
               activeSection === 'comunidad'
-                ? 'bg-emerald-700 text-white'
-                : 'bg-gray-100 text-slate-950 hover:bg-gray-200'
+                ? 'bg-slate-900 text-white shadow-sm'
+                : 'bg-stone-50 border border-slate-200 text-slate-650 text-slate-600 hover:bg-stone-100'
             }`}
-      
           >
-            Comunidad
+            Muro de Experiencias
           </button>
           <button
             onClick={() => setActiveSection('mercado')}
-            className={`px-4 py-2 rounded-lg font-semibold transition-colors whitespace-nowrap ${
+            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
               activeSection === 'mercado'
-                ? 'bg-emerald-700 text-white'
-                : 'bg-gray-100 text-slate-950 hover:bg-gray-200'
+                ? 'bg-slate-900 text-white shadow-sm'
+                : 'bg-stone-50 border border-slate-200 text-slate-650 text-slate-600 hover:bg-stone-100'
             }`}
           >
-            Feria universitaria
+            Feria de Materiales
+          </button>
+          <button
+            onClick={() => setActiveSection('ayuda')}
+            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
+              activeSection === 'ayuda'
+                ? 'bg-slate-900 text-white shadow-sm'
+                : 'bg-stone-50 border border-slate-200 text-slate-650 text-slate-600 hover:bg-stone-100'
+            }`}
+          >
+            Diagnóstico & Coaching
           </button>
           <button
             onClick={() => setActiveSection('cursos')}
-            className={`px-4 py-2 rounded-lg font-semibold transition-colors whitespace-nowrap ${
+            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
               activeSection === 'cursos'
-                ? 'bg-emerald-700 text-white'
-                : 'bg-gray-100 text-slate-950 hover:bg-gray-200'
+                ? 'bg-slate-900 text-white shadow-sm'
+                : 'bg-stone-50 border border-slate-200 text-slate-650 text-slate-600 hover:bg-stone-100'
             }`}
           >
-        
-            Cursos
+            Tutorías Médicas
           </button>
           <button
             onClick={() => setActiveSection('testimonios')}
-            className={`px-4 py-2 rounded-lg font-semibold transition-colors whitespace-nowrap ${
+            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
               activeSection === 'testimonios'
-                ? 'bg-emerald-700 text-white'
-                : 'bg-gray-100 text-slate-950 hover:bg-gray-200'
+                ? 'bg-slate-900 text-white shadow-sm'
+                : 'bg-stone-50 border border-slate-200 text-slate-650 text-slate-600 hover:bg-stone-100'
             }`}
           >
             Testimonios
@@ -201,12 +200,29 @@ function App() {
       </nav>
 
       {/* Content Sections */}
-      <div className="min-h-screen">
-        {activeSection === 'ayuda' && <About />}
-        {activeSection === 'comunidad' && <CommunityMarketplace />}
-        {activeSection === 'mercado' && <TestSection />}
-        {activeSection === 'cursos' && <Courses />}
-        {activeSection === 'testimonios' && <Testimonials />}
+      <div className="min-h-[60vh] bg-stone-50/30">
+        {activeSection === 'comunidad' && (
+          <CommunityMarketplace onOpenFair={() => setActiveSection('mercado')} />
+        )}
+        
+        {activeSection === 'mercado' && (
+          <AcademicFair />
+        )}
+        
+        {activeSection === 'ayuda' && (
+          <div className="space-y-6">
+            <About />
+            <TestSection />
+          </div>
+        )}
+        
+        {activeSection === 'cursos' && (
+          <Courses />
+        )}
+        
+        {activeSection === 'testimonios' && (
+          <Testimonials />
+        )}
       </div>
 
       <Features />
