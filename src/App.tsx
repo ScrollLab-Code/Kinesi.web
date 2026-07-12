@@ -17,6 +17,7 @@ import Welcome from './sections/Welcome'
 import Premium from './sections/Premium'
 import WeeklyPlanner from './sections/WeeklyPlanner'
 import Flashcards from './sections/Flashcards'
+import HabitCreator from './sections/HabitCreator'
 import Footer from './components/Footer'
 import { supabase } from './lib/supabase'
 
@@ -46,7 +47,7 @@ function App() {
   const [session, setSession] = useState<Session | null>(null)
   const [localAccess, setLocalAccess] = useState(getStoredAccess)
   const [isCheckingSession, setIsCheckingSession] = useState(true)
-  const [activeSection, setActiveSection] = useState<'bienvenido' | 'comunidad' | 'mercado' | 'explorador' | 'gymkana' | 'planificador' | 'ayuda' | 'cursos' | 'testimonios' | 'premium' | 'planificador_semanal' | 'flashcards' | 'publicas'>('bienvenido')
+  const [activeSection, setActiveSection] = useState<'bienvenido' | 'comunidad' | 'mercado' | 'explorador' | 'gymkana' | 'planificador' | 'ayuda' | 'cursos' | 'testimonios' | 'premium' | 'planificador_semanal' | 'flashcards' | 'publicas' | 'habit_creator'>('bienvenido')
 
   // Premium state
   const [isPremium, setIsPremium] = useState<boolean>(() => {
@@ -235,23 +236,24 @@ function App() {
         <div className="mx-auto max-w-7xl flex gap-2 overflow-x-auto scrollbar-none">
           {(!isPremium
             ? [
-                { id: 'bienvenido', label: '👋 Bienvenidos' },
-                { id: 'mercado', label: '📚 Feria de Materiales' },
-                { id: 'ayuda', label: '🩺 Diagnóstico & Coaching' },
-                { id: 'cursos', label: '🎓 Tutorías Médicas' },
-                { id: 'testimonios', label: '🗣️ Testimonios' },
-                { id: 'premium', label: '💎 Premium VIP', isSpecial: true }
+                { id: 'bienvenido', label: 'Bienvenidos' },
+                { id: 'mercado', label: 'Feria de Materiales' },
+                { id: 'ayuda', label: 'Diagnóstico & Coaching' },
+                { id: 'cursos', label: 'Tutorías Médicas' },
+                { id: 'testimonios', label: 'Testimonios' },
+                { id: 'premium', label: 'Premium VIP', isSpecial: true }
               ]
             : [
-                { id: 'bienvenido', label: '👋 Bienvenidos' },
-                { id: 'premium', label: '💎 Panel VIP', isSpecial: true },
-                { id: 'comunidad', label: '💬 Muro de Experiencias' },
-                { id: 'explorador', label: '💀 Explorador Anatómico' },
-                { id: 'gymkana', label: '🎯 Simulador Gymkana' },
-                { id: 'planificador', label: '📅 Planificador Inverso' },
-                { id: 'planificador_semanal', label: '📅 Planificador Semanal' },
-                { id: 'flashcards', label: '🧠 Flashcards VIP' },
-                { id: 'publicas', label: '🌐 Secciones Públicas' }
+                { id: 'bienvenido', label: 'Bienvenidos' },
+                { id: 'premium', label: 'Panel VIP', isSpecial: true },
+                { id: 'comunidad', label: 'Muro de Experiencias' },
+                { id: 'explorador', label: 'Explorador Anatómico' },
+                { id: 'gymkana', label: 'Simulador Gymkana' },
+                { id: 'planificador', label: 'Planificador Inverso' },
+                { id: 'planificador_semanal', label: 'Planificador Semanal' },
+                { id: 'flashcards', label: 'Flashcards VIP' },
+                { id: 'habit_creator', label: 'Creador de Habitos' },
+                { id: 'publicas', label: 'Secciones Públicas' }
               ]
           ).map(tab => {
             const isActive = activeSection === tab.id
@@ -319,6 +321,10 @@ function App() {
             {activeSection === 'flashcards' && (
               <Flashcards />
             )}
+
+            {activeSection === 'habit_creator' && (
+              <HabitCreator />
+            )}
             
             {activeSection === 'ayuda' && (
               <div className="space-y-6">
@@ -343,7 +349,7 @@ function App() {
               <div className="mx-auto max-w-7xl px-6 py-8 space-y-6 animate-fadeIn">
                 <div className="border-b border-slate-200 dark:border-[#1d3330] pb-2">
                   <h3 className="text-lg font-black text-slate-900 dark:text-white">
-                    🌐 Secciones Públicas de la Academia
+                    Secciones Públicas de la Academia
                   </h3>
                   <p className="text-xs text-slate-500">
                     Como miembro Premium VIP, sigues teniendo acceso completo a todos los recursos abiertos de Kinase.
@@ -354,7 +360,6 @@ function App() {
                     onClick={() => setActiveSection('mercado')}
                     className="glass-card rounded-2xl p-5 text-left border border-slate-200 hover:border-emerald-600 transition-all clinical-shadow space-y-2 cursor-pointer"
                   >
-                    <span className="text-2xl">📚</span>
                     <h4 className="font-bold text-sm text-slate-800 dark:text-white">Feria de Materiales</h4>
                     <p className="text-[11px] text-slate-500 leading-normal">Apuntes, atlas y resúmenes cargados por alumnos.</p>
                   </button>
@@ -362,7 +367,6 @@ function App() {
                     onClick={() => setActiveSection('ayuda')}
                     className="glass-card rounded-2xl p-5 text-left border border-slate-200 hover:border-emerald-600 transition-all clinical-shadow space-y-2 cursor-pointer"
                   >
-                    <span className="text-2xl">🩺</span>
                     <h4 className="font-bold text-sm text-slate-800 dark:text-white">Diagnóstico & Coaching</h4>
                     <p className="text-[11px] text-slate-500 leading-normal">Test vocacional y de regularidad sin costo.</p>
                   </button>
@@ -370,7 +374,6 @@ function App() {
                     onClick={() => setActiveSection('cursos')}
                     className="glass-card rounded-2xl p-5 text-left border border-slate-200 hover:border-emerald-600 transition-all clinical-shadow space-y-2 cursor-pointer"
                   >
-                    <span className="text-2xl">🎓</span>
                     <h4 className="font-bold text-sm text-slate-800 dark:text-white">Tutorías Médicas</h4>
                     <p className="text-[11px] text-slate-500 leading-normal">Cursos intensivos dictados por residentes.</p>
                   </button>
@@ -378,7 +381,6 @@ function App() {
                     onClick={() => setActiveSection('testimonios')}
                     className="glass-card rounded-2xl p-5 text-left border border-slate-200 hover:border-emerald-600 transition-all clinical-shadow space-y-2 cursor-pointer"
                   >
-                    <span className="text-2xl">🗣️</span>
                     <h4 className="font-bold text-sm text-slate-800 dark:text-white">Testimonios</h4>
                     <p className="text-[11px] text-slate-500 leading-normal">Experiencias y reviews de alumnos de medicina.</p>
                   </button>

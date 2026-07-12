@@ -46,7 +46,6 @@ export default function Navbar({
                     : "bg-gradient-to-r from-amber-500 to-yellow-500 border-amber-400 text-slate-900 hover:from-amber-600 hover:to-yellow-600"
                 }`}
               >
-                <span>💎</span>
                 <span className="hidden xs:inline">{isPremium ? "Premium VIP" : "Premium"}</span>
               </button>
             )}

@@ -123,7 +123,7 @@ export default function Premium({ isPremium, onActivate }: PremiumProps) {
           {/* Hero Banner */}
           <div className="text-center max-w-3xl mx-auto space-y-4">
             <span className="rounded-full bg-amber-500/10 border border-amber-500/20 px-3.5 py-1 text-xs font-black uppercase tracking-widest text-amber-600 dark:text-amber-400">
-              💎 Kinase Premium VIP
+              Kinase Premium VIP
             </span>
             <h2 className="text-3xl md:text-4.5xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">
               Desbloquea tu Entorno Médico de Alto Rendimiento
@@ -143,7 +143,6 @@ export default function Premium({ isPremium, onActivate }: PremiumProps) {
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="glass-card rounded-2xl p-5 border-l-4 border-l-amber-500 clinical-shadow space-y-2">
-                  <span className="text-2xl">💬</span>
                   <h4 className="font-bold text-sm text-slate-800 dark:text-white">Muro de Experiencias (Foro)</h4>
                   <p className="text-xs text-slate-500 dark:text-slate-450 leading-normal">
                     Comparte y lee reviews reales de exámenes de alumnos de cátedra.
@@ -151,7 +150,6 @@ export default function Premium({ isPremium, onActivate }: PremiumProps) {
                 </div>
 
                 <div className="glass-card rounded-2xl p-5 border-l-4 border-l-amber-500 clinical-shadow space-y-2">
-                  <span className="text-2xl">💀</span>
                   <h4 className="font-bold text-sm text-slate-800 dark:text-white">Explorador Anatómico VIP</h4>
                   <p className="text-xs text-slate-500 dark:text-slate-450 leading-normal">
                     Atlas comentado con orígenes, inserciones e irrigaciones de preparados óseos y musculares.
@@ -159,7 +157,6 @@ export default function Premium({ isPremium, onActivate }: PremiumProps) {
                 </div>
 
                 <div className="glass-card rounded-2xl p-5 border-l-4 border-l-amber-500 clinical-shadow space-y-2">
-                  <span className="text-2xl">🎯</span>
                   <h4 className="font-bold text-sm text-slate-800 dark:text-white">Simulador de Gymkana</h4>
                   <p className="text-xs text-slate-500 dark:text-slate-450 leading-normal">
                     Ponte a prueba con simulacros prácticos cronometrados con reconocimiento de estructuras.
@@ -167,7 +164,6 @@ export default function Premium({ isPremium, onActivate }: PremiumProps) {
                 </div>
 
                 <div className="glass-card rounded-2xl p-5 border-l-4 border-l-amber-500 clinical-shadow space-y-2">
-                  <span className="text-2xl">📅</span>
                   <h4 className="font-bold text-sm text-slate-800 dark:text-white">Doble Planificación Académica</h4>
                   <p className="text-xs text-slate-500 dark:text-slate-450 leading-normal">
                     Planificador Inverso para exámenes finales y Planificador Semanal interactivo.
@@ -201,12 +197,12 @@ export default function Premium({ isPremium, onActivate }: PremiumProps) {
                   type="submit"
                   className="w-full rounded-lg bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs py-3 transition duration-200 shadow-md"
                 >
-                  🚀 Habilitar Acceso Premium VIP
+                  Habilitar Acceso Premium VIP
                 </button>
 
                 {errorMessage && (
                   <p className="text-xs text-rose-600 dark:text-rose-450 text-center font-bold">
-                    ⚠️ {errorMessage}
+                    {errorMessage}
                   </p>
                 )}
               </form>
@@ -228,7 +224,7 @@ export default function Premium({ isPremium, onActivate }: PremiumProps) {
                     onClick={triggerPaymentSimulation}
                     className="rounded-lg bg-emerald-800 hover:bg-slate-900 text-white font-bold text-xs px-5 py-2.5 transition duration-200 shadow-sm"
                   >
-                    💳 Obtener Código Premium Gratis
+                    Obtener Código Premium Gratis
                   </button>
                   <p className="text-[10px] font-bold text-slate-400">
                     Código de habilitación: <span className="text-emerald-800 dark:text-emerald-450 font-black">KINASE-FREE-VIP</span>
@@ -283,9 +279,6 @@ export default function Premium({ isPremium, onActivate }: PremiumProps) {
           
           {/* Welcome Banner */}
           <div className="rounded-2xl border border-amber-500 bg-gradient-to-br from-[#1c180d] to-[#0c1815] p-6 text-white clinical-shadow flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden">
-            <div className="absolute right-0 top-0 opacity-10 pointer-events-none transform translate-x-10 -translate-y-10">
-              <span className="text-[200px]">💎</span>
-            </div>
             
             <div className="space-y-1 z-10">
               <span className="rounded bg-amber-500/20 px-2 py-0.5 text-[9px] font-black uppercase tracking-widest text-amber-500">
@@ -302,7 +295,7 @@ export default function Premium({ isPremium, onActivate }: PremiumProps) {
             <div className="bg-[#1b1c1d]/60 border border-slate-700 rounded-xl p-3.5 shrink-0 z-10">
               <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest block">Próximo Examen de Cátedra</span>
               <span className="text-lg font-black text-amber-500 block">Final de Anatomía</span>
-              <span className="text-[10px] text-emerald-450 block font-semibold">⏱ Quedan {daysLeft} días</span>
+              <span className="text-[10px] text-emerald-455 block font-semibold">Quedan {daysLeft} días</span>
             </div>
           </div>
 
@@ -314,7 +307,7 @@ export default function Premium({ isPremium, onActivate }: PremiumProps) {
               <div className="border-b border-slate-100 dark:border-[#1d3330] pb-2 flex items-center justify-between">
                 <div>
                   <h4 className="font-bold text-sm text-slate-900 dark:text-white uppercase tracking-wider">
-                    ⚡ Autoevaluación Choice - Nivel Cátedra
+                    Autoevaluación Choice - Nivel Cátedra
                   </h4>
                   <p className="text-xs text-slate-400 mt-0.5">
                     Preguntas avanzadas justificadas para exámenes orales y prácticos.
@@ -371,13 +364,13 @@ export default function Premium({ isPremium, onActivate }: PremiumProps) {
                       className="rounded-xl bg-slate-50 dark:bg-[#0d1615] border border-slate-200 dark:border-[#1d3330] p-4 text-xs space-y-2"
                     >
                       <p className="font-bold text-slate-900 dark:text-white">
-                        {selectedOptionIndex === quizQuestions[currentQuestionIndex].correctIndex ? "✅ ¡Respuesta Correcta!" : "❌ Respuesta Incorrecta"}
+                        {selectedOptionIndex === quizQuestions[currentQuestionIndex].correctIndex ? "¡Respuesta Correcta!" : "Respuesta Incorrecta"}
                       </p>
                       <p className="text-slate-650 dark:text-slate-400 leading-relaxed font-medium">
                         {quizQuestions[currentQuestionIndex].explanation}
                       </p>
-                      <p className="text-[10px] font-bold text-emerald-800 dark:text-emerald-450">
-                        📖 Referencia: {quizQuestions[currentQuestionIndex].reference}
+                      <p className="text-[10px] font-bold text-emerald-800 dark:text-emerald-455">
+                        Referencia: {quizQuestions[currentQuestionIndex].reference}
                       </p>
 
                       <button
@@ -392,8 +385,7 @@ export default function Premium({ isPremium, onActivate }: PremiumProps) {
                 </div>
               ) : (
                 <div className="text-center py-8 space-y-4">
-                  <span className="text-4xl">🎉</span>
-                  <h5 className="font-bold text-lg text-slate-900 dark:text-white">¡Simulador Completado!</h5>
+                  <h5 className="font-bold text-lg text-slate-900 dark:text-white">Simulador Completado</h5>
                   <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
                     Has acertado <strong className="text-emerald-800 dark:text-emerald-400 text-sm">{quizScore}</strong> de <strong>{quizQuestions.length}</strong> preguntas.
                   </p>
@@ -422,7 +414,7 @@ export default function Premium({ isPremium, onActivate }: PremiumProps) {
                   Hemos analizado tus bloques del <strong>Planificador Semanal</strong>. Tu mayor foco de estudio esta semana corresponde a la anatomía del Miembro Superior. Te sugerimos realizar la <strong>Gymkana de Codo y Antebrazo</strong> para afianzar el reconocimiento antes de tu clase de repaso de este viernes.
                 </p>
                 <div className="rounded-lg bg-emerald-50/50 dark:bg-emerald-950/20 p-3 text-[11px] text-emerald-800 dark:text-emerald-400 font-semibold leading-relaxed">
-                  💡 Tip del Tutor: En miembro superior, asocia cada accidente óseo siempre con el músculo que se inserta allí para no memorizar en vano.
+                  Tip del Tutor: En miembro superior, asocia cada accidente óseo siempre con el músculo que se inserta allí para no memorizar en vano.
                 </div>
               </div>
 

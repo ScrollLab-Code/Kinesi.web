@@ -22,7 +22,7 @@ type Announcement = {
 const defaultAnnouncements: Announcement[] = [
   {
     id: "1",
-    title: "🩺 Clase de Repaso: Plexo Braquial e Irrigación del Miembro Superior",
+    title: "Clase de Repaso: Plexo Braquial e Irrigación del Miembro Superior",
     date: "Hoy, 20:00 hs",
     content: "Clase interactiva en vivo por Meet con tutores médicos. Resolveremos dudas de Latarjet y anatomía topográfica aplicada. ¡Trae tus apuntes y preguntas!",
     tag: "Anatomía",
@@ -30,7 +30,7 @@ const defaultAnnouncements: Announcement[] = [
   },
   {
     id: "2",
-    title: "📚 Desgrabados de Fisiología Renal & Cardiovascular Actualizados",
+    title: "Desgrabados de Fisiología Renal & Cardiovascular Actualizados",
     date: "Hace 2 días",
     content: "Ya están disponibles en la Feria de Materiales los últimos apuntes y resúmenes corregidos por docentes sobre contracción cardíaca y filtración glomerular.",
     tag: "Fisiología",
@@ -38,7 +38,7 @@ const defaultAnnouncements: Announcement[] = [
   },
   {
     id: "3",
-    title: "🎯 Lanzamiento: Simulador Gymkana de Codo y Antebrazo",
+    title: "Lanzamiento: Simulador Gymkana de Codo y Antebrazo",
     date: "Hace 4 días",
     content: "Ponte a prueba con el simulador práctico de reconocimiento de accidentes óseos, nervios y tendones basado en los exámenes de cátedra.",
     tag: "Simulador",
@@ -181,7 +181,7 @@ export default function Welcome() {
           <div className="glass-card rounded-2xl p-6 clinical-shadow space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-[#1d3330] pb-3">
               <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                📢 Tablón de Avisos y Novedades
+                Tablón de Avisos y Novedades
               </h3>
               <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">
                 Actualizaciones del Curso
@@ -228,7 +228,7 @@ export default function Welcome() {
           <div className="glass-card rounded-2xl p-6 clinical-shadow space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-[#1d3330] pb-3">
               <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                🧬 La Historia de Kinase Academy
+                La Historia de Kinase Academy
               </h3>
               <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">
                 Nuestros Orígenes
@@ -326,7 +326,7 @@ export default function Welcome() {
           <div className="glass-card rounded-2xl p-6 clinical-shadow space-y-4 sticky top-36">
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-[#1d3330] pb-3">
               <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                📝 Anotador Kinase
+                Anotador Kinase
               </h3>
               <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">
                 Tus Notas
@@ -351,10 +351,10 @@ export default function Welcome() {
                   onChange={e => setNoteCategory(e.target.value as Note["category"])}
                   className="rounded-lg border border-slate-200 bg-white px-3 py-2 outline-none transition focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600/20 text-xs text-slate-700 dark:text-slate-200"
                 >
-                  <option value="General">📂 General</option>
-                  <option value="Anatomía">💀 Anatomía</option>
-                  <option value="Histología">🔬 Histología</option>
-                  <option value="Fisiología">⚡ Fisiología</option>
+                  <option value="General">General</option>
+                  <option value="Anatomía">Anatomía</option>
+                  <option value="Histología">Histología</option>
+                  <option value="Fisiología">Fisiología</option>
                 </select>
 
                 <button
