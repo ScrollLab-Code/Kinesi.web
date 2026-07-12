@@ -20,7 +20,6 @@ export default function Premium({ isPremium, onActivate }: PremiumProps) {
   const [errorMessage, setErrorMessage] = useState("")
   const [showPaymentModal, setShowPaymentModal] = useState(false)
   const [simulatedCode, setSimulatedCode] = useState("")
-  const [activePremiumTab, setActivePremiumTab] = useState<"banco" | "atlas" | "soporte" | "analisis">("banco")
 
   // Quiz game state
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
@@ -28,6 +27,9 @@ export default function Premium({ isPremium, onActivate }: PremiumProps) {
   const [quizScore, setQuizScore] = useState(0)
   const [quizCompleted, setQuizCompleted] = useState(false)
 
+  // Countdown timer simulation
+  const daysLeft = 12
+  
   const quizQuestions: Question[] = [
     {
       id: 1,
@@ -98,19 +100,17 @@ export default function Premium({ isPremium, onActivate }: PremiumProps) {
 
     const success = onActivate(activationCode.trim())
     if (!success) {
-      setErrorMessage("Código inválido. Asegúrate de copiarlo correctamente (ej. KINASE-PREMIUM-XXXXX).")
+      setErrorMessage("Código inválido. Usa KINASE-FREE-VIP para entrar sin pagar.")
     }
   }
 
   const triggerPaymentSimulation = () => {
-    const randomCodeSuffix = Math.floor(1000 + Math.random() * 9000).toString()
-    const code = `KINASE-PREMIUM-${randomCodeSuffix}`
-    setSimulatedCode(code)
+    setSimulatedCode("KINASE-FREE-VIP")
     setShowPaymentModal(true)
     try {
-      navigator.clipboard.writeText(code)
-    } catch {
-      // Ignorar fallo de portapapeles en ciertos navegadores locales
+      navigator.clipboard.writeText("KINASE-FREE-VIP")
+    } catch (e) {
+      console.warn("Could not copy code to clipboard", e)
     }
   }
 
@@ -123,13 +123,13 @@ export default function Premium({ isPremium, onActivate }: PremiumProps) {
           {/* Hero Banner */}
           <div className="text-center max-w-3xl mx-auto space-y-4">
             <span className="rounded-full bg-amber-500/10 border border-amber-500/20 px-3.5 py-1 text-xs font-black uppercase tracking-widest text-amber-600 dark:text-amber-400">
-              💎 Kinase Premium
+              💎 Kinase Premium VIP
             </span>
             <h2 className="text-3xl md:text-4.5xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">
-              Desbloquea el Acceso Académico Total
+              Desbloquea tu Entorno Médico de Alto Rendimiento
             </h2>
             <p className="text-sm md:text-base text-slate-600 dark:text-slate-350 leading-relaxed">
-              Consigue herramientas premium de alto rendimiento clínico, creadas por médicos residentes y tutores de cátedra para garantizar tu regularidad y aprobación.
+              Transforma tu forma de estudiar medicina con acceso ilimitado a simuladores, planificadores y herramientas exclusivas diseñadas por tutores de cátedra.
             </p>
           </div>
 
@@ -138,39 +138,39 @@ export default function Premium({ isPremium, onActivate }: PremiumProps) {
             {/* Beneficios */}
             <div className="space-y-4">
               <h3 className="text-md font-bold text-slate-900 dark:text-white uppercase tracking-wider">
-                ¿Qué incluye tu habilitación Premium?
+                Contenido VIP para Habilitar:
               </h3>
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="glass-card rounded-2xl p-5 border-l-4 border-l-amber-500 clinical-shadow space-y-2">
-                  <span className="text-2xl">⚡</span>
-                  <h4 className="font-bold text-sm text-slate-800 dark:text-white">Banco de Preguntas Avanzado</h4>
-                  <p className="text-xs text-slate-500 dark:text-slate-450 leading-normal">
-                    Más de 1500 preguntas Choice y simulacros orales comentados basados en las cátedras de Anatomía, Histo y Fisiología.
-                  </p>
-                </div>
-
-                <div className="glass-card rounded-2xl p-5 border-l-4 border-l-amber-500 clinical-shadow space-y-2">
-                  <span className="text-2xl">🧠</span>
-                  <h4 className="font-bold text-sm text-slate-800 dark:text-white">Atlas Interactivo 3D Completo</h4>
-                  <p className="text-xs text-slate-500 dark:text-slate-450 leading-normal">
-                    Accede a guías y modelos de preparados cadavéricos 3D con nomenclaturas y marcas clínicas reales.
-                  </p>
-                </div>
-
-                <div className="glass-card rounded-2xl p-5 border-l-4 border-l-amber-500 clinical-shadow space-y-2">
                   <span className="text-2xl">💬</span>
-                  <h4 className="font-bold text-sm text-slate-800 dark:text-white">Asesoría Médica Directa 24/7</h4>
+                  <h4 className="font-bold text-sm text-slate-800 dark:text-white">Muro de Experiencias (Foro)</h4>
                   <p className="text-xs text-slate-500 dark:text-slate-450 leading-normal">
-                    Contacto instantáneo vía WhatsApp con tutores de medicina para resolver dudas urgentes antes de tus exámenes.
+                    Comparte y lee reviews reales de exámenes de alumnos de cátedra.
                   </p>
                 </div>
 
                 <div className="glass-card rounded-2xl p-5 border-l-4 border-l-amber-500 clinical-shadow space-y-2">
-                  <span className="text-2xl">📈</span>
-                  <h4 className="font-bold text-sm text-slate-800 dark:text-white">Predicciones Académicas con IA</h4>
+                  <span className="text-2xl">💀</span>
+                  <h4 className="font-bold text-sm text-slate-800 dark:text-white">Explorador Anatómico VIP</h4>
                   <p className="text-xs text-slate-500 dark:text-slate-450 leading-normal">
-                    Análisis inteligente que predice tus puntos débiles y te otorga recomendaciones personalizadas basadas en tus notas.
+                    Atlas comentado con orígenes, inserciones e irrigaciones de preparados óseos y musculares.
+                  </p>
+                </div>
+
+                <div className="glass-card rounded-2xl p-5 border-l-4 border-l-amber-500 clinical-shadow space-y-2">
+                  <span className="text-2xl">🎯</span>
+                  <h4 className="font-bold text-sm text-slate-800 dark:text-white">Simulador de Gymkana</h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-450 leading-normal">
+                    Ponte a prueba con simulacros prácticos cronometrados con reconocimiento de estructuras.
+                  </p>
+                </div>
+
+                <div className="glass-card rounded-2xl p-5 border-l-4 border-l-amber-500 clinical-shadow space-y-2">
+                  <span className="text-2xl">📅</span>
+                  <h4 className="font-bold text-sm text-slate-800 dark:text-white">Doble Planificación Académica</h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-450 leading-normal">
+                    Planificador Inverso para exámenes finales y Planificador Semanal interactivo.
                   </p>
                 </div>
               </div>
@@ -191,7 +191,7 @@ export default function Premium({ isPremium, onActivate }: PremiumProps) {
                     type="text"
                     value={activationCode}
                     onChange={e => setActivationCode(e.target.value)}
-                    placeholder="ej. KINASE-PREMIUM-7749"
+                    placeholder="ej. KINASE-FREE-VIP"
                     required
                     className="w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 outline-none transition focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20 text-center text-sm font-bold tracking-widest text-slate-800 dark:text-white uppercase"
                   />
@@ -199,9 +199,9 @@ export default function Premium({ isPremium, onActivate }: PremiumProps) {
 
                 <button
                   type="submit"
-                  className="w-full rounded-lg bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs py-3 transition duration-200 shadow-md shadow-amber-500/10"
+                  className="w-full rounded-lg bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs py-3 transition duration-200 shadow-md"
                 >
-                  🚀 Habilitar Acceso Premium
+                  🚀 Habilitar Acceso Premium VIP
                 </button>
 
                 {errorMessage && (
@@ -213,22 +213,27 @@ export default function Premium({ isPremium, onActivate }: PremiumProps) {
 
               <div className="flex items-center my-4">
                 <div className="flex-1 border-t border-slate-200 dark:border-slate-800"></div>
-                <span className="px-3 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase">Simulación</span>
+                <span className="px-3 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase">Acceso Rápido</span>
                 <div className="flex-1 border-t border-slate-200 dark:border-slate-800"></div>
               </div>
 
               <div className="text-center space-y-3">
                 <p className="text-xs text-slate-500 leading-normal">
-                  Puedes adquirir tu membresía simulando el flujo de pago sin costo real. Te daremos un código automático al instante.
+                  Puedes ingresar gratis usando el código provisto por la academia o simular el pago al instante.
                 </p>
 
-                <button
-                  type="button"
-                  onClick={triggerPaymentSimulation}
-                  className="rounded-lg bg-emerald-800 hover:bg-slate-900 text-white font-bold text-xs px-5 py-2.5 transition duration-200 shadow-sm"
-                >
-                  💳 Simular Pago y Obtener Código
-                </button>
+                <div className="flex flex-col gap-2">
+                  <button
+                    type="button"
+                    onClick={triggerPaymentSimulation}
+                    className="rounded-lg bg-emerald-800 hover:bg-slate-900 text-white font-bold text-xs px-5 py-2.5 transition duration-200 shadow-sm"
+                  >
+                    💳 Obtener Código Premium Gratis
+                  </button>
+                  <p className="text-[10px] font-bold text-slate-400">
+                    Código de habilitación: <span className="text-emerald-800 dark:text-emerald-450 font-black">KINASE-FREE-VIP</span>
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -242,10 +247,10 @@ export default function Premium({ isPremium, onActivate }: PremiumProps) {
                   ✓
                 </div>
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white">
-                  ¡Pago Simulado Exitoso!
+                  ¡Habilitación Obtenida!
                 </h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                  Hemos procesado tu pago de prueba y se ha enviado tu código de habilitación (simulación).
+                  Copia el código provisto a continuación para activar tu cuenta Premium VIP gratis de inmediato.
                 </p>
 
                 <div className="bg-slate-50 dark:bg-[#070a09] border border-slate-200 dark:border-[#1d3330] rounded-xl p-3.5 space-y-1">
@@ -256,10 +261,6 @@ export default function Premium({ isPremium, onActivate }: PremiumProps) {
                     {simulatedCode}
                   </span>
                 </div>
-
-                <p className="text-[10px] text-slate-400 dark:text-slate-500">
-                  * El código se ha copiado en tu portapapeles. Pégalo en el campo de habilitación para desbloquear el contenido premium.
-                </p>
 
                 <button
                   type="button"
@@ -277,296 +278,180 @@ export default function Premium({ isPremium, onActivate }: PremiumProps) {
 
         </div>
       ) : (
-        // VISTA: PREMIUM HABILITADO
-        <div className="space-y-6">
+        // VISTA: PREMIUM ACTIVADO (Entorno VIP Cockpit Dashboard)
+        <div className="space-y-8">
           
-          {/* Cabecera Premium */}
-          <div className="rounded-2xl border border-amber-600 bg-gradient-to-br from-amber-600/10 to-amber-700/20 dark:from-[#2c1e0a] dark:to-[#170f05] p-5 flex flex-wrap items-center justify-between gap-4 clinical-shadow">
-            <div className="flex items-center gap-3">
-              <span className="text-3xl">💎</span>
-              <div>
-                <h3 className="text-lg font-black text-slate-900 dark:text-white flex items-center gap-1.5">
-                  Estudiante Activo Premium
-                  <span className="rounded bg-amber-500/20 px-2 py-0.5 text-[9px] font-black uppercase text-amber-600 dark:text-amber-400">
-                    VIP
-                  </span>
-                </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
-                  Acceso completo e ilimitado desbloqueado correctamente.
-                </p>
-              </div>
+          {/* Welcome Banner */}
+          <div className="rounded-2xl border border-amber-500 bg-gradient-to-br from-[#1c180d] to-[#0c1815] p-6 text-white clinical-shadow flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden">
+            <div className="absolute right-0 top-0 opacity-10 pointer-events-none transform translate-x-10 -translate-y-10">
+              <span className="text-[200px]">💎</span>
             </div>
-
-            <span className="text-xs font-semibold text-amber-600 dark:text-amber-400">
-              Código de Activación: Activo
-            </span>
-          </div>
-
-          {/* Navegación Interna Premium */}
-          <div className="flex gap-2 border-b border-slate-200 dark:border-[#1d3330] pb-2 overflow-x-auto scrollbar-none">
-            <button
-              onClick={() => setActivePremiumTab("banco")}
-              className={`px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
-                activePremiumTab === "banco"
-                  ? "bg-amber-500 text-white shadow-sm"
-                  : "bg-stone-50 border border-slate-200 text-slate-650 hover:bg-stone-100 dark:bg-[#0d1615] dark:border-[#1d3330] dark:text-emerald-450"
-              }`}
-            >
-              ⚡ Banco de Preguntas
-            </button>
-            <button
-              onClick={() => setActivePremiumTab("atlas")}
-              className={`px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
-                activePremiumTab === "atlas"
-                  ? "bg-amber-500 text-white shadow-sm"
-                  : "bg-stone-50 border border-slate-200 text-slate-650 hover:bg-stone-100 dark:bg-[#0d1615] dark:border-[#1d3330] dark:text-emerald-450"
-              }`}
-            >
-              🧠 Atlas 3D Preview
-            </button>
-            <button
-              onClick={() => setActivePremiumTab("soporte")}
-              className={`px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
-                activePremiumTab === "soporte"
-                  ? "bg-amber-500 text-white shadow-sm"
-                  : "bg-stone-50 border border-slate-200 text-slate-655 hover:bg-stone-100 dark:bg-[#0d1615] dark:border-[#1d3330] dark:text-emerald-455"
-              }`}
-            >
-              💬 Asistencia 24/7
-            </button>
-            <button
-              onClick={() => setActivePremiumTab("analisis")}
-              className={`px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
-                activePremiumTab === "analisis"
-                  ? "bg-amber-500 text-white shadow-sm"
-                  : "bg-stone-50 border border-slate-200 text-slate-655 hover:bg-stone-100 dark:bg-[#0d1615] dark:border-[#1d3330] dark:text-emerald-455"
-              }`}
-            >
-              📈 Predicciones IA
-            </button>
-          </div>
-
-          {/* CONTENIDOS TABS */}
-          <div className="glass-card rounded-2xl p-6 clinical-shadow min-h-[400px] flex flex-col justify-between">
             
-            {/* TAB: BANCO DE PREGUNTAS (Quiz interactivo) */}
-            {activePremiumTab === "banco" && (
-              <div className="space-y-4">
-                <div className="border-b border-slate-100 dark:border-[#1d3330] pb-2">
-                  <h4 className="font-bold text-md text-slate-900 dark:text-white">
-                    Simulador Exclusivo Choice - Medicina
-                  </h4>
-                  <p className="text-xs text-slate-400">
-                    Preguntas avanzadas justificadas para exámenes de regularidad.
-                  </p>
-                </div>
-
-                {!quizCompleted ? (
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between text-xs font-bold">
-                      <span className="text-emerald-800 dark:text-emerald-400">
-                        Pregunta {currentQuestionIndex + 1} de {quizQuestions.length}
-                      </span>
-                      <span className="text-slate-400">Score: {quizScore}</span>
-                    </div>
-
-                    <h5 className="text-sm font-bold text-slate-800 dark:text-white">
-                      {quizQuestions[currentQuestionIndex].question}
-                    </h5>
-
-                    <div className="grid gap-2">
-                      {quizQuestions[currentQuestionIndex].options.map((option, idx) => {
-                        let btnStyle = "border-slate-200 bg-white hover:bg-stone-50 text-slate-700 dark:text-slate-300 dark:bg-[#0c1312]"
-                        if (selectedOptionIndex !== null) {
-                          if (idx === quizQuestions[currentQuestionIndex].correctIndex) {
-                            btnStyle = "border-emerald-500 bg-emerald-50 text-emerald-800 dark:bg-emerald-950/30 dark:text-emerald-400"
-                          } else if (idx === selectedOptionIndex) {
-                            btnStyle = "border-rose-500 bg-rose-50 text-rose-800 dark:bg-rose-950/30 dark:text-rose-450"
-                          } else {
-                            btnStyle = "border-slate-200 bg-white opacity-40 text-slate-400"
-                          }
-                        }
-
-                        return (
-                          <button
-                            key={option}
-                            onClick={() => selectedOptionIndex === null && setSelectedOptionIndex(idx)}
-                            disabled={selectedOptionIndex !== null}
-                            className={`w-full rounded-xl border p-3.5 text-xs text-left font-semibold transition ${btnStyle}`}
-                          >
-                            {option}
-                          </button>
-                        )
-                      })}
-                    </div>
-
-                    {selectedOptionIndex !== null && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 5 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="rounded-xl bg-slate-50 dark:bg-[#0d1615] border border-slate-200 dark:border-[#1d3330] p-4 text-xs space-y-2"
-                      >
-                        <p className="font-bold text-slate-900 dark:text-white">
-                          {selectedOptionIndex === quizQuestions[currentQuestionIndex].correctIndex ? "✅ ¡Respuesta Correcta!" : "❌ Respuesta Incorrecta"}
-                        </p>
-                        <p className="text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-                          {quizQuestions[currentQuestionIndex].explanation}
-                        </p>
-                        <p className="text-[10px] font-bold text-emerald-800 dark:text-emerald-450">
-                          📖 Referencia: {quizQuestions[currentQuestionIndex].reference}
-                        </p>
-
-                        <button
-                          type="button"
-                          onClick={handleNextQuestion}
-                          className="mt-3 rounded-lg bg-emerald-800 hover:bg-slate-900 text-white font-bold text-xs px-4 py-2 transition"
-                        >
-                          {currentQuestionIndex < quizQuestions.length - 1 ? "Siguiente Pregunta" : "Finalizar Test"}
-                        </button>
-                      </motion.div>
-                    )}
-                  </div>
-                ) : (
-                  <div className="text-center py-8 space-y-4">
-                    <span className="text-4xl">🎉</span>
-                    <h5 className="font-bold text-lg text-slate-900 dark:text-white">¡Test Completado!</h5>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
-                      Has acertado <strong className="text-emerald-800 dark:text-emerald-400 text-sm">{quizScore}</strong> de <strong>{quizQuestions.length}</strong> preguntas.
-                    </p>
-                    <button
-                      type="button"
-                      onClick={resetQuiz}
-                      className="rounded-lg bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs px-5 py-2.5 transition"
-                    >
-                      Intentar de nuevo
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* TAB: ATLAS 3D PREVIEW */}
-            {activePremiumTab === "atlas" && (
-              <div className="space-y-4">
-                <div className="border-b border-slate-100 dark:border-[#1d3330] pb-2">
-                  <h4 className="font-bold text-md text-slate-900 dark:text-white">
-                    Atlas de Disecciones 3D
-                  </h4>
-                  <p className="text-xs text-slate-400">
-                    Modelados exclusivos en alta fidelidad y reconstrucciones clínicas.
-                  </p>
-                </div>
-
-                <div className="grid gap-6 md:grid-cols-2">
-                  <div className="rounded-2xl border border-slate-200 dark:border-[#1d3330] bg-stone-100 dark:bg-[#0c1312] p-4 flex flex-col justify-center items-center h-[250px] relative overflow-hidden">
-                    <span className="text-4xl animate-bounce">💀</span>
-                    <span className="text-xs font-bold text-slate-800 dark:text-white mt-2">Miembro Superior - Huesos</span>
-                    <span className="text-[10px] text-slate-400 mt-1">Renderizado 3D Interactivo Activo</span>
-                    
-                    <div className="absolute bottom-3 right-3 rounded bg-emerald-800 text-white text-[8px] font-black uppercase px-2 py-0.5">
-                      100% Cátedra
-                    </div>
-                  </div>
-
-                  <div className="space-y-3 flex flex-col justify-center">
-                    <h5 className="font-bold text-sm text-slate-800 dark:text-white">
-                      Guía del Preparado Clínico: Hombro
-                    </h5>
-                    <p className="text-xs text-slate-500 dark:text-slate-450 leading-relaxed font-medium">
-                      En este visualizador premium, puedes rotar el miembro para identificar la clavícula, la escápula, el húmero y los ligamentos acromioclaviculares. Cada estructura posee una ventana con su irrigación e inervación.
-                    </p>
-                    <div className="rounded-lg bg-teal-50/50 dark:bg-teal-950/20 border border-teal-200 dark:border-teal-900 p-3 text-xs text-teal-850 dark:text-teal-400 font-semibold">
-                      💡 Consejo: Utiliza la rueda del mouse para hacer zoom e identificar las inserciones del m. deltoides.
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* TAB: SOPORTE 24/7 */}
-            {activePremiumTab === "soporte" && (
-              <div className="space-y-4">
-                <div className="border-b border-slate-100 dark:border-[#1d3330] pb-2">
-                  <h4 className="font-bold text-md text-slate-900 dark:text-white">
-                    Soporte Médico y Tutorías Exclusivas
-                  </h4>
-                  <p className="text-xs text-slate-400">
-                    Canal de comunicación directa con médicos residentes y ayudantes de cátedra.
-                  </p>
-                </div>
-
-                <div className="rounded-xl border border-slate-200 dark:border-[#1d3330] p-4 bg-stone-50 dark:bg-[#070a09] space-y-4">
-                  <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-full bg-emerald-800 text-white flex items-center justify-center font-bold text-sm shrink-0">
-                      Dr
-                    </div>
-                    <div>
-                      <h5 className="text-xs font-bold text-slate-900 dark:text-white">Dr. Juan P. Giacomassi</h5>
-                      <span className="text-[9px] font-bold text-emerald-800 dark:text-emerald-450 uppercase">Tutor de Turno Activo</span>
-                    </div>
-                  </div>
-
-                  <p className="text-xs text-slate-600 dark:text-slate-400 leading-normal font-medium">
-                    "Hola. Envía tu captura de pantalla, preparado de atlas o mnemotecnia que no comprendas. Te contestaremos en menos de 15 minutos con un audio aclaratorio y el sustento bibliográfico exacto."
-                  </p>
-
-                  <a
-                    href="https://wa.me/5491112345678"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-2 rounded-lg bg-[#25D366] hover:bg-[#20ba5a] text-white text-xs font-bold px-4 py-2 transition"
-                  >
-                    💬 Contactar Tutor por WhatsApp
-                  </a>
-                </div>
-              </div>
-            )}
-
-            {/* TAB: ANALISIS PREDICCIONES IA */}
-            {activePremiumTab === "analisis" && (
-              <div className="space-y-4">
-                <div className="border-b border-slate-100 dark:border-[#1d3330] pb-2">
-                  <h4 className="font-bold text-md text-slate-900 dark:text-white">
-                    Predicciones de Rendimiento y Regularidad
-                  </h4>
-                  <p className="text-xs text-slate-400">
-                    Análisis de tus resultados en simulacros y plan de estudio personalizado.
-                  </p>
-                </div>
-
-                <div className="grid gap-4 sm:grid-cols-3">
-                  <div className="border border-slate-200 dark:border-[#1d3330] rounded-xl p-4 text-center space-y-1">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Predicción de Aprobación</span>
-                    <span className="text-2xl font-black text-emerald-800 dark:text-emerald-400 block">87%</span>
-                    <span className="text-[9px] text-slate-500 block">Rango de confianza: Alto</span>
-                  </div>
-
-                  <div className="border border-slate-200 dark:border-[#1d3330] rounded-xl p-4 text-center space-y-1">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Materias de Enfoque</span>
-                    <span className="text-sm font-bold text-rose-800 dark:text-rose-400 block">Fisiología Renal</span>
-                    <span className="text-[9px] text-slate-500 block">Basado en tus últimos simulacros</span>
-                  </div>
-
-                  <div className="border border-slate-200 dark:border-[#1d3330] rounded-xl p-4 text-center space-y-1">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Tiempo Estimado de Estudio</span>
-                    <span className="text-2xl font-black text-amber-600 block">18 hs</span>
-                    <span className="text-[9px] text-slate-500 block">Recomendado esta semana</span>
-                  </div>
-                </div>
-
-                <div className="rounded-xl border border-slate-200 dark:border-[#1d3330] p-4 bg-emerald-50/50 dark:bg-emerald-950/20 text-xs">
-                  <h5 className="font-bold text-slate-800 dark:text-slate-200 mb-1">🤖 Recomendación del Asesor IA:</h5>
-                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-                    Has completado con éxito la identificación de preparados óseos de codo. Tu principal área de debilidad se sitúa en los mecanismos de retroalimentación de Fisiología Renal. Te aconsejamos realizar el simulacro interactivo de fisiología renal antes del examen parcial de este jueves.
-                  </p>
-                </div>
-              </div>
-            )}
-
-            <div className="border-t border-slate-100 dark:border-[#1d3330] pt-4 mt-6 text-center text-[10px] text-slate-400">
-              Kinase Premium • Diseñado para la excelencia médica • Acreditación VIP Activa
+            <div className="space-y-1 z-10">
+              <span className="rounded bg-amber-500/20 px-2 py-0.5 text-[9px] font-black uppercase tracking-widest text-amber-500">
+                VIP Academic Environment
+              </span>
+              <h3 className="text-2xl font-black tracking-tight">
+                ¡Bienvenido a tu Cockpit Médico de Alto Rendimiento!
+              </h3>
+              <p className="text-xs text-slate-350 leading-relaxed max-w-2xl font-medium">
+                Tienes acceso total desbloqueado. Utiliza las pestañas del menú superior para navegar entre el Muro, el Explorador Anatómico, el Simulador de Gymkana y tus planificadores.
+              </p>
             </div>
 
+            <div className="bg-[#1b1c1d]/60 border border-slate-700 rounded-xl p-3.5 shrink-0 z-10">
+              <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest block">Próximo Examen de Cátedra</span>
+              <span className="text-lg font-black text-amber-500 block">Final de Anatomía</span>
+              <span className="text-[10px] text-emerald-450 block font-semibold">⏱ Quedan {daysLeft} días</span>
+            </div>
+          </div>
+
+          {/* Grid de widgets */}
+          <div className="grid gap-6 md:grid-cols-[1.2fr_0.8fr]">
+            
+            {/* Banco de Choice Premium */}
+            <div className="glass-card rounded-2xl p-6 border border-amber-500/35 clinical-shadow space-y-4">
+              <div className="border-b border-slate-100 dark:border-[#1d3330] pb-2 flex items-center justify-between">
+                <div>
+                  <h4 className="font-bold text-sm text-slate-900 dark:text-white uppercase tracking-wider">
+                    ⚡ Autoevaluación Choice - Nivel Cátedra
+                  </h4>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    Preguntas avanzadas justificadas para exámenes orales y prácticos.
+                  </p>
+                </div>
+                <span className="rounded bg-emerald-800/10 px-2 py-0.5 text-[9px] font-bold text-emerald-800 dark:text-emerald-400">
+                  Activo
+                </span>
+              </div>
+
+              {!quizCompleted ? (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between text-xs font-bold">
+                    <span className="text-amber-600 dark:text-amber-400">
+                      Pregunta {currentQuestionIndex + 1} de {quizQuestions.length}
+                    </span>
+                    <span className="text-slate-400">Puntaje: {quizScore}</span>
+                  </div>
+
+                  <h5 className="text-xs md:text-sm font-bold text-slate-800 dark:text-white leading-relaxed">
+                    {quizQuestions[currentQuestionIndex].question}
+                  </h5>
+
+                  <div className="grid gap-2">
+                    {quizQuestions[currentQuestionIndex].options.map((option, idx) => {
+                      let btnStyle = "border-slate-200 bg-white hover:bg-stone-50 text-slate-700 dark:text-slate-350 dark:bg-[#0c1312]"
+                      if (selectedOptionIndex !== null) {
+                        if (idx === quizQuestions[currentQuestionIndex].correctIndex) {
+                          btnStyle = "border-emerald-500 bg-emerald-50/50 text-emerald-800 dark:bg-emerald-950/30 dark:text-emerald-400"
+                        } else if (idx === selectedOptionIndex) {
+                          btnStyle = "border-rose-500 bg-rose-50/50 text-rose-800 dark:bg-rose-950/30 dark:text-rose-450"
+                        } else {
+                          btnStyle = "border-slate-200 bg-white opacity-40 text-slate-400"
+                        }
+                      }
+
+                      return (
+                        <button
+                          key={option}
+                          onClick={() => selectedOptionIndex === null && setSelectedOptionIndex(idx)}
+                          disabled={selectedOptionIndex !== null}
+                          className={`w-full rounded-xl border p-3.5 text-xs text-left font-semibold transition ${btnStyle}`}
+                        >
+                          {option}
+                        </button>
+                      )
+                    })}
+                  </div>
+
+                  {selectedOptionIndex !== null && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="rounded-xl bg-slate-50 dark:bg-[#0d1615] border border-slate-200 dark:border-[#1d3330] p-4 text-xs space-y-2"
+                    >
+                      <p className="font-bold text-slate-900 dark:text-white">
+                        {selectedOptionIndex === quizQuestions[currentQuestionIndex].correctIndex ? "✅ ¡Respuesta Correcta!" : "❌ Respuesta Incorrecta"}
+                      </p>
+                      <p className="text-slate-650 dark:text-slate-400 leading-relaxed font-medium">
+                        {quizQuestions[currentQuestionIndex].explanation}
+                      </p>
+                      <p className="text-[10px] font-bold text-emerald-800 dark:text-emerald-450">
+                        📖 Referencia: {quizQuestions[currentQuestionIndex].reference}
+                      </p>
+
+                      <button
+                        type="button"
+                        onClick={handleNextQuestion}
+                        className="mt-3 rounded-lg bg-emerald-800 hover:bg-slate-900 text-white font-bold text-xs px-4 py-2 transition"
+                      >
+                        {currentQuestionIndex < quizQuestions.length - 1 ? "Siguiente Pregunta" : "Finalizar Autoevaluación"}
+                      </button>
+                    </motion.div>
+                  )}
+                </div>
+              ) : (
+                <div className="text-center py-8 space-y-4">
+                  <span className="text-4xl">🎉</span>
+                  <h5 className="font-bold text-lg text-slate-900 dark:text-white">¡Simulador Completado!</h5>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                    Has acertado <strong className="text-emerald-800 dark:text-emerald-400 text-sm">{quizScore}</strong> de <strong>{quizQuestions.length}</strong> preguntas.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={resetQuiz}
+                    className="rounded-lg bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs px-5 py-2.5 transition"
+                  >
+                    Reiniciar Test Choice
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Columna Derecha: AI Feedback & Asesor */}
+            <div className="space-y-6">
+              
+              {/* Asesor IA Widget */}
+              <div className="glass-card rounded-2xl p-5 border border-amber-500/35 clinical-shadow space-y-3">
+                <span className="rounded bg-amber-500/20 px-2 py-0.5 text-[9px] font-black uppercase text-amber-500">
+                  AI Academic Coach
+                </span>
+                <h4 className="font-bold text-sm text-slate-800 dark:text-white mt-1">Recomendación Clínica Personalizada</h4>
+                
+                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
+                  Hemos analizado tus bloques del <strong>Planificador Semanal</strong>. Tu mayor foco de estudio esta semana corresponde a la anatomía del Miembro Superior. Te sugerimos realizar la <strong>Gymkana de Codo y Antebrazo</strong> para afianzar el reconocimiento antes de tu clase de repaso de este viernes.
+                </p>
+                <div className="rounded-lg bg-emerald-50/50 dark:bg-emerald-950/20 p-3 text-[11px] text-emerald-800 dark:text-emerald-400 font-semibold leading-relaxed">
+                  💡 Tip del Tutor: En miembro superior, asocia cada accidente óseo siempre con el músculo que se inserta allí para no memorizar en vano.
+                </div>
+              </div>
+
+              {/* Quick stats tracker */}
+              <div className="glass-card rounded-2xl p-5 border border-slate-200 dark:border-[#1d3330] clinical-shadow">
+                <h4 className="font-bold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-3">
+                  Tus Estadísticas VIP
+                </h4>
+                <div className="grid grid-cols-2 gap-3 text-center">
+                  <div className="border border-slate-100 dark:border-[#1d3330] rounded-xl p-3.5">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase block">Horas de Estudio</span>
+                    <span className="text-xl font-black text-emerald-800 dark:text-emerald-400 block mt-1">24 hs</span>
+                    <span className="text-[9px] text-slate-500 block">Esta semana</span>
+                  </div>
+
+                  <div className="border border-slate-100 dark:border-[#1d3330] rounded-xl p-3.5">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase block">Mnemotecnias</span>
+                    <span className="text-xl font-black text-amber-600 block mt-1">12 activas</span>
+                    <span className="text-[9px] text-slate-500 block">En tus notas</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div className="text-center text-[10px] text-slate-400 pt-4 border-t border-slate-200 dark:border-slate-800">
+            Kinase Premium VIP Cockpit • Diseñado para la Excelencia Estudiantil Médica
           </div>
 
         </div>

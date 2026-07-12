@@ -85,7 +85,7 @@ export default function Welcome() {
         if (error) throw error
 
         if (data && data.length > 0) {
-          const mapped: Announcement[] = data.map((item: any) => {
+          const mapped: Announcement[] = data.map((item: { id: string | number; title: string | null; content: string | null; tag: string | null; created_at: string | null }) => {
             let tagColor = "bg-emerald-50 border-emerald-200 text-emerald-800 dark:bg-emerald-950/40 dark:border-emerald-900 dark:text-emerald-400"
             const tagLower = (item.tag || "").toLowerCase()
             if (tagLower.includes("anat")) {

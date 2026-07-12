@@ -15,6 +15,8 @@ import GymkanaSimulator from './sections/GymkanaSimulator'
 import AcademicPlanner from './sections/AcademicPlanner'
 import Welcome from './sections/Welcome'
 import Premium from './sections/Premium'
+import WeeklyPlanner from './sections/WeeklyPlanner'
+import Flashcards from './sections/Flashcards'
 import Footer from './components/Footer'
 import { supabase } from './lib/supabase'
 
@@ -44,7 +46,7 @@ function App() {
   const [session, setSession] = useState<Session | null>(null)
   const [localAccess, setLocalAccess] = useState(getStoredAccess)
   const [isCheckingSession, setIsCheckingSession] = useState(true)
-  const [activeSection, setActiveSection] = useState<'bienvenido' | 'comunidad' | 'mercado' | 'explorador' | 'gymkana' | 'planificador' | 'ayuda' | 'cursos' | 'testimonios' | 'premium'>('bienvenido')
+  const [activeSection, setActiveSection] = useState<'bienvenido' | 'comunidad' | 'mercado' | 'explorador' | 'gymkana' | 'planificador' | 'ayuda' | 'cursos' | 'testimonios' | 'premium' | 'planificador_semanal' | 'flashcards' | 'publicas'>('bienvenido')
 
   // Premium state
   const [isPremium, setIsPremium] = useState<boolean>(() => {
@@ -56,7 +58,13 @@ function App() {
   })
 
   const handleActivatePremium = (code: string) => {
-    if (code.trim().toUpperCase().startsWith('KINASE-PREMIUM-')) {
+    const cleanCode = code.trim().toUpperCase()
+    if (
+      cleanCode.startsWith('KINASE-PREMIUM-') || 
+      cleanCode === 'KINASE-FREE-VIP' || 
+      cleanCode === 'KINASE-TIZIANO-PREMIUM' ||
+      cleanCode === 'KINASE-ACTIVA-2026'
+    ) {
       setIsPremium(true)
       try {
         localStorage.setItem('kinase_student_premium', 'true')
@@ -184,7 +192,9 @@ function App() {
   }
 
   return (
-    <main className="min-h-screen bg-stone-50/50 dark:bg-[#090f0e] pb-12 transition-colors duration-300">
+    <main className={`min-h-screen pb-12 transition-colors duration-300 ${
+      isPremium ? 'bg-[#030706] text-slate-100' : 'bg-stone-50/50 dark:bg-[#090f0e]'
+    }`}>
       <Navbar 
         onLogout={signOut} 
         darkMode={darkMode} 
@@ -195,120 +205,76 @@ function App() {
 
       <section
         id="inicio"
-        className="bg-white dark:bg-[#111c1a] border-b border-slate-100 dark:border-[#1d3330] px-6 pb-12 pt-24 text-slate-900 transition-colors duration-300"
+        className={`px-6 pb-12 pt-24 text-slate-900 transition-colors duration-300 border-b ${
+          isPremium
+            ? 'bg-gradient-to-r from-[#14120a] via-[#111c1a] to-[#0a1516] border-amber-500/35 text-white'
+            : 'bg-white dark:bg-[#111c1a] border-slate-100 dark:border-[#1d3330]'
+        }`}
       >
         <div className="mx-auto max-w-7xl">
-          <p className="mb-2 text-xs font-black uppercase tracking-[0.2em] text-emerald-800 dark:text-emerald-400">
-            Panel del Estudiante
+          <p className={`mb-2 text-xs font-black uppercase tracking-[0.2em] ${
+            isPremium ? 'text-amber-500 animate-pulse' : 'text-emerald-800 dark:text-emerald-400'
+          }`}>
+            {isPremium ? '💎 Kinase Premium VIP Dashboard' : 'Panel del Estudiante'}
           </p>
 
-          <h1 className="max-w-3xl text-3xl font-black leading-tight text-slate-900 dark:text-white md:text-5xl tracking-tight">
-            Estudia con método, comparte tus experiencias y aprueba con tranquilidad.
+          <h1 className={`max-w-3xl text-3xl font-black leading-tight md:text-5xl tracking-tight ${
+            isPremium ? 'text-white' : 'text-slate-900 dark:text-white'
+          }`}>
+            {isPremium 
+              ? 'Entorno Médico de Alto Rendimiento. Tienes acceso completo.' 
+              : 'Estudia con método, comparte tus experiencias y aprueba con tranquilidad.'}
           </h1>
         </div>
-      </section>      {/* Navigation Tabs */}
-      <nav className="sticky top-20 bg-white/95 dark:bg-[#111c1a]/95 backdrop-blur-md border-b border-slate-200 dark:border-[#1d3330] px-6 py-3 z-30 shadow-sm transition-colors duration-300">
+      </section>
+
+      {/* Dynamic Navigation Tabs */}
+      <nav className={`sticky top-20 bg-white/95 dark:bg-[#111c1a]/95 backdrop-blur-md border-b px-6 py-3 z-30 shadow-sm transition-colors duration-300 ${
+        isPremium ? 'border-amber-500/30' : 'border-slate-200 dark:border-[#1d3330]'
+      }`}>
         <div className="mx-auto max-w-7xl flex gap-2 overflow-x-auto scrollbar-none">
-          <button
-            onClick={() => setActiveSection('bienvenido')}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
-              activeSection === 'bienvenido'
-                ? 'bg-slate-900 text-white shadow-sm dark:bg-emerald-800'
-                : 'bg-stone-50 border border-slate-200 text-slate-600 hover:bg-stone-100 dark:bg-[#0d1615] dark:border-[#1d3330] dark:text-emerald-450'
-            }`}
-          >
-            👋 Bienvenidos
-          </button>
-          <button
-            onClick={() => setActiveSection('comunidad')}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
-              activeSection === 'comunidad'
-                ? 'bg-slate-900 text-white shadow-sm dark:bg-emerald-800'
-                : 'bg-stone-50 border border-slate-200 text-slate-600 hover:bg-stone-100 dark:bg-[#0d1615] dark:border-[#1d3330] dark:text-emerald-450'
-            }`}
-          >
-            Muro de Experiencias
-          </button>
-          <button
-            onClick={() => setActiveSection('mercado')}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
-              activeSection === 'mercado'
-                ? 'bg-slate-900 text-white shadow-sm dark:bg-emerald-800'
-                : 'bg-stone-50 border border-slate-200 text-slate-650 hover:bg-stone-100 dark:bg-[#0d1615] dark:border-[#1d3330] dark:text-emerald-455'
-            }`}
-          >
-            Feria de Materiales
-          </button>
-          <button
-            onClick={() => setActiveSection('explorador')}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
-              activeSection === 'explorador'
-                ? 'bg-slate-900 text-white shadow-sm dark:bg-emerald-800'
-                : 'bg-stone-50 border border-slate-200 text-slate-655 hover:bg-stone-100 dark:bg-[#0d1615] dark:border-[#1d3330] dark:text-emerald-455'
-            }`}
-          >
-            💀 Explorador Anatómico
-          </button>
-          <button
-            onClick={() => setActiveSection('gymkana')}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
-              activeSection === 'gymkana'
-                ? 'bg-slate-900 text-white shadow-sm dark:bg-emerald-800'
-                : 'bg-stone-50 border border-slate-200 text-slate-655 hover:bg-stone-100 dark:bg-[#0d1615] dark:border-[#1d3330] dark:text-emerald-455'
-            }`}
-          >
-            🎯 Simulador Gymkana
-          </button>
-          <button
-            onClick={() => setActiveSection('planificador')}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
-              activeSection === 'planificador'
-                ? 'bg-slate-900 text-white shadow-sm dark:bg-emerald-800'
-                : 'bg-stone-50 border border-slate-200 text-slate-655 hover:bg-stone-100 dark:bg-[#0d1615] dark:border-[#1d3330] dark:text-emerald-455'
-            }`}
-          >
-            📅 Planificador Inverso
-          </button>
-          <button
-            onClick={() => setActiveSection('ayuda')}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
-              activeSection === 'ayuda'
-                ? 'bg-slate-900 text-white shadow-sm dark:bg-emerald-800'
-                : 'bg-stone-50 border border-slate-200 text-slate-655 hover:bg-stone-100 dark:bg-[#0d1615] dark:border-[#1d3330] dark:text-emerald-455'
-            }`}
-          >
-            Diagnóstico & Coaching
-          </button>
-          <button
-            onClick={() => setActiveSection('cursos')}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
-              activeSection === 'cursos'
-                ? 'bg-slate-900 text-white shadow-sm dark:bg-emerald-800'
-                : 'bg-stone-50 border border-slate-200 text-slate-655 hover:bg-stone-100 dark:bg-[#0d1615] dark:border-[#1d3330] dark:text-emerald-455'
-            }`}
-          >
-            Tutorías Médicas
-          </button>
-          <button
-            onClick={() => setActiveSection('testimonios')}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
-              activeSection === 'testimonios'
-                ? 'bg-slate-900 text-white shadow-sm dark:bg-emerald-800'
-                : 'bg-stone-50 border border-slate-200 text-slate-655 hover:bg-stone-100 dark:bg-[#0d1615] dark:border-[#1d3330] dark:text-emerald-455'
-            }`}
-          >
-            Testimonios
-          </button>
-          <button
-            onClick={() => setActiveSection('premium')}
-            className={`px-4 py-2 rounded-lg text-xs font-black transition-all whitespace-nowrap ${
-              activeSection === 'premium'
-                ? 'bg-amber-500 text-white shadow-sm'
-                : 'bg-amber-5 border border-amber-255 text-amber-800 hover:bg-amber-100 dark:bg-[#1a170f] dark:border-amber-900/40 dark:text-amber-400'
-            }`}
-          >
-            💎 Premium VIP
-          </button>
+          {(!isPremium
+            ? [
+                { id: 'bienvenido', label: '👋 Bienvenidos' },
+                { id: 'mercado', label: '📚 Feria de Materiales' },
+                { id: 'ayuda', label: '🩺 Diagnóstico & Coaching' },
+                { id: 'cursos', label: '🎓 Tutorías Médicas' },
+                { id: 'testimonios', label: '🗣️ Testimonios' },
+                { id: 'premium', label: '💎 Premium VIP', isSpecial: true }
+              ]
+            : [
+                { id: 'bienvenido', label: '👋 Bienvenidos' },
+                { id: 'premium', label: '💎 Panel VIP', isSpecial: true },
+                { id: 'comunidad', label: '💬 Muro de Experiencias' },
+                { id: 'explorador', label: '💀 Explorador Anatómico' },
+                { id: 'gymkana', label: '🎯 Simulador Gymkana' },
+                { id: 'planificador', label: '📅 Planificador Inverso' },
+                { id: 'planificador_semanal', label: '📅 Planificador Semanal' },
+                { id: 'flashcards', label: '🧠 Flashcards VIP' },
+                { id: 'publicas', label: '🌐 Secciones Públicas' }
+              ]
+          ).map(tab => {
+            const isActive = activeSection === tab.id
+            let activeStyle = 'bg-slate-900 text-white shadow-sm dark:bg-emerald-800'
+            let inactiveStyle = 'bg-stone-50 border border-slate-200 text-slate-655 hover:bg-stone-100 dark:bg-[#0d1615] dark:border-[#1d3330] dark:text-emerald-455'
+
+            if ('isSpecial' in tab && tab.isSpecial) {
+              activeStyle = 'bg-amber-500 text-white shadow-sm'
+              inactiveStyle = 'bg-amber-5/10 border border-amber-250/20 text-amber-600 hover:bg-amber-100/50 dark:bg-[#1a170f] dark:border-amber-900/30 dark:text-amber-400'
+            }
+
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveSection(tab.id as typeof activeSection)}
+                className={`px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
+                  isActive ? activeStyle : inactiveStyle
+                }`}
+              >
+                {tab.label}
+              </button>
+            )
+          })}
         </div>
       </nav>
 
@@ -345,6 +311,14 @@ function App() {
             {activeSection === 'planificador' && (
               <AcademicPlanner />
             )}
+
+            {activeSection === 'planificador_semanal' && (
+              <WeeklyPlanner />
+            )}
+
+            {activeSection === 'flashcards' && (
+              <Flashcards />
+            )}
             
             {activeSection === 'ayuda' && (
               <div className="space-y-6">
@@ -363,6 +337,53 @@ function App() {
 
             {activeSection === 'premium' && (
               <Premium isPremium={isPremium} onActivate={handleActivatePremium} />
+            )}
+
+            {activeSection === 'publicas' && (
+              <div className="mx-auto max-w-7xl px-6 py-8 space-y-6 animate-fadeIn">
+                <div className="border-b border-slate-200 dark:border-[#1d3330] pb-2">
+                  <h3 className="text-lg font-black text-slate-900 dark:text-white">
+                    🌐 Secciones Públicas de la Academia
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Como miembro Premium VIP, sigues teniendo acceso completo a todos los recursos abiertos de Kinase.
+                  </p>
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
+                  <button
+                    onClick={() => setActiveSection('mercado')}
+                    className="glass-card rounded-2xl p-5 text-left border border-slate-200 hover:border-emerald-600 transition-all clinical-shadow space-y-2 cursor-pointer"
+                  >
+                    <span className="text-2xl">📚</span>
+                    <h4 className="font-bold text-sm text-slate-800 dark:text-white">Feria de Materiales</h4>
+                    <p className="text-[11px] text-slate-500 leading-normal">Apuntes, atlas y resúmenes cargados por alumnos.</p>
+                  </button>
+                  <button
+                    onClick={() => setActiveSection('ayuda')}
+                    className="glass-card rounded-2xl p-5 text-left border border-slate-200 hover:border-emerald-600 transition-all clinical-shadow space-y-2 cursor-pointer"
+                  >
+                    <span className="text-2xl">🩺</span>
+                    <h4 className="font-bold text-sm text-slate-800 dark:text-white">Diagnóstico & Coaching</h4>
+                    <p className="text-[11px] text-slate-500 leading-normal">Test vocacional y de regularidad sin costo.</p>
+                  </button>
+                  <button
+                    onClick={() => setActiveSection('cursos')}
+                    className="glass-card rounded-2xl p-5 text-left border border-slate-200 hover:border-emerald-600 transition-all clinical-shadow space-y-2 cursor-pointer"
+                  >
+                    <span className="text-2xl">🎓</span>
+                    <h4 className="font-bold text-sm text-slate-800 dark:text-white">Tutorías Médicas</h4>
+                    <p className="text-[11px] text-slate-500 leading-normal">Cursos intensivos dictados por residentes.</p>
+                  </button>
+                  <button
+                    onClick={() => setActiveSection('testimonios')}
+                    className="glass-card rounded-2xl p-5 text-left border border-slate-200 hover:border-emerald-600 transition-all clinical-shadow space-y-2 cursor-pointer"
+                  >
+                    <span className="text-2xl">🗣️</span>
+                    <h4 className="font-bold text-sm text-slate-800 dark:text-white">Testimonios</h4>
+                    <p className="text-[11px] text-slate-500 leading-normal">Experiencias y reviews de alumnos de medicina.</p>
+                  </button>
+                </div>
+              </div>
             )}
           </motion.div>
         </AnimatePresence>
