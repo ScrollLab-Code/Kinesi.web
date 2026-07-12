@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { supabase } from "../lib/supabase"
 
 type Note = {
   id: string
@@ -18,6 +19,33 @@ type Announcement = {
   tagColor: string
 }
 
+const defaultAnnouncements: Announcement[] = [
+  {
+    id: "1",
+    title: "🩺 Clase de Repaso: Plexo Braquial e Irrigación del Miembro Superior",
+    date: "Hoy, 20:00 hs",
+    content: "Clase interactiva en vivo por Meet con tutores médicos. Resolveremos dudas de Latarjet y anatomía topográfica aplicada. ¡Trae tus apuntes y preguntas!",
+    tag: "Anatomía",
+    tagColor: "bg-teal-50 border-teal-200 text-teal-800 dark:bg-teal-950/40 dark:border-teal-900 dark:text-teal-400"
+  },
+  {
+    id: "2",
+    title: "📚 Desgrabados de Fisiología Renal & Cardiovascular Actualizados",
+    date: "Hace 2 días",
+    content: "Ya están disponibles en la Feria de Materiales los últimos apuntes y resúmenes corregidos por docentes sobre contracción cardíaca y filtración glomerular.",
+    tag: "Fisiología",
+    tagColor: "bg-blue-50 border-blue-200 text-blue-800 dark:bg-blue-950/40 dark:border-blue-900 dark:text-blue-400"
+  },
+  {
+    id: "3",
+    title: "🎯 Lanzamiento: Simulador Gymkana de Codo y Antebrazo",
+    date: "Hace 4 días",
+    content: "Ponte a prueba con el simulador práctico de reconocimiento de accidentes óseos, nervios y tendones basado en los exámenes de cátedra.",
+    tag: "Simulador",
+    tagColor: "bg-emerald-50 border-emerald-200 text-emerald-800 dark:bg-emerald-950/40 dark:border-emerald-900 dark:text-emerald-400"
+  }
+]
+
 export default function Welcome() {
   const [notes, setNotes] = useState<Note[]>(() => {
     try {
@@ -32,6 +60,8 @@ export default function Welcome() {
   const [noteContent, setNoteContent] = useState("")
   const [noteCategory, setNoteCategory] = useState<Note["category"]>("General")
   const [showFullHistory, setShowFullHistory] = useState(false)
+  const [announcements, setAnnouncements] = useState<Announcement[]>([])
+  const [isLoadingAnnouncements, setIsLoadingAnnouncements] = useState(true)
 
   // Save notes to localStorage
   useEffect(() => {
@@ -41,6 +71,63 @@ export default function Welcome() {
       console.error("No se pudieron guardar las notas en localStorage", e)
     }
   }, [notes])
+
+  // Fetch announcements from Supabase
+  useEffect(() => {
+    const fetchAnnouncements = async () => {
+      setIsLoadingAnnouncements(true)
+      try {
+        const { data, error } = await supabase
+          .from("announcements")
+          .select("id, title, content, tag, created_at")
+          .order("created_at", { ascending: false })
+
+        if (error) throw error
+
+        if (data && data.length > 0) {
+          const mapped: Announcement[] = data.map((item: any) => {
+            let tagColor = "bg-emerald-50 border-emerald-200 text-emerald-800 dark:bg-emerald-950/40 dark:border-emerald-900 dark:text-emerald-400"
+            const tagLower = (item.tag || "").toLowerCase()
+            if (tagLower.includes("anat")) {
+              tagColor = "bg-teal-50 border-teal-200 text-teal-800 dark:bg-teal-950/40 dark:border-teal-900 dark:text-teal-400"
+            } else if (tagLower.includes("fisi")) {
+              tagColor = "bg-blue-50 border-blue-200 text-blue-800 dark:bg-blue-950/40 dark:border-blue-900 dark:text-blue-400"
+            } else if (tagLower.includes("hist")) {
+              tagColor = "bg-amber-50 border-amber-200 text-amber-800 dark:bg-amber-950/40 dark:border-amber-900 dark:text-amber-400"
+            }
+
+            const dateVal = item.created_at
+              ? new Date(item.created_at).toLocaleDateString("es-AR", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  hour: "2-digit",
+                  minute: "2-digit"
+                })
+              : "Reciente"
+
+            return {
+              id: String(item.id),
+              title: item.title || "Aviso sin título",
+              date: dateVal,
+              content: item.content || "",
+              tag: item.tag || "General",
+              tagColor
+            }
+          })
+          setAnnouncements(mapped)
+        } else {
+          setAnnouncements(defaultAnnouncements)
+        }
+      } catch (err) {
+        console.warn("No se pudieron cargar los avisos de la base de datos (usando avisos de respaldo local):", err)
+        setAnnouncements(defaultAnnouncements)
+      } finally {
+        setIsLoadingAnnouncements(false)
+      }
+    }
+
+    fetchAnnouncements()
+  }, [])
 
   const handleAddNote = (e: React.FormEvent) => {
     e.preventDefault()
@@ -69,33 +156,6 @@ export default function Welcome() {
   const handleDeleteNote = (id: string) => {
     setNotes(prev => prev.filter(note => note.id !== id))
   }
-
-  const announcements: Announcement[] = [
-    {
-      id: "1",
-      title: "🩺 Clase de Repaso: Plexo Braquial e Irrigación del Miembro Superior",
-      date: "Hoy, 20:00 hs",
-      content: "Clase interactiva en vivo por Meet con tutores médicos. Resolveremos dudas de Latarjet y anatomía topográfica aplicada. ¡Trae tus apuntes y preguntas!",
-      tag: "Anatomía",
-      tagColor: "bg-teal-50 border-teal-200 text-teal-800 dark:bg-teal-950/40 dark:border-teal-900 dark:text-teal-400"
-    },
-    {
-      id: "2",
-      title: "📚 Desgrabados de Fisiología Renal & Cardiovascular Actualizados",
-      date: "Hace 2 días",
-      content: "Ya están disponibles en la Feria de Materiales los últimos apuntes y resúmenes corregidos por docentes sobre contracción cardíaca y filtración glomerular.",
-      tag: "Fisiología",
-      tagColor: "bg-blue-50 border-blue-200 text-blue-800 dark:bg-blue-950/40 dark:border-blue-900 dark:text-blue-400"
-    },
-    {
-      id: "3",
-      title: "🎯 Lanzamiento: Simulador Gymkana de Codo y Antebrazo",
-      date: "Hace 4 días",
-      content: "Ponte a prueba con el simulador práctico de reconocimiento de accidentes óseos, nervios y tendones basado en los exámenes de cátedra.",
-      tag: "Simulador",
-      tagColor: "bg-emerald-50 border-emerald-200 text-emerald-800 dark:bg-emerald-950/40 dark:border-emerald-900 dark:text-emerald-400"
-    }
-  ]
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-8">
@@ -129,27 +189,38 @@ export default function Welcome() {
             </div>
 
             <div className="space-y-4">
-              {announcements.map(announcement => (
-                <div 
-                  key={announcement.id} 
-                  className="rounded-xl border border-slate-200/60 dark:border-[#1d3330]/60 p-4 hover:bg-stone-50/50 dark:hover:bg-[#0c1312]/30 transition-all duration-300"
-                >
-                  <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-                    <span className={`rounded px-2.5 py-0.5 text-[9px] font-bold border ${announcement.tagColor}`}>
-                      {announcement.tag}
-                    </span>
-                    <span className="text-[10px] font-medium text-slate-400 dark:text-slate-500">
-                      {announcement.date}
-                    </span>
-                  </div>
-                  <h4 className="text-sm font-bold text-slate-900 dark:text-white">
-                    {announcement.title}
-                  </h4>
-                  <p className="text-xs text-slate-500 dark:text-slate-450 mt-1 leading-relaxed">
-                    {announcement.content}
-                  </p>
+              {isLoadingAnnouncements ? (
+                <div className="text-center py-6 text-xs text-slate-450">
+                  <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-emerald-800 border-t-transparent mr-2 align-middle"></span>
+                  Cargando avisos desde la base de datos...
                 </div>
-              ))}
+              ) : announcements.length === 0 ? (
+                <div className="text-center py-6 text-xs text-slate-400">
+                  No hay avisos disponibles.
+                </div>
+              ) : (
+                announcements.map(announcement => (
+                  <div 
+                    key={announcement.id} 
+                    className="rounded-xl border border-slate-200/60 dark:border-[#1d3330]/60 p-4 hover:bg-stone-50/50 dark:hover:bg-[#0c1312]/30 transition-all duration-300"
+                  >
+                    <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                      <span className={`rounded px-2.5 py-0.5 text-[9px] font-bold border ${announcement.tagColor}`}>
+                        {announcement.tag}
+                      </span>
+                      <span className="text-[10px] font-medium text-slate-400 dark:text-slate-500">
+                        {announcement.date}
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 dark:text-white">
+                      {announcement.title}
+                    </h4>
+                    <p className="text-xs text-slate-500 dark:text-slate-450 mt-1 leading-relaxed">
+                      {announcement.content}
+                    </p>
+                  </div>
+                ))
+              )}
             </div>
           </div>
 
