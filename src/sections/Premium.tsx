@@ -150,9 +150,9 @@ export default function Premium({ isPremium, onActivate }: PremiumProps) {
                 </div>
 
                 <div className="glass-card rounded-2xl p-5 border-l-4 border-l-amber-500 clinical-shadow space-y-2">
-                  <h4 className="font-bold text-sm text-slate-800 dark:text-white">Explorador Anatómico VIP</h4>
+                  <h4 className="font-bold text-sm text-slate-800 dark:text-white">Flashcards VIP Autoevaluables</h4>
                   <p className="text-xs text-slate-500 dark:text-slate-450 leading-normal">
-                    Atlas comentado con orígenes, inserciones e irrigaciones de preparados óseos y musculares.
+                    Fichas con repetición espaciada y modo de visualización interactiva.
                   </p>
                 </div>
 

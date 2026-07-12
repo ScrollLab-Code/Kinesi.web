@@ -10,7 +10,6 @@ import TestSection from './sections/TestSection'
 import About from './sections/About'
 import Courses from './sections/Courses'
 import Testimonials from './sections/Testimonials'
-import AnatomyExplorer from './sections/AnatomyExplorer'
 import GymkanaSimulator from './sections/GymkanaSimulator'
 import AcademicPlanner from './sections/AcademicPlanner'
 import Welcome from './sections/Welcome'
@@ -47,7 +46,7 @@ function App() {
   const [session, setSession] = useState<Session | null>(null)
   const [localAccess, setLocalAccess] = useState(getStoredAccess)
   const [isCheckingSession, setIsCheckingSession] = useState(true)
-  const [activeSection, setActiveSection] = useState<'bienvenido' | 'comunidad' | 'mercado' | 'explorador' | 'gymkana' | 'planificador' | 'ayuda' | 'cursos' | 'testimonios' | 'premium' | 'planificador_semanal' | 'flashcards' | 'publicas' | 'habit_creator'>('bienvenido')
+  const [activeSection, setActiveSection] = useState<'bienvenido' | 'comunidad' | 'mercado' | 'gymkana' | 'planificador' | 'ayuda' | 'cursos' | 'testimonios' | 'premium' | 'planificador_semanal' | 'flashcards' | 'publicas' | 'habit_creator'>('bienvenido')
 
   // Premium state
   const [isPremium, setIsPremium] = useState<boolean>(() => {
@@ -224,7 +223,6 @@ function App() {
                 { id: 'bienvenido', label: 'Bienvenidos' },
                 { id: 'premium', label: 'Panel VIP', isSpecial: true },
                 { id: 'comunidad', label: 'Muro de Experiencias' },
-                { id: 'explorador', label: 'Explorador Anatómico' },
                 { id: 'gymkana', label: 'Simulador Gymkana' },
                 { id: 'planificador', label: 'Planificador Inverso' },
                 { id: 'planificador_semanal', label: 'Planificador Semanal' },
@@ -277,10 +275,6 @@ function App() {
             
             {activeSection === 'mercado' && (
               <AcademicFair />
-            )}
-
-            {activeSection === 'explorador' && (
-              <AnatomyExplorer />
             )}
 
             {activeSection === 'gymkana' && (
