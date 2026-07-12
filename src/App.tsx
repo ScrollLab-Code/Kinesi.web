@@ -77,29 +77,15 @@ function App() {
     return false
   }
 
-  // Dark mode states
-  const [darkMode, setDarkMode] = useState<boolean>(() => {
-    try {
-      return localStorage.getItem('kinase_dark_mode') === 'true'
-    } catch {
-      return false
-    }
-  })
-
+  // Force light mode on mount
   useEffect(() => {
-    // Update theme class on HTML element
-    const root = window.document.documentElement
-    if (darkMode) {
-      root.classList.add('dark')
-    } else {
-      root.classList.remove('dark')
-    }
     try {
-      localStorage.setItem('kinase_dark_mode', String(darkMode))
+      window.document.documentElement.classList.remove('dark')
+      localStorage.setItem('kinase_dark_mode', 'false')
     } catch {
-      // Local storage can be blocked
+      // Storage blocked
     }
-  }, [darkMode])
+  }, [])
 
   useEffect(() => {
     let isMounted = true
@@ -161,18 +147,14 @@ function App() {
     setLocalAccess(false)
   }
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode)
-  }
-
   if (isCheckingSession) {
     return (
-      <main className="grid min-h-screen place-items-center bg-stone-50 dark:bg-[#090f0e] px-6 text-center transition-colors duration-300">
+      <main className="grid min-h-screen place-items-center bg-stone-50 px-6 text-center transition-colors duration-300">
         <div className="flex flex-col items-center">
-          <p className="mb-2 text-xs font-bold uppercase tracking-[0.25em] text-emerald-800 dark:text-emerald-450 animate-pulse">
+          <p className="mb-2 text-xs font-bold uppercase tracking-[0.25em] text-emerald-800 animate-pulse">
             Kinase Academy
           </p>
-          <h1 className="text-xl font-bold text-slate-800 dark:text-slate-100">
+          <h1 className="text-xl font-bold text-slate-800">
             Cargando entorno médico...
           </h1>
         </div>
@@ -182,11 +164,8 @@ function App() {
 
   if (!session && !localAccess) {
     return (
-      <main className="bg-stone-50 dark:bg-[#090f0e] min-h-screen transition-colors duration-300">
-        <Navbar 
-          darkMode={darkMode} 
-          toggleDarkMode={toggleDarkMode} 
-        />
+      <main className="bg-stone-50 min-h-screen transition-colors duration-300">
+        <Navbar />
         <Hero onAuthenticated={unlockApp} />
       </main>
     )
@@ -194,12 +173,10 @@ function App() {
 
   return (
     <main className={`min-h-screen pb-12 transition-colors duration-300 ${
-      isPremium ? 'bg-[#030706] text-slate-100' : 'bg-stone-50/50 dark:bg-[#090f0e]'
+      isPremium ? 'bg-[#fcfbf9] text-slate-900' : 'bg-stone-50/50'
     }`}>
       <Navbar 
         onLogout={signOut} 
-        darkMode={darkMode} 
-        toggleDarkMode={toggleDarkMode}
         isPremium={isPremium}
         onPremiumClick={() => setActiveSection('premium')}
       />
