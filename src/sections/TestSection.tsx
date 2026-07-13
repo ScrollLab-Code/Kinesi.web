@@ -22,21 +22,21 @@ const questions: Question[] = [
     ],
   },
   {
-    question: "2. ¿Cuál es tu método principal de retención para preparados y anatomía?",
+    question: "2. ¿Cuál es tu método principal de retención e incorporación de conceptos complejos?",
     options: [
       { text: "Lectura pasiva de libros, resúmenes ajenos y subrayado tradicional.", points: 1 },
-      { text: "Dibujo esquemas rápidos pero me cuesta relacionarlos con el preparado real.", points: 2 },
-      { text: "Uso flashcards digitales (como Anki) y atlas de forma intermitente.", points: 3 },
-      { text: "Integro atlas fotográficos, preparado real en museo y autoevaluaciones activas.", points: 4 },
+      { text: "Relectura reiterada de apuntes y realización de resúmenes escritos a mano.", points: 2 },
+      { text: "Uso de flashcards digitales y autoevaluaciones de forma intermitente.", points: 3 },
+      { text: "Integración de esquemas activos, repaso espaciado y explicación de conceptos en voz alta.", points: 4 },
     ],
   },
   {
-    question: "3. ¿Cómo te desenvuelves al exponer un tema en un examen oral frente al preparado?",
+    question: "3. ¿Cómo te desenvuelves al exponer un tema técnico complejo en una evaluación o examen oral?",
     options: [
-      { text: "Me bloqueo por la ansiedad y me cuesta estructurar la descripción anatómica.", points: 1 },
-      { text: "Conozco la teoría pero me falta vocabulario técnico y fluidez para hablar.", points: 2 },
-      { text: "Expongo de forma aceptable si el docente me guía, pero me cuesta iniciar solo.", points: 3 },
-      { text: "Describo con orden anatómico, seguridad y terminología exacta.", points: 4 },
+      { text: "Me bloqueo por la ansiedad y me cuesta estructurar la exposición.", points: 1 },
+      { text: "Conozco la teoría pero me falta vocabulario técnico y fluidez al hablar.", points: 2 },
+      { text: "Expongo de forma aceptable si me guían con preguntas, pero me cuesta iniciar solo.", points: 3 },
+      { text: "Describo con orden lógico, seguridad y terminología exacta.", points: 4 },
     ],
   },
   {
@@ -64,7 +64,7 @@ type Lead = {
   lastname: string
   email: string
   phone: string
-  career: string
+  difficulty: string
   resultStatus: "Rojo" | "Amarillo" | "Verde"
   score: number
   answers: string
@@ -76,7 +76,7 @@ const createAcademicHelpMessage = (lead: Lead) =>
     `Nombre: ${lead.name} ${lead.lastname}`,
     `Email: ${lead.email}`,
     `WhatsApp: ${lead.phone}`,
-    `Materia/Cátedra: ${lead.career}`,
+    `Dificultad de Estudio: ${lead.difficulty}`,
     `Semáforo: [${lead.resultStatus}] (Puntaje: ${lead.score}/20)`,
     `Respuestas: ${lead.answers}`,
   ].join("\n")
@@ -101,7 +101,7 @@ export default function TestSection() {
     lastname: "",
     email: "",
     phone: "",
-    career: "",
+    difficulty: "",
   })
 
   const question = questions[currentQuestion]
@@ -188,7 +188,7 @@ export default function TestSection() {
       !formData.lastname ||
       !formData.email ||
       !formData.phone ||
-      !formData.career
+      !formData.difficulty
     ) {
       setSubmitError("Completa todos los campos antes de enviar.")
       return
@@ -202,7 +202,7 @@ export default function TestSection() {
       lastname: formData.lastname,
       email: formData.email,
       phone: formData.phone,
-      career: formData.career,
+      difficulty: formData.difficulty,
       resultStatus: result.status,
       score: totalScore,
       answers: answers.map((ans, index) => `P${index + 1}: ${ans}`).join("; "),
@@ -330,12 +330,12 @@ export default function TestSection() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-655 mb-1">Materia / Cátedra que te cuesta más</label>
+                <label className="block text-xs font-bold text-slate-655 mb-1">Dificultad principal en tu estudio</label>
                 <input
                   type="text"
-                  name="career"
-                  placeholder="Ej. Anatomía Cátedra 1 (UBA)"
-                  value={formData.career}
+                  name="difficulty"
+                  placeholder="Ej. Falta de tiempo, organización, ansiedad en orales, etc."
+                  value={formData.difficulty}
                   onChange={handleChange}
                   required
                   className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs outline-none focus:border-emerald-600"

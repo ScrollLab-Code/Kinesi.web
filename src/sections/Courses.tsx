@@ -119,7 +119,7 @@ export default function Courses() {
                 </div>
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white">¡Reserva Enviada a WhatsApp!</h3>
                 <p className="text-xs text-slate-550 dark:text-slate-400 max-w-sm mx-auto leading-relaxed">
-                  Hemos enviado los detalles a nuestro sistema de turnos vía WhatsApp. El equipo de Kinase confirmará tu sesión a la brevedad.
+                  Hemos enviado los detalles a nuestro sistema de turnos vía WhatsApp. El equipo de Kinase confirmará tu sesión a la brevedad. <strong>Por favor, revisa tu correo electrónico para completar el Test de Rendimiento Académico (Semáforo) antes de tu sesión de acompañamiento.</strong>
                 </p>
                 <button
                   onClick={handleReset}
