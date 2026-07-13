@@ -146,6 +146,16 @@ function App() {
     setLocalAccess(false)
   }
 
+  const handleDeactivatePremium = () => {
+    setIsPremium(false)
+    try {
+      localStorage.setItem('kinase_student_premium', 'false')
+    } catch {
+      // Storage blocked
+    }
+    setActiveSection('bienvenido')
+  }
+
   if (isCheckingSession) {
     return (
       <main className="grid min-h-screen place-items-center bg-stone-50 px-6 text-center transition-colors duration-300">
@@ -313,7 +323,11 @@ function App() {
             )}
 
             {activeSection === 'premium' && (
-              <Premium isPremium={isPremium} onActivate={handleActivatePremium} />
+              <Premium 
+                isPremium={isPremium} 
+                onActivate={handleActivatePremium} 
+                onDeactivate={handleDeactivatePremium} 
+              />
             )}
 
             {activeSection === 'publicas' && (

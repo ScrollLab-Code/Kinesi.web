@@ -4,6 +4,7 @@ import { motion } from "framer-motion"
 type PremiumProps = {
   isPremium: boolean
   onActivate: (code: string) => boolean
+  onDeactivate?: () => void
 }
 
 type Question = {
@@ -15,7 +16,7 @@ type Question = {
   reference: string
 }
 
-export default function Premium({ isPremium, onActivate }: PremiumProps) {
+export default function Premium({ isPremium, onActivate, onDeactivate }: PremiumProps) {
   const [activationCode, setActivationCode] = useState("")
   const [errorMessage, setErrorMessage] = useState("")
   const [showPaymentModal, setShowPaymentModal] = useState(false)
@@ -287,9 +288,17 @@ export default function Premium({ isPremium, onActivate }: PremiumProps) {
               <h3 className="text-2xl font-black tracking-tight">
                 ¡Bienvenido a tu Cockpit Médico de Alto Rendimiento!
               </h3>
-              <p className="text-xs text-slate-350 leading-relaxed max-w-2xl font-medium">
-                Tienes acceso total desbloqueado. Utiliza las pestañas del menú superior para navegar entre el Muro, el Explorador Anatómico, el Simulador de Gymkana y tus planificadores.
+              <p className="text-xs text-slate-355 leading-relaxed max-w-2xl font-medium">
+                Tienes acceso total desbloqueado. Utiliza las pestañas del menú superior para navegar entre el Muro, el Simulador de Gymkana, tus planificadores y tu Creador de Hábitos.
               </p>
+              {onDeactivate && (
+                <button
+                  onClick={onDeactivate}
+                  className="mt-3 inline-block rounded border border-red-500/20 bg-red-800/10 hover:bg-red-800/20 px-3 py-1.5 text-[10px] font-bold text-red-400 transition"
+                >
+                  Volver a Versión Gratuita (Desactivar Premium)
+                </button>
+              )}
             </div>
 
             <div className="bg-[#1b1c1d]/60 border border-slate-700 rounded-xl p-3.5 shrink-0 z-10">
