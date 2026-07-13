@@ -96,14 +96,27 @@ export default function Welcome() {
                 })
               : "Reciente"
 
+            let displayContent = item.content || ""
+            let extractedLink = item.link || item.url || undefined
+
+            const linkMarkerIndex = displayContent.indexOf("[LINK_URL:")
+            if (linkMarkerIndex !== -1) {
+              const markerText = displayContent.substring(linkMarkerIndex)
+              const match = markerText.match(/\[LINK_URL:(.*?)\]/)
+              if (match && match[1]) {
+                extractedLink = match[1]
+              }
+              displayContent = displayContent.substring(0, linkMarkerIndex).trim()
+            }
+
             return {
               id: String(item.id),
               title: item.title || "Aviso sin título",
               date: dateVal,
-              content: item.content || "",
+              content: displayContent,
               tag: item.tag || "General",
               tagColor,
-              link: item.link || item.url || undefined
+              link: extractedLink
             }
           })
           setAnnouncements(mapped)
@@ -153,11 +166,14 @@ export default function Welcome() {
     e.preventDefault()
     if (!announceTitle.trim() || !announceContent.trim()) return
 
+    const finalContent = announceLink.trim()
+      ? `${announceContent.trim()}\n\n[LINK_URL:${announceLink.trim()}]`
+      : announceContent.trim()
+
     const newAnnData = {
       title: announceTitle.trim(),
-      content: announceContent.trim(),
-      tag: announceTag.trim() || "General",
-      link: announceLink.trim() || null
+      content: finalContent,
+      tag: announceTag.trim() || "General"
     }
 
     try {
@@ -178,11 +194,11 @@ export default function Welcome() {
         const newLocal: Announcement = {
           id: String(data[0].id),
           title: data[0].title || newAnnData.title,
-          content: data[0].content || newAnnData.content,
+          content: announceContent.trim(),
           date: dateVal,
           tag: data[0].tag || newAnnData.tag,
           tagColor: "bg-emerald-50 border-emerald-200 text-emerald-800",
-          link: data[0].link || newAnnData.link || undefined
+          link: announceLink.trim() || undefined
         }
         setAnnouncements(prev => [newLocal, ...prev])
       }
@@ -191,11 +207,11 @@ export default function Welcome() {
       const newLocal: Announcement = {
         id: Math.random().toString(36).substring(2, 9),
         title: newAnnData.title,
-        content: newAnnData.content,
+        content: announceContent.trim(),
         date: "Reciente",
         tag: newAnnData.tag,
         tagColor: "bg-emerald-50 border-emerald-200 text-emerald-800",
-        link: newAnnData.link || undefined
+        link: announceLink.trim() || undefined
       }
       setAnnouncements(prev => [newLocal, ...prev])
     }

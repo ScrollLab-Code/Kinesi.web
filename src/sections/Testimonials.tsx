@@ -58,11 +58,18 @@ export default function Testimonials() {
             career?: string | null
             text?: string | null
             testimonial?: string | null 
-          }) => ({
-            name: item.name || "Alumno Anónimo",
-            career: item.career || "Estudiante de Medicina",
-            text: item.text || item.testimonial || ""
-          }))
+          }) => {
+            let displayText = item.text || item.testimonial || ""
+            const emailMarkerIndex = displayText.indexOf("[EMAIL_CONTACT:")
+            if (emailMarkerIndex !== -1) {
+              displayText = displayText.substring(0, emailMarkerIndex).trim()
+            }
+            return {
+              name: item.name || "Alumno Anónimo",
+              career: item.career || "Estudiante de Medicina",
+              text: displayText
+            }
+          })
           setTestimonials(mapped)
         }
       } catch (err) {
@@ -106,6 +113,10 @@ export default function Testimonials() {
 
     // 1. Persist to Supabase Database
     let dbSuccess = false
+    const finalText = formData.email.trim()
+      ? `${formData.testimonial}\n\n[EMAIL_CONTACT:${formData.email.trim()}]`
+      : formData.testimonial
+
     try {
       const { error: dbError } = await supabase
         .from("testimonials")
@@ -113,8 +124,7 @@ export default function Testimonials() {
           {
             name: formData.name,
             career: formData.career,
-            text: formData.testimonial,
-            email: formData.email || null
+            text: finalText
           }
         ])
 
