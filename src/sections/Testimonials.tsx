@@ -2,23 +2,7 @@ import { useState, useEffect, type ChangeEvent, type FormEvent } from "react"
 import { motion } from "framer-motion"
 import { supabase } from "../lib/supabase"
 
-const initialTestimonials = [
-  {
-    name: "Martina G.",
-    career: "Estudiante de Medicina (UBA) - Aprobó Anatomía I",
-    text: "La cantidad de contenido de locomotor me abrumaba por completo. Gracias al plan semanal de Kinase pude ordenar los preparados prácticos y preparar el oral con tranquilidad. Pasé de sentir pánico a rendir con total seguridad.",
-  },
-  {
-    name: "Nicolás P.",
-    career: "Estudiante de Medicina (UNLP) - Aprobó Fisiología",
-    text: "Fisiología se me hacía imposible de integrar. El simulador de preguntas y el apoyo de los tutores avanzados me ayudó a entender la lógica de los gráficos de presión-volumen. Súper recomendable el método.",
-  },
-  {
-    name: "Florencia B.",
-    career: "Estudiante de Medicina (Fmed) - Aprobó Histología",
-    text: "El atlas de preparados de la feria me salvó en el integrador práctico. Poder comparar fotos microscópicas reales comentadas por otros alumnos me dio la precisión que me faltaba.",
-  }
-]
+const initialTestimonials: Testimonial[] = []
 
 type Testimonial = {
   name: string

@@ -20,24 +20,7 @@ type Announcement = {
   link?: string
 }
 
-const defaultAnnouncements: Announcement[] = [
-  {
-    id: "1",
-    title: "Clase de Repaso: Plexo Braquial e Irrigación del Miembro Superior",
-    date: "Hoy, 20:00 hs",
-    content: "Clase interactiva en vivo por Meet con tutores médicos. Resolveremos dudas de Latarjet y anatomía topográfica aplicada. ¡Trae tus apuntes y preguntas!",
-    tag: "Anatomía",
-    tagColor: "bg-teal-50 border-teal-200 text-teal-800"
-  },
-  {
-    id: "2",
-    title: "Desgrabados de Fisiología Renal & Cardiovascular Actualizados",
-    date: "Hace 2 días",
-    content: "Ya están disponibles en la Feria de Materiales los últimos apuntes y resúmenes corregidos por docentes sobre contracción cardíaca y filtración glomerular.",
-    tag: "Fisiología",
-    tagColor: "bg-blue-50 border-blue-200 text-blue-800"
-  }
-]
+const defaultAnnouncements: Announcement[] = []
 
 export default function Welcome() {
   const [notes, setNotes] = useState<Note[]>(() => {
