@@ -77,19 +77,20 @@ export default function Navbar({
                   <button
                     type="button"
                     onClick={onPremiumClick}
-                    className={`flex items-center gap-1 px-3.5 py-2 rounded-lg text-xs font-black transition border shadow-sm ${
+                    className={`flex items-center gap-1 px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-lg text-xs font-black transition border shadow-sm ${
                       isPremium
                         ? "bg-amber-500 border-amber-600 text-white hover:bg-amber-600"
                         : "bg-gradient-to-r from-amber-500 to-yellow-500 border-amber-400 text-slate-900 hover:from-amber-600 hover:to-yellow-600 animate-pulse"
                     }`}
                   >
-                    {isPremium ? "Premium VIP" : "Hazte Premium"}
+                    <span className="hidden sm:inline">{isPremium ? "Premium VIP" : "Hazte Premium"}</span>
+                    <span className="inline sm:hidden">{isPremium ? "💎" : "👑"}</span>
                   </button>
                 )}
                 <button
                   type="button"
                   onClick={onLogout}
-                  className="rounded-lg bg-emerald-800 px-4 py-2 font-bold text-white transition hover:bg-slate-900 text-xs shadow-sm"
+                  className="rounded-lg bg-emerald-800 px-3.5 py-1.5 sm:px-4 sm:py-2 font-bold text-white transition hover:bg-slate-900 text-xs shadow-sm"
                 >
                   Cerrar Sesión
                 </button>
@@ -99,14 +100,15 @@ export default function Navbar({
                 <button
                   type="button"
                   onClick={() => document.getElementById('inicio')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="px-3.5 py-2 rounded-lg text-xs font-black transition border border-amber-400 shadow-sm bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-900 hover:from-amber-600 hover:to-yellow-600"
+                  className="px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-lg text-xs font-black transition border border-amber-400 shadow-sm bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-900 hover:from-amber-600 hover:to-yellow-600"
                 >
-                  Hazte Premium
+                  <span className="hidden sm:inline">Hazte Premium</span>
+                  <span className="inline sm:hidden">👑</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => document.getElementById('inicio')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="rounded-lg bg-emerald-800 px-4 py-2 font-bold text-white transition hover:bg-slate-900 text-xs shadow-sm"
+                  className="rounded-lg bg-emerald-800 px-3.5 py-1.5 sm:px-4 sm:py-2 font-bold text-white transition hover:bg-slate-900 text-xs shadow-sm"
                 >
                   Iniciar Sesión
                 </button>
