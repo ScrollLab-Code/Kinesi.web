@@ -1,5 +1,6 @@
-import { useState, type ChangeEvent, type FormEvent } from "react"
+import { useState, useEffect, type ChangeEvent, type FormEvent } from "react"
 import { motion } from "framer-motion"
+import { supabase } from "../lib/supabase"
 
 const initialTestimonials = [
   {
@@ -37,7 +38,7 @@ export default function Testimonials() {
         if (Array.isArray(parsed) && parsed.length > 0) {
           return parsed
         }
-      } catch (e) {
+      } catch {
         return initialTestimonials
       }
     }
@@ -53,6 +54,42 @@ export default function Testimonials() {
   const [isSending, setIsSending] = useState(false)
   const [submitError, setSubmitError] = useState("")
   const [responseMessage, setResponseMessage] = useState("")
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Fetch testimonials from Supabase database
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      setIsLoading(true)
+      try {
+        const { data, error } = await supabase
+          .from("testimonials")
+          .select("*")
+          .order("created_at", { ascending: false })
+
+        if (error) throw error
+
+        if (data && data.length > 0) {
+          const mapped = data.map((item: { 
+            name?: string | null
+            career?: string | null
+            text?: string | null
+            testimonial?: string | null 
+          }) => ({
+            name: item.name || "Alumno Anónimo",
+            career: item.career || "Estudiante de Medicina",
+            text: item.text || item.testimonial || ""
+          }))
+          setTestimonials(mapped)
+        }
+      } catch (err) {
+        console.warn("No se pudieron cargar los testimonios desde Supabase. Usando respaldo local:", err)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchTestimonials()
+  }, [])
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -83,8 +120,29 @@ export default function Testimonials() {
       text: formData.testimonial,
     }
 
+    // 1. Persist to Supabase Database
+    let dbSuccess = false
     try {
-      const response = await fetch("/api/send-email", {
+      const { error: dbError } = await supabase
+        .from("testimonials")
+        .insert([
+          {
+            name: formData.name,
+            career: formData.career,
+            text: formData.testimonial,
+            email: formData.email || null
+          }
+        ])
+
+      if (dbError) throw dbError
+      dbSuccess = true
+    } catch (err) {
+      console.warn("Could not save to Supabase 'testimonials' table. Falling back to local storage:", err)
+    }
+
+    // 2. Dispatch email notification as backup
+    try {
+      await fetch("/api/send-email", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -97,35 +155,26 @@ export default function Testimonials() {
           phone: "No aplica",
         }),
       })
-
-      if (!response.ok) {
-        const data = await response.json()
-        throw new Error(data?.error || "Error al enviar el testimonio.")
-      }
-
-      setTestimonials((prev) => {
-        const next = [newTestimonial, ...prev]
-        localStorage.setItem(LOCAL_STORAGE_KEY_TESTIMONIALS, JSON.stringify(next))
-        return next
-      })
-      setResponseMessage(
-        "¡Gracias por tu testimonio! Se ha registrado para ser publicado en la plataforma."
-      )
-      setFormData({ name: "", career: "", email: "", testimonial: "" })
-      setShowForm(false)
-    } catch (error) {
-      // Local demo persistence fallback
-      setTestimonials((prev) => {
-        const next = [newTestimonial, ...prev]
-        localStorage.setItem(LOCAL_STORAGE_KEY_TESTIMONIALS, JSON.stringify(next))
-        return next
-      })
-      setResponseMessage("Gracias (Modo Demo: testimonio registrado localmente de forma segura).")
-      setFormData({ name: "", career: "", email: "", testimonial: "" })
-      setShowForm(false)
-    } finally {
-      setIsSending(false)
+    } catch (err) {
+      console.warn("Email API notification error:", err)
     }
+
+    // 3. Update local state
+    setTestimonials((prev) => {
+      const next = [newTestimonial, ...prev]
+      localStorage.setItem(LOCAL_STORAGE_KEY_TESTIMONIALS, JSON.stringify(next))
+      return next
+    })
+
+    if (dbSuccess) {
+      setResponseMessage("¡Gracias por tu testimonio! Se ha guardado de forma permanente en la base de datos.")
+    } else {
+      setResponseMessage("¡Gracias! Tu testimonio se ha registrado localmente (Demostración de Respaldo).")
+    }
+
+    setFormData({ name: "", career: "", email: "", testimonial: "" })
+    setShowForm(false)
+    setIsSending(false)
   }
 
   return (
@@ -136,7 +185,7 @@ export default function Testimonials() {
             Historias de Éxito
           </p>
 
-          <h2 className="text-3xl font-black leading-tight text-slate-950 md:text-4xl">
+          <h2 className="text-3xl font-black leading-tight text-slate-955 md:text-4xl">
             La promesa es simple: cursar con estrategia, aprobar sin caos.
           </h2>
 
@@ -145,26 +194,33 @@ export default function Testimonials() {
           </p>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {testimonials.map((testimonial, index) => (
-            <motion.article
-              key={`${testimonial.name}-${index}`}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35, delay: index * 0.05 }}
-              className="rounded-xl border border-slate-200 bg-stone-50/50 p-6 flex flex-col justify-between"
-            >
-              <p className="mb-5 text-sm leading-relaxed text-slate-655 text-slate-600 italic">
-                "{testimonial.text}"
-              </p>
+        {isLoading ? (
+          <div className="text-center py-12 text-xs text-slate-400">
+            <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-emerald-800 border-t-transparent mr-2 align-middle"></span>
+            Cargando testimonios...
+          </div>
+        ) : (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {testimonials.map((testimonial, index) => (
+              <motion.article
+                key={`${testimonial.name}-${index}`}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, delay: index * 0.05 }}
+                className="rounded-xl border border-slate-200 bg-stone-50/50 p-6 flex flex-col justify-between"
+              >
+                <p className="mb-5 text-sm leading-relaxed text-slate-600 italic">
+                  "{testimonial.text}"
+                </p>
 
-              <div>
-                <h3 className="text-sm font-bold text-slate-950">{testimonial.name}</h3>
-                <p className="text-xs text-slate-500">{testimonial.career}</p>
-              </div>
-            </motion.article>
-          ))}
-        </div>
+                <div>
+                  <h3 className="text-sm font-bold text-slate-950">{testimonial.name}</h3>
+                  <p className="text-xs text-slate-500">{testimonial.career}</p>
+                </div>
+              </motion.article>
+            ))}
+          </div>
+        )}
 
         <div className="mt-12 rounded-2xl border border-slate-200 bg-emerald-50/30 p-6 max-w-3xl mx-auto shadow-sm">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -172,7 +228,7 @@ export default function Testimonials() {
               <p className="mb-1 text-xs font-black uppercase tracking-wider text-emerald-800">
                 Tu opinión nos impulsa
               </p>
-              <h3 className="text-lg font-bold text-slate-950">
+              <h3 className="text-lg font-bold text-slate-955">
                 ¿Kinase te ayudó a destrabar una materia?
               </h3>
             </div>
@@ -180,7 +236,7 @@ export default function Testimonials() {
             <button
               type="button"
               onClick={() => setShowForm((prev) => !prev)}
-              className="inline-flex items-center justify-center rounded-lg bg-slate-900 px-4 py-2 text-xs font-bold text-white transition hover:bg-emerald-850 hover:bg-slate-800 shrink-0"
+              className="inline-flex items-center justify-center rounded-lg bg-slate-900 px-4 py-2 text-xs font-bold text-white transition hover:bg-slate-800 shrink-0"
             >
               {showForm ? "Ocultar" : "Dejar testimonio"}
             </button>
@@ -202,13 +258,13 @@ export default function Testimonials() {
                 </label>
 
                 <label className="block">
-                  <span className="text-xs font-bold text-slate-600">Materia aprobada / Carrera</span>
+                  <span className="text-xs font-bold text-slate-600">Carrera / Materia Aprobada</span>
                   <input
                     name="career"
                     value={formData.career}
                     onChange={handleChange}
                     className="mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-emerald-600"
-                    placeholder="Ej. Anatomía Cátedra I (UBA)"
+                    placeholder="Ej: Medicina (UBA) - Aprobé Anatomía"
                     required
                   />
                 </label>
@@ -216,49 +272,49 @@ export default function Testimonials() {
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <label className="block">
-                  <span className="text-xs font-bold text-slate-600">Email (opcional)</span>
+                  <span className="text-xs font-bold text-slate-600">Email (Opcional - No se publica)</span>
                   <input
-                    name="email"
                     type="email"
+                    name="email"
                     value={formData.email}
                     onChange={handleChange}
                     className="mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-emerald-600"
-                    placeholder="Tu correo de contacto"
+                    placeholder="tuemail@correo.com"
                   />
                 </label>
               </div>
 
               <label className="block">
-                <span className="text-xs font-bold text-slate-600">Tu relato / testimonio</span>
+                <span className="text-xs font-bold text-slate-600">Tu Testimonio</span>
                 <textarea
                   name="testimonial"
                   value={formData.testimonial}
                   onChange={handleChange}
                   rows={4}
-                  className="mt-1.5 w-full rounded-lg border border-slate-200 bg-white p-3 text-sm text-slate-900 outline-none focus:border-emerald-600"
-                  placeholder="Describe qué materias cursaste, cómo te sirvió Kinase y qué lograste..."
+                  className="mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-emerald-600 resize-none"
+                  placeholder="Cuéntanos cómo te ayudó Kinase en tu cursada..."
                   required
                 />
               </label>
 
               {submitError && (
-                <div className="rounded bg-rose-50 border border-rose-100 p-2.5 text-xs text-rose-700">
+                <p className="text-xs font-semibold text-rose-600">
                   {submitError}
-                </div>
+                </p>
               )}
 
               {responseMessage && (
-                <div className="rounded bg-emerald-50 border border-emerald-100 p-2.5 text-xs text-emerald-800">
+                <p className="text-xs font-semibold text-emerald-800">
                   {responseMessage}
-                </div>
+                </p>
               )}
 
               <button
                 type="submit"
                 disabled={isSending}
-                className="w-full rounded-lg bg-slate-900 py-2.5 text-xs font-bold text-white transition hover:bg-emerald-800 disabled:opacity-60"
+                className="w-full rounded-lg bg-emerald-800 hover:bg-slate-900 text-white font-bold text-xs py-2 transition disabled:opacity-50"
               >
-                {isSending ? "Enviando..." : "Publicar Testimonio"}
+                {isSending ? "Guardando testimonio..." : "Enviar Testimonio"}
               </button>
             </form>
           )}
