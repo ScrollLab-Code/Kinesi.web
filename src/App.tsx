@@ -48,13 +48,7 @@ function App() {
   const [activeSection, setActiveSection] = useState<'bienvenido' | 'comunidad' | 'mercado' | 'planificador' | 'ayuda' | 'cursos' | 'testimonios' | 'premium' | 'planificador_semanal' | 'flashcards' | 'publicas' | 'habit_creator'>('bienvenido')
 
   // Premium state
-  const [isPremium, setIsPremium] = useState<boolean>(() => {
-    try {
-      return localStorage.getItem('kinase_student_premium') === 'true'
-    } catch {
-      return false
-    }
-  })
+  const [isPremium, setIsPremium] = useState<boolean>(false)
 
   const handleActivatePremium = (code: string) => {
     const cleanCode = code.trim().toUpperCase()
@@ -65,10 +59,18 @@ function App() {
       cleanCode === 'KINASE-ACTIVA-2026'
     ) {
       setIsPremium(true)
-      try {
-        localStorage.setItem('kinase_student_premium', 'true')
-      } catch {
-        // Blocked
+      if (session) {
+        supabase.auth.updateUser({
+          data: { is_premium: true }
+        }).catch(e => {
+          console.warn("Could not update premium metadata in Supabase:", e)
+        })
+      } else {
+        try {
+          localStorage.setItem('kinase_student_premium_local', 'true')
+        } catch {
+          // Blocked
+        }
       }
       return true
     }
@@ -101,11 +103,19 @@ function App() {
       .then(({ data }) => {
         if (isMounted) {
           setSession(data.session)
+          if (data.session) {
+            const hasPremium = data.session.user?.user_metadata?.is_premium === true
+            setIsPremium(hasPremium)
+          } else {
+            const localPrem = localStorage.getItem('kinase_student_premium_local') === 'true'
+            setIsPremium(localPrem)
+          }
         }
       })
       .catch(() => {
         if (isMounted) {
           setSession(null)
+          setIsPremium(false)
         }
       })
       .finally(() => {
@@ -122,6 +132,11 @@ function App() {
       if (activeSession) {
         setStoredAccess(true)
         setLocalAccess(true)
+        const hasPremium = activeSession.user?.user_metadata?.is_premium === true
+        setIsPremium(hasPremium)
+      } else {
+        const localPrem = localStorage.getItem('kinase_student_premium_local') === 'true'
+        setIsPremium(localPrem)
       }
       setIsCheckingSession(false)
     })
@@ -143,14 +158,23 @@ function App() {
     setStoredAccess(false)
     setSession(null)
     setLocalAccess(false)
+    setIsPremium(false)
   }
 
   const handleDeactivatePremium = () => {
     setIsPremium(false)
-    try {
-      localStorage.setItem('kinase_student_premium', 'false')
-    } catch {
-      // Storage blocked
+    if (session) {
+      supabase.auth.updateUser({
+        data: { is_premium: false }
+      }).catch(e => {
+        console.warn("Could not deactivate premium in Supabase metadata:", e)
+      })
+    } else {
+      try {
+        localStorage.setItem('kinase_student_premium_local', 'false')
+      } catch {
+        // Storage blocked
+      }
     }
     setActiveSection('bienvenido')
   }
