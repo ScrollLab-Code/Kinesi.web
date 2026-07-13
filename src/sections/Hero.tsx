@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import type { FormEvent } from "react"
 import { supabase } from "../lib/supabase"
-import logo from "../assets/logo.svg"
+import logoIcon from "../assets/logo_icon.jpg"
 
 
 const studyTips = [
@@ -138,7 +138,21 @@ export default function Hero({ onAuthenticated }: HeroProps) {
       <div className="mx-auto max-w-7xl px-6 w-full grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
         <div className="max-w-xl">
           <div className="mb-6">
-            <img src={logo} alt="KINASE ACADEMY Logo" className="h-10 w-auto mb-4" />
+            <div className="flex items-center gap-3.5 mb-5">
+              <img 
+                src={logoIcon} 
+                alt="KINASE Logo Mark" 
+                className="h-12 w-12 object-contain rounded-xl border border-slate-200 bg-white p-1 shadow-sm" 
+              />
+              <div className="flex flex-col justify-center leading-none">
+                <span className="text-xl font-black uppercase tracking-[0.18em] text-slate-950">
+                  Kinase
+                </span>
+                <span className="text-[10px] font-bold uppercase tracking-[0.42em] text-slate-550 mt-1">
+                  Academy
+                </span>
+              </div>
+            </div>
             <h1 className="mt-2 text-4xl font-black leading-tight text-slate-950 md:text-5xl tracking-tight">
               Afronta la carrera de medicina con un plan de estudio sólido.
             </h1>

@@ -1,4 +1,4 @@
-import logo from "../assets/logo.svg"
+import logoIcon from "../assets/logo_icon.jpg"
 
 type NavbarProps = {
   onLogout?: () => void
@@ -14,15 +14,25 @@ export default function Navbar({
   return (
     <>
       {/* Top bar - Medical Logo and session actions */}
-      <header className="fixed top-0 w-full bg-white/95 backdrop-blur-md border-b border-slate-200 z-40 py-3.5 px-6 shadow-sm transition-colors duration-300">
+      <header className="fixed top-0 w-full bg-white/95 backdrop-blur-md border-b border-slate-200 z-40 py-3 px-6 shadow-sm transition-colors duration-300">
         <div className="flex items-center justify-between max-w-7xl mx-auto">
-          <div className="flex items-center gap-2">
-            {/* Enlarged logo 'agrandar host' */}
-            <img 
-              src={logo} 
-              alt="KINASE ACADEMY Logo" 
-              className="h-10 md:h-12 w-auto transition-all duration-300" 
-            />
+          <div className="flex items-center gap-2.5">
+            {/* Horizontal deconstructed logo */}
+            <div className="flex items-center gap-2">
+              <img 
+                src={logoIcon} 
+                alt="KINASE Logo Mark" 
+                className="h-9 w-9 md:h-11 md:w-11 object-contain rounded-xl border border-slate-200 bg-white p-0.5" 
+              />
+              <div className="flex flex-col justify-center leading-none">
+                <span className="text-sm md:text-base font-black uppercase tracking-[0.15em] text-slate-900 font-sans">
+                  Kinase
+                </span>
+                <span className="text-[8px] md:text-[9px] font-bold uppercase tracking-[0.38em] text-slate-500 font-sans mt-0.5">
+                  Academy
+                </span>
+              </div>
+            </div>
             {isPremium && (
               <span className="hidden sm:inline-block rounded-full bg-amber-500/20 border border-amber-500/30 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-amber-600 animate-pulse">
                 Miembro Premium VIP
