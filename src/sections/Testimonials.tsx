@@ -33,7 +33,10 @@ export default function Testimonials() {
     const local = localStorage.getItem(LOCAL_STORAGE_KEY_TESTIMONIALS)
     if (local) {
       try {
-        return JSON.parse(local)
+        const parsed = JSON.parse(local)
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed
+        }
       } catch (e) {
         return initialTestimonials
       }
@@ -147,9 +150,8 @@ export default function Testimonials() {
             <motion.article
               key={`${testimonial.name}-${index}`}
               initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35, delay: index * 0.05 }}
-              viewport={{ once: true }}
               className="rounded-xl border border-slate-200 bg-stone-50/50 p-6 flex flex-col justify-between"
             >
               <p className="mb-5 text-sm leading-relaxed text-slate-655 text-slate-600 italic">
