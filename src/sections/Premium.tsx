@@ -158,9 +158,9 @@ export default function Premium({ isPremium, onActivate, onDeactivate }: Premium
                 </div>
 
                 <div className="glass-card rounded-2xl p-5 border-l-4 border-l-amber-500 clinical-shadow space-y-2">
-                  <h4 className="font-bold text-sm text-slate-800 dark:text-white">Simulador de Gymkana</h4>
+                  <h4 className="font-bold text-sm text-slate-800 dark:text-white">Creador de Hábitos VIP</h4>
                   <p className="text-xs text-slate-500 dark:text-slate-450 leading-normal">
-                    Ponte a prueba con simulacros prácticos cronometrados con reconocimiento de estructuras.
+                    Planificador secuencial interactivo con distribución lógica de estudio semanal.
                   </p>
                 </div>
 
@@ -289,7 +289,7 @@ export default function Premium({ isPremium, onActivate, onDeactivate }: Premium
                 ¡Bienvenido a tu Cockpit Médico de Alto Rendimiento!
               </h3>
               <p className="text-xs text-slate-355 leading-relaxed max-w-2xl font-medium">
-                Tienes acceso total desbloqueado. Utiliza las pestañas del menú superior para navegar entre el Muro, el Simulador de Gymkana, tus planificadores y tu Creador de Hábitos.
+                Tienes acceso total desbloqueado. Utiliza las pestañas del menú superior para navegar entre el Muro, tus planificadores, las flashcards y tu Creador de Hábitos.
               </p>
               {onDeactivate && (
                 <button
