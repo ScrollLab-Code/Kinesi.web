@@ -30,6 +30,7 @@ export default function HabitCreator() {
   // Step 3: Form state
   const [goal, setGoal] = useState<"Parcial" | "Cursada">("Parcial")
   const [hasAcademicSupport, setHasAcademicSupport] = useState(false)
+  const [dailyHours, setDailyHours] = useState<number>(4)
 
   // Step 4: Output plan state
   const [isGenerated, setIsGenerated] = useState(false)
@@ -81,11 +82,11 @@ export default function HabitCreator() {
     const habits: string[] = []
     
     if (goal === "Parcial") {
-      habits.push("Priorizar bloques de simulacros de examen cronometrados (enfoque práctico).")
-      habits.push("Realizar dos repasos activos diarios de mnemotecnias clínicas.")
+      habits.push("Foco en simulacros cronometrados sobre preparados y choice (enfoque práctico).")
+      habits.push("Realizar dos repasos activos diarios de mnemotecnias clínicas de 15 minutos.")
     } else {
-      habits.push("Priorizar repasos diarios de contenidos teóricos dictados en la cursada.")
-      habits.push("Elaborar resúmenes sintéticos al finalizar cada jornada lectiva.")
+      habits.push("Priorizar lecturas previas a las clases oficiales para facilitar el anclaje cognitivo.")
+      habits.push("Elaborar un esquema sintético conceptual propio al finalizar cada tema troncal.")
     }
 
     // Check subjects with difficulty 1 or 2 for tutoring alerts if academic support is checked
@@ -109,30 +110,66 @@ export default function HabitCreator() {
     const medioSubjects = subjects.filter(s => priorityMap[s.id] === "medio")
     const baseSubjects = subjects.filter(s => priorityMap[s.id] === "base")
 
-    days.forEach(day => {
+    // Dynamic distribution based on available hours
+    // Goal: Avoid studying 3 subjects a day, which is context-heavy and impossible in short blocks (like 2 hours)
+    days.forEach((day, index) => {
       const blocks: string[] = []
 
-      // Constraint: Cuspide subject (especially if Difficulty is 1/Rojo) must occupy the first study blocks of the day
-      if (cuspideSubject) {
-        blocks.push(`08:00 - 10:00: ${cuspideSubject.name} (Prioridad Cúspide)`)
+      if (dailyHours <= 3) {
+        // Mode: Single Focus Subject per day
+        // Day 0 (Lunes): Cuspide
+        // Day 1 (Martes): Medio 1
+        // Day 2 (Miércoles): Cuspide
+        // Day 3 (Jueves): Base 1 or Medio 2
+        // Day 4 (Viernes): Cuspide
+        if (index === 0 || index === 2 || index === 4) {
+          if (cuspideSubject) {
+            blocks.push(`Bloque Único (${dailyHours} hs): ${cuspideSubject.name} (Enfoque Cúspide de Alta Prioridad)`)
+          } else {
+            blocks.push(`Bloque Único (${dailyHours} hs): Estudio Libre`)
+          }
+        } else if (index === 1) {
+          const sub = medioSubjects[0] || subjects[0]
+          blocks.push(`Bloque Único (${dailyHours} hs): ${sub.name} (Enfoque Medio de Cursada)`)
+        } else {
+          const sub = baseSubjects[0] || medioSubjects[1] || subjects[1]
+          blocks.push(`Bloque Único (${dailyHours} hs): ${sub.name} (Enfoque de Base y Repaso)`)
+        }
       } else {
-        blocks.push("08:00 - 10:00: Bloque de Estudio Libre")
-      }
+        // Mode: Dual Focus Subject per day (Split 70% / 30% to prevent fatigue)
+        const primaryHours = Math.round(dailyHours * 0.7)
+        const secondaryHours = dailyHours - primaryHours
 
-      // Middle level subjects in the middle block
-      if (medioSubjects.length > 0) {
-        const sub = medioSubjects[days.indexOf(day) % medioSubjects.length]
-        blocks.push(`10:00 - 12:00: ${sub.name} (Prioridad Media)`)
-      } else {
-        blocks.push("10:00 - 12:00: Bloque de Estudio Libre")
-      }
+        if (index === 0 || index === 2 || index === 4) {
+          // Main focus Cuspide, secondary focus Medio
+          if (cuspideSubject) {
+            blocks.push(`Bloque Principal (${primaryHours} hs): ${cuspideSubject.name} (Enfoque Cúspide)`)
+          } else {
+            blocks.push(`Bloque Principal (${primaryHours} hs): Estudio Libre`)
+          }
 
-      // Base level subjects in the afternoon block
-      if (baseSubjects.length > 0) {
-        const sub = baseSubjects[days.indexOf(day) % baseSubjects.length]
-        blocks.push(`14:00 - 16:00: ${sub.name} (Prioridad Base)`)
-      } else {
-        blocks.push("14:00 - 16:00: Bloque de Repaso General")
+          if (medioSubjects.length > 0) {
+            const sub = medioSubjects[index % medioSubjects.length]
+            blocks.push(`Bloque Secundario (${secondaryHours} hs): ${sub.name} (Repaso e Integración)`)
+          } else {
+            blocks.push(`Bloque Secundario (${secondaryHours} hs): Repaso General`)
+          }
+        } else {
+          // Main focus Medio, secondary focus Base
+          if (medioSubjects.length > 0) {
+            const sub = medioSubjects[index % medioSubjects.length]
+            blocks.push(`Bloque Principal (${primaryHours} hs): ${sub.name} (Foco de Regularidad)`)
+          } else {
+            blocks.push(`Bloque Principal (${primaryHours} hs): Estudio de Materia Temprana`)
+          }
+
+          if (baseSubjects.length > 0) {
+            const sub = baseSubjects[index % baseSubjects.length]
+            blocks.push(`Bloque Secundario (${secondaryHours} hs): ${sub.name} (Repaso de Base)`)
+          } else {
+            blocks.push(`Bloque Secundario (${secondaryHours} hs): Mnemotecnias y Autoevaluación`)
+          }
+        }
       }
 
       schedule[day] = blocks
@@ -145,8 +182,8 @@ export default function HabitCreator() {
 
   return (
     <div className="space-y-8 max-w-7xl mx-auto px-6 py-8">
-      <div className="border-b border-slate-200 dark:border-[#1d3330] pb-3">
-        <h3 className="text-xl font-black text-slate-900 dark:text-white">
+      <div className="border-b border-slate-200 pb-3">
+        <h3 className="text-xl font-black text-slate-900">
           Creador de Hábitos y Calendario Académico
         </h3>
         <p className="text-xs text-slate-500 mt-1">
@@ -161,8 +198,8 @@ export default function HabitCreator() {
           
           {/* PASO 1: Carga de Datos */}
           <div className="glass-card rounded-2xl p-5 clinical-shadow space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-100 dark:border-[#1d3330] pb-2">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-250">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-800">
                 Paso 1: Definición de Materias y Dificultad
               </h4>
               <span className="text-[10px] text-slate-400 font-semibold">5 Materias Obligatorias</span>
@@ -171,7 +208,7 @@ export default function HabitCreator() {
             <div className="space-y-3">
               {subjects.map(sub => (
                 <div key={sub.id} className="flex items-center gap-3">
-                  {/* Color indicator indicator */}
+                  {/* Color indicator */}
                   <div 
                     className="h-4.5 w-4.5 rounded shrink-0 border border-black/10 transition-colors duration-300"
                     style={{ backgroundColor: getDifficultyColor(sub.difficulty) }}
@@ -191,7 +228,7 @@ export default function HabitCreator() {
                   <select
                     value={sub.difficulty}
                     onChange={e => handleSubjectDifficultyChange(sub.id, Number(e.target.value))}
-                    className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs outline-none text-slate-700 dark:text-slate-300"
+                    className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs outline-none text-slate-700"
                   >
                     <option value={1}>Dificultad 1 (Rojo)</option>
                     <option value={2}>Dificultad 2 (Naranja)</option>
@@ -206,15 +243,14 @@ export default function HabitCreator() {
 
           {/* PASO 2: Triángulo de Prioridades */}
           <div className="glass-card rounded-2xl p-5 clinical-shadow space-y-4">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-250 border-b border-slate-100 dark:border-[#1d3330] pb-2">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-800 border-b border-slate-100 pb-2">
               Paso 2: Triángulo de Prioridades
             </h4>
 
-            {/* Pyramid visual structure */}
             <div className="flex flex-col items-center py-2 space-y-2">
               {/* Level 1: Cuspide */}
               <div className="w-[140px] border border-amber-500/30 bg-amber-500/5 rounded-t-lg p-2.5 text-center relative">
-                <span className="text-[9px] font-bold text-amber-600 dark:text-amber-400 block mb-1">CÚSPIDE</span>
+                <span className="text-[9px] font-bold text-amber-600 block mb-1">CÚSPIDE</span>
                 <select
                   value={Object.keys(priorityMap).find(key => priorityMap[key] === "cuspide") || ""}
                   onChange={e => handlePriorityChange(e.target.value, "cuspide")}
@@ -228,7 +264,7 @@ export default function HabitCreator() {
               </div>
 
               {/* Level 2: Medio */}
-              <div className="w-[240px] border border-slate-300 bg-slate-100/10 dark:bg-slate-900/10 p-2.5 text-center flex gap-2">
+              <div className="w-[240px] border border-slate-300 bg-slate-100/10 p-2.5 text-center flex gap-2">
                 <div className="flex-1">
                   <span className="text-[9px] font-bold text-slate-500 block mb-1">MEDIO (Slot 1)</span>
                   <select
@@ -258,7 +294,7 @@ export default function HabitCreator() {
               </div>
 
               {/* Level 3: Base */}
-              <div className="w-[340px] border border-slate-350 bg-slate-100/10 dark:bg-slate-900/10 rounded-b-lg p-2.5 text-center flex gap-2">
+              <div className="w-[340px] border border-slate-350 bg-slate-100/10 rounded-b-lg p-2.5 text-center flex gap-2">
                 <div className="flex-1">
                   <span className="text-[9px] font-bold text-slate-500 block mb-1">BASE (Slot 1)</span>
                   <select
@@ -291,18 +327,36 @@ export default function HabitCreator() {
 
           {/* PASO 3: Condicionales de Hábitos */}
           <div className="glass-card rounded-2xl p-5 clinical-shadow space-y-4">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-250 border-b border-slate-100 dark:border-[#1d3330] pb-2">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-800 border-b border-slate-100 pb-2">
               Paso 3: Parámetros y Condicionales de Hábitos
             </h4>
 
             <div className="space-y-4">
+              {/* Daily hours selection */}
+              <div>
+                <label className="block text-xs font-bold text-slate-600 mb-1.5">
+                  Horas diarias disponibles para estudio
+                </label>
+                <select
+                  value={dailyHours}
+                  onChange={e => setDailyHours(Number(e.target.value))}
+                  className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs outline-none text-slate-700 w-full"
+                >
+                  <option value={2}>2 horas por día (Foco Único Diario)</option>
+                  <option value={3}>3 horas por día (Foco Único Diario)</option>
+                  <option value={4}>4 horas por día (Doble Foco: 3 hs / 1 hs)</option>
+                  <option value={6}>6 horas por día (Doble Foco: 4 hs / 2 hs)</option>
+                  <option value={8}>8 horas por día (Doble Foco: 6 hs / 2 hs)</option>
+                </select>
+              </div>
+
               {/* Question A */}
               <div>
-                <label className="block text-xs font-bold text-slate-600 dark:text-slate-350 mb-1.5">
+                <label className="block text-xs font-bold text-slate-600 mb-1.5">
                   Pregunta A: ¿Cuál es el objetivo de estudio inmediato?
                 </label>
                 <div className="flex gap-4">
-                  <label className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300">
+                  <label className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700">
                     <input
                       type="radio"
                       name="goal"
@@ -313,7 +367,7 @@ export default function HabitCreator() {
                     />
                     Preparar un examen parcial (simulacros)
                   </label>
-                  <label className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300">
+                  <label className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700">
                     <input
                       type="radio"
                       name="goal"
@@ -329,10 +383,10 @@ export default function HabitCreator() {
 
               {/* Question B */}
               <div>
-                <label className="block text-xs font-bold text-slate-600 dark:text-slate-350 mb-1.5">
+                <label className="block text-xs font-bold text-slate-600 mb-1.5">
                   Pregunta B: ¿Requiere acompañamiento académico docente en tutorías?
                 </label>
-                <label className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300">
+                <label className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700">
                   <input
                     type="checkbox"
                     checked={hasAcademicSupport}
@@ -345,7 +399,7 @@ export default function HabitCreator() {
 
               <button
                 onClick={generatePlan}
-                className="w-full rounded-lg bg-slate-900 dark:bg-amber-500 hover:bg-slate-950 dark:hover:bg-amber-600 text-white font-bold text-xs py-2.5 transition mt-2 shadow-sm"
+                className="w-full rounded-lg bg-slate-900 hover:bg-slate-950 text-white font-bold text-xs py-2.5 transition mt-2 shadow-sm"
               >
                 Generar Calendario y Plan de Hábitos
               </button>
@@ -357,8 +411,8 @@ export default function HabitCreator() {
         {/* COLUMNA DERECHA: Resultados (Paso 4) */}
         <div>
           <div className="glass-card rounded-2xl p-6 clinical-shadow space-y-6 min-h-[500px]">
-            <div className="border-b border-slate-100 dark:border-[#1d3330] pb-3">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-250">
+            <div className="border-b border-slate-100 pb-3">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-800">
                 Paso 4: Plan de Trabajo Generado
               </h4>
               <p className="text-[10px] text-slate-400 mt-0.5">
@@ -367,7 +421,7 @@ export default function HabitCreator() {
             </div>
 
             {!isGenerated ? (
-              <div className="h-[400px] flex items-center justify-center text-center text-xs text-slate-400 dark:text-slate-500 border border-dashed border-slate-200 dark:border-[#1d3330] rounded-xl p-8">
+              <div className="h-[400px] flex items-center justify-center text-center text-xs text-slate-400 border border-dashed border-slate-200 rounded-xl p-8">
                 Configura los pasos 1, 2 y 3 y haz clic en "Generar Calendario" para desplegar la planificación.
               </div>
             ) : (
@@ -386,8 +440,8 @@ export default function HabitCreator() {
                           key={idx} 
                           className={`text-xs p-3 rounded-lg border leading-relaxed font-medium ${
                             isAlert 
-                              ? "border-rose-300 bg-rose-50/50 dark:bg-rose-950/20 text-rose-800 dark:text-rose-300"
-                              : "border-slate-200 bg-stone-50/50 dark:bg-slate-900/20 text-slate-700 dark:text-slate-300"
+                              ? "border-rose-300 bg-rose-50/50 text-rose-800"
+                              : "border-slate-200 bg-stone-50/50 text-slate-700"
                           }`}
                         >
                           {habit}
@@ -405,21 +459,21 @@ export default function HabitCreator() {
 
                   <div className="space-y-3 max-h-[350px] overflow-y-auto pr-1">
                     {Object.keys(weeklySchedule).map(day => (
-                      <div key={day} className="rounded-xl border border-slate-250 dark:border-[#1d3330] p-3.5 space-y-2">
-                        <span className="text-xs font-bold text-slate-900 dark:text-white block border-b border-slate-100 dark:border-[#1d3330]/40 pb-1.5">
+                      <div key={day} className="rounded-xl border border-slate-250 p-3.5 space-y-2">
+                        <span className="text-xs font-bold text-slate-900 block border-b border-slate-100 pb-1.5">
                           {day}
                         </span>
                         
                         <div className="space-y-1.5">
                           {weeklySchedule[day].map((block, idx) => {
-                            const isCuspide = block.includes("Prioridad Cúspide")
+                            const isCuspide = block.includes("Enfoque Cúspide") || block.includes("Enfoque Medio")
                             return (
                               <div 
                                 key={idx} 
                                 className={`text-[11px] p-2 rounded border font-semibold flex justify-between items-center ${
                                   isCuspide 
-                                    ? "border-amber-500/40 bg-amber-500/5 text-amber-700 dark:text-amber-300"
-                                    : "border-slate-200 bg-white text-slate-600 dark:bg-[#0c1312]"
+                                    ? "border-amber-500/40 bg-amber-500/5 text-amber-700"
+                                    : "border-slate-250 bg-white text-slate-600"
                                 }`}
                               >
                                 <span>{block}</span>
