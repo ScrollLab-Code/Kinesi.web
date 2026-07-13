@@ -1,4 +1,5 @@
 import { useState } from "react"
+import lopezRossetti from "../assets/lopez_rossetti.jpg"
 
 type PremiumProps = {
   isPremium: boolean
@@ -288,22 +289,34 @@ export default function Premium({ isPremium, onActivate, onDeactivate }: Premium
             {/* Columna Derecha: Mensaje de estudio tranquilo y Soporte vía WhatsApp */}
             <div className="space-y-4 font-sans">
               
-              <div className="glass-card rounded-2xl p-6 border border-emerald-500/35 clinical-shadow space-y-4 bg-white">
-                <span className="rounded bg-emerald-50 border border-emerald-200 px-2 py-0.5 text-[9px] font-black uppercase text-emerald-800">
+              <div className="glass-card rounded-2xl p-6 border border-emerald-500/35 clinical-shadow space-y-4 bg-white animate-fadeIn">
+                <span className="rounded bg-emerald-50 border border-emerald-200 px-2 py-0.5 text-[9px] font-black uppercase text-emerald-805 text-emerald-800">
                   Estudio Tranquilo y Enfocado
                 </span>
                 
                 <h4 className="font-bold text-sm text-slate-900 mt-1">
                   Tu tranquilidad es el pilar de tu aprendizaje
                 </h4>
+
+                <div className="space-y-3">
+                  <img 
+                    src={lopezRossetti} 
+                    alt="Encuentro con el Dr. Daniel López Rossetti" 
+                    className="w-full h-auto max-h-[280px] rounded-xl object-cover border border-slate-200 shadow-sm transition hover:scale-[1.01]"
+                    loading="lazy"
+                  />
+                  <p className="text-[11px] leading-relaxed text-slate-500 italic bg-stone-50 p-2.5 rounded-lg border border-slate-105 border-slate-100 font-medium">
+                    "En mi encuentro con el Dr. Daniel López Rossetti, una voz de gran autoridad y prestigio médico, me dejó una enseñanza fundamental que hoy define la filosofía de Kinase: <strong>hacer las cosas con tranquilidad</strong>."
+                  </p>
+                </div>
                 
-                <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                  La carrera de medicina es de largo aliento. Estudiar con calma, constancia y una estrategia clara reduce el estrés y aumenta la retención. No se trata de memorizar sin parar, sino de estructurar la información con tranquilidad y comprender la lógica clínica detrás de cada preparado o gráfico.
+                <p className="text-xs text-slate-655 text-slate-600 leading-relaxed font-medium">
+                  La carrera de medicina es de largo aliento. Estudiar con calma, constancia y una estrategia clara reduce el estrés y aumenta la retención cognitiva. No se trata de memorizar sin descanso, sino de estructurar la información con serenidad para conectar la teoría con la práctica clínica real.
                 </p>
 
                 <div className="border-t border-slate-100 pt-4 space-y-3">
                   <p className="text-[11px] text-slate-500 leading-relaxed">
-                    Si te sientes abrumado con la materia o necesitas ayuda personalizada para sacarle provecho a tus planificadores, solicita soporte directo para recibir asistencia veloz de nuestros tutores.
+                    Si te sientes abrumado con la materia o necesitas ayuda personalizada para organizar tus tiempos, solicita asistencia de nuestros tutores.
                   </p>
 
                   <a
@@ -312,7 +325,7 @@ export default function Premium({ isPremium, onActivate, onDeactivate }: Premium
                     rel="noreferrer"
                     className="block w-full rounded-lg bg-emerald-800 hover:bg-slate-900 text-white font-bold text-xs py-2.5 text-center transition shadow-sm"
                   >
-                    💬 Soporte Veloz por WhatsApp
+                    💬 Solicitar ayuda
                   </a>
                 </div>
               </div>
