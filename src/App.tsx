@@ -16,6 +16,7 @@ import WeeklyPlanner from './sections/WeeklyPlanner'
 import Flashcards from './sections/Flashcards'
 import HabitCreator from './sections/HabitCreator'
 import Footer from './components/Footer'
+import HelpChatWidget from './components/HelpChatWidget'
 import { supabase } from './lib/supabase'
 
 const accessKey = 'kinase_student_access'
@@ -198,6 +199,7 @@ function App() {
       <main className="bg-stone-50 min-h-screen transition-colors duration-300">
         <Navbar />
         <Hero onAuthenticated={unlockApp} />
+        <HelpChatWidget />
       </main>
     )
   }
@@ -210,6 +212,7 @@ function App() {
         onLogout={signOut} 
         isPremium={isPremium}
         onPremiumClick={() => setActiveSection('premium')}
+        onNavigate={setActiveSection}
       />
 
       <section
@@ -410,6 +413,7 @@ function App() {
 
       <Features />
       <Footer />
+      <HelpChatWidget />
     </main>
   )
 }

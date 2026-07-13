@@ -1,5 +1,6 @@
 import { motion } from "framer-motion"
 import videoPresentacion from "../assets/video presentacion.mp4"
+import FAQ from "../components/FAQ"
 
 export default function About() {
   return (
@@ -72,6 +73,11 @@ export default function About() {
             </p>
           </div>
         </motion.div>
+      </div>
+
+      {/* FAQ Accordion Section */}
+      <div className="mt-16 border-t border-slate-100 pt-10">
+        <FAQ />
       </div>
     </section>
   )
