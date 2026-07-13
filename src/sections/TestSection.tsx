@@ -209,6 +209,28 @@ export default function TestSection() {
     }
 
     try {
+      // 1. Dispatch email notification as backup
+      try {
+        await fetch("/api/send-email", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: lead.name,
+            lastname: lead.lastname,
+            email: lead.email,
+            phone: lead.phone,
+            career: lead.difficulty, // Map difficulty to career for send-email parser compatibility
+            result: lead.resultStatus,
+            answers: lead.answers,
+          }),
+        })
+      } catch (err) {
+        console.warn("Email API notification error:", err)
+      }
+
+      // 2. Open WhatsApp message
       const message = createAcademicHelpMessage(lead)
       window.open(
         createAcademicHelpWhatsAppLink(message),
@@ -216,7 +238,7 @@ export default function TestSection() {
         "noopener,noreferrer"
       )
       setSent(true)
-    } catch (error) {
+    } catch {
       setSubmitError("No se pudo enviar el diagnóstico.")
     } finally {
       setIsSubmitting(false)
