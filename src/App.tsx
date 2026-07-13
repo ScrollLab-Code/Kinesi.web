@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Navbar from './components/Navbar'
 import Hero from './sections/Hero'
 import Features from './sections/Features'
-import CommunityMarketplace from './sections/CommunityMarketplace'
 import AcademicFair from './sections/AcademicFair'
 import TestSection from './sections/TestSection'
 import About from './sections/About'
@@ -45,7 +44,7 @@ function App() {
   const [session, setSession] = useState<Session | null>(null)
   const [localAccess, setLocalAccess] = useState(getStoredAccess)
   const [isCheckingSession, setIsCheckingSession] = useState(true)
-  const [activeSection, setActiveSection] = useState<'bienvenido' | 'comunidad' | 'mercado' | 'planificador' | 'ayuda' | 'cursos' | 'testimonios' | 'premium' | 'planificador_semanal' | 'flashcards' | 'publicas' | 'habit_creator'>('bienvenido')
+  const [activeSection, setActiveSection] = useState<'bienvenido' | 'cuadro_sinoptico' | 'mercado' | 'planificador' | 'ayuda' | 'cursos' | 'testimonios' | 'premium' | 'planificador_semanal' | 'flashcards' | 'publicas' | 'habit_creator'>('bienvenido')
 
   // Premium state
   const [isPremium, setIsPremium] = useState<boolean>(false)
@@ -255,7 +254,7 @@ function App() {
             : [
                 { id: 'bienvenido', label: 'Bienvenidos' },
                 { id: 'premium', label: 'Panel VIP', isSpecial: true },
-                { id: 'comunidad', label: 'Muro de Experiencias' },
+                { id: 'cuadro_sinoptico', label: 'Creador de Cuadro Sinóptico' },
                 { id: 'planificador', label: 'Planificador Inverso' },
                 { id: 'planificador_semanal', label: 'Planificador Semanal' },
                 { id: 'flashcards', label: 'Flashcards VIP' },
@@ -301,8 +300,23 @@ function App() {
               <Welcome />
             )}
 
-            {activeSection === 'comunidad' && (
-              <CommunityMarketplace onOpenFair={() => setActiveSection('mercado')} />
+            {activeSection === 'cuadro_sinoptico' && (
+              <section className="bg-stone-50 px-6 py-16">
+                <div className="mx-auto max-w-3xl text-center space-y-6">
+                  <span className="rounded-full bg-amber-500/10 border border-amber-500/20 px-3.5 py-1 text-xs font-black uppercase tracking-widest text-amber-600 dark:text-amber-400">
+                    Herramienta en Desarrollo
+                  </span>
+                  <h2 className="text-3xl font-black text-slate-950 leading-tight">
+                    Creador de Cuadros Sinópticos
+                  </h2>
+                  <p className="text-sm leading-relaxed text-slate-600">
+                    Esta sección está siendo construida para permitir a los estudiantes de medicina generar de forma interactiva y automatizada cuadros sinópticos y mapas jerárquicos a partir de textos de estudio.
+                  </p>
+                  <div className="rounded-2xl border border-dashed border-slate-300 p-8 bg-white/50 text-slate-500 text-xs">
+                    ⚡ Próximamente: Ingresa tus apuntes de Anatomía o Fisiología y obtén un esquema estructurado visual con relaciones lógicas inmediatas para facilitar tu repaso oral.
+                  </div>
+                </div>
+              </section>
             )}
             
             {activeSection === 'mercado' && (

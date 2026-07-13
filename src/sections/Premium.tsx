@@ -1,19 +1,9 @@
 import { useState } from "react"
-import { motion } from "framer-motion"
 
 type PremiumProps = {
   isPremium: boolean
   onActivate: (code: string) => boolean
   onDeactivate?: () => void
-}
-
-type Question = {
-  id: number
-  question: string
-  options: string[]
-  correctIndex: number
-  explanation: string
-  reference: string
 }
 
 export default function Premium({ isPremium, onActivate, onDeactivate }: PremiumProps) {
@@ -22,77 +12,8 @@ export default function Premium({ isPremium, onActivate, onDeactivate }: Premium
   const [showPaymentModal, setShowPaymentModal] = useState(false)
   const [simulatedCode, setSimulatedCode] = useState("")
 
-  // Quiz game state
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-  const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | null>(null)
-  const [quizScore, setQuizScore] = useState(0)
-  const [quizCompleted, setQuizCompleted] = useState(false)
-
   // Countdown timer simulation
   const daysLeft = 12
-  
-  const quizQuestions: Question[] = [
-    {
-      id: 1,
-      question: "¿Qué nervio perfora al músculo coracobraquial (el nervio perforado de Casserius)?",
-      options: ["Nervio mediano", "Nervio musculocutáneo", "Nervio cubital", "Nervio radial"],
-      correctIndex: 1,
-      explanation: "El nervio musculocutáneo perfora al coracobraquial y luego discurre entre el bíceps braquial y el músculo braquial anterior, inervando a todos los flexores del compartimento anterior del brazo.",
-      reference: "Latarjet - Ruiz Liard, Tomo 1, Capítulo de Nervios del Miembro Superior"
-    },
-    {
-      id: 2,
-      question: "¿Cuál es el principal elemento óseo que pasa por el surco epitrócleo-olecraniano en el codo?",
-      options: ["Nervio radial", "Arteria colateral cubital", "Nervio cubital", "Arteria braquial profunda"],
-      correctIndex: 2,
-      explanation: "El nervio cubital pasa por la cara posterior de la articulación del codo, discurriendo por el surco cubital (canal epitrócleo-olecraniano) antes de ingresar al antebrazo.",
-      reference: "Latarjet - Ruiz Liard, Tomo 1, Anatomía de Codo"
-    },
-    {
-      id: 3,
-      question: "En el ciclo cardíaco, ¿cuál es el evento fisiológico inmediato que ocurre tras el cierre de las válvulas auriculoventriculares?",
-      options: ["Llenado rápido ventricular", "Eyección rápida ventricular", "Contracción isovolumétrica", "Relajación isovolumétrica"],
-      correctIndex: 2,
-      explanation: "La contracción isovolumétrica comienza inmediatamente después del cierre de las válvulas AV (primer ruido cardíaco) y dura hasta que la presión de los ventrículos supera la presión aórtica y pulmonar, abriendo las válvulas semilunares.",
-      reference: "Fisiología Médica de Guyton & Hall, Unidad de Fisiología Cardiovascular"
-    },
-    {
-      id: 4,
-      question: "¿Cuál de las siguientes hormonas es el principal regulador de la reabsorción de agua libre en el túbulo colector renal?",
-      options: ["Aldosterona", "Angiotensina II", "Hormona antidiurética (ADH / Vasopresina)", "Péptido natriurético auricular"],
-      correctIndex: 2,
-      explanation: "La ADH aumenta la permeabilidad al agua del conducto colector renal al inducir la inserción de canales de acuaporina-2 en las membranas apicales de las células principales.",
-      reference: "Fisiología Médica de Guyton & Hall, Regulación Renal de la Osmolaridad"
-    },
-    {
-      id: 5,
-      question: "¿Cuál de las siguientes estructuras anatómicas delimita el canal del pulso en la muñeca lateralmente?",
-      options: ["Tendón del músculo flexor cubital del carpo", "Tendón del músculo braquiorradial (supinador largo)", "Tendón del flexor radial del carpo (palmar mayor)", "Arteria radial"],
-      correctIndex: 1,
-      explanation: "El canal del pulso radial está delimitado lateralmente por el tendón del supinador largo (braquiorradial) y medialmente por el tendón del palmar mayor (flexor radial del carpo). La arteria radial viaja dentro del canal.",
-      reference: "Latarjet - Ruiz Liard, Anatomía del Antebrazo y Muñeca"
-    }
-  ]
-
-  const handleNextQuestion = () => {
-    if (selectedOptionIndex === quizQuestions[currentQuestionIndex].correctIndex) {
-      setQuizScore(prev => prev + 1)
-    }
-
-    setSelectedOptionIndex(null)
-    if (currentQuestionIndex < quizQuestions.length - 1) {
-      setCurrentQuestionIndex(prev => prev + 1)
-    } else {
-      setQuizCompleted(true)
-    }
-  }
-
-  const resetQuiz = () => {
-    setCurrentQuestionIndex(0)
-    setSelectedOptionIndex(null)
-    setQuizScore(0)
-    setQuizCompleted(false)
-  }
 
   const handleActivationSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -276,11 +197,10 @@ export default function Premium({ isPremium, onActivate, onDeactivate }: Premium
         </div>
       ) : (
         // VISTA: PREMIUM ACTIVADO (Entorno VIP Cockpit Dashboard)
-        <div className="space-y-8">
+        <div className="space-y-8 animate-fadeIn">
           
           {/* Welcome Banner */}
           <div className="rounded-2xl border border-amber-500 bg-gradient-to-br from-[#1c180d] to-[#0c1815] p-6 text-white clinical-shadow flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden">
-            
             <div className="space-y-1 z-10">
               <span className="rounded bg-amber-500/20 px-2 py-0.5 text-[9px] font-black uppercase tracking-widest text-amber-500">
                 VIP Academic Environment
@@ -288,8 +208,8 @@ export default function Premium({ isPremium, onActivate, onDeactivate }: Premium
               <h3 className="text-2xl font-black tracking-tight">
                 ¡Bienvenido a tu Cockpit Médico de Alto Rendimiento!
               </h3>
-              <p className="text-xs text-slate-355 leading-relaxed max-w-2xl font-medium">
-                Tienes acceso total desbloqueado. Utiliza las pestañas del menú superior para navegar entre el Muro, tus planificadores, las flashcards y tu Creador de Hábitos.
+              <p className="text-xs text-slate-300 leading-relaxed max-w-2xl font-medium">
+                Tienes acceso total desbloqueado. Utiliza las pestañas del menú superior para navegar entre las herramientas premium de planificación, flashcards y hábitos.
               </p>
               {onDeactivate && (
                 <button
@@ -304,146 +224,96 @@ export default function Premium({ isPremium, onActivate, onDeactivate }: Premium
             <div className="bg-[#1b1c1d]/60 border border-slate-700 rounded-xl p-3.5 shrink-0 z-10">
               <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest block">Próximo Examen de Cátedra</span>
               <span className="text-lg font-black text-amber-500 block">Final de Anatomía</span>
-              <span className="text-[10px] text-emerald-455 block font-semibold">Quedan {daysLeft} días</span>
+              <span className="text-[10px] text-emerald-400 block font-semibold">Quedan {daysLeft} días</span>
             </div>
           </div>
 
-          {/* Grid de widgets */}
+          {/* Grid de Contenido Desarmado y Espacioso */}
           <div className="grid gap-6 md:grid-cols-[1.2fr_0.8fr]">
             
-            {/* Banco de Choice Premium */}
-            <div className="glass-card rounded-2xl p-6 border border-amber-500/35 clinical-shadow space-y-4">
-              <div className="border-b border-slate-100 dark:border-[#1d3330] pb-2 flex items-center justify-between">
-                <div>
-                  <h4 className="font-bold text-sm text-slate-900 dark:text-white uppercase tracking-wider">
-                    Autoevaluación Choice - Nivel Cátedra
-                  </h4>
-                  <p className="text-xs text-slate-400 mt-0.5">
-                    Preguntas avanzadas justificadas para exámenes orales y prácticos.
-                  </p>
-                </div>
-                <span className="rounded bg-emerald-800/10 px-2 py-0.5 text-[9px] font-bold text-emerald-800 dark:text-emerald-400">
-                  Activo
-                </span>
+            {/* Columna Izquierda: Explicación de beneficios y simplificación de estudio */}
+            <div className="glass-card rounded-2xl p-6 border border-amber-500/35 clinical-shadow space-y-6 bg-white">
+              <div>
+                <h4 className="font-extrabold text-lg text-slate-900 uppercase tracking-wide border-b border-slate-100 pb-3">
+                  ¿Cómo te beneficia este Panel VIP y cómo simplifica tu estudio?
+                </h4>
+                <p className="text-xs text-slate-500 mt-2">
+                  El entorno VIP está diseñado para remover los obstáculos organizativos y cognitivos de la carrera de medicina.
+                </p>
               </div>
 
-              {!quizCompleted ? (
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between text-xs font-bold">
-                    <span className="text-amber-600 dark:text-amber-400">
-                      Pregunta {currentQuestionIndex + 1} de {quizQuestions.length}
-                    </span>
-                    <span className="text-slate-400">Puntaje: {quizScore}</span>
+              <div className="space-y-4">
+                <div className="flex gap-4">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-800 font-bold text-sm">
+                    1
                   </div>
-
-                  <h5 className="text-xs md:text-sm font-bold text-slate-800 dark:text-white leading-relaxed">
-                    {quizQuestions[currentQuestionIndex].question}
-                  </h5>
-
-                  <div className="grid gap-2">
-                    {quizQuestions[currentQuestionIndex].options.map((option, idx) => {
-                      let btnStyle = "border-slate-200 bg-white hover:bg-stone-50 text-slate-700 dark:text-slate-350 dark:bg-[#0c1312]"
-                      if (selectedOptionIndex !== null) {
-                        if (idx === quizQuestions[currentQuestionIndex].correctIndex) {
-                          btnStyle = "border-emerald-500 bg-emerald-50/50 text-emerald-800 dark:bg-emerald-950/30 dark:text-emerald-400"
-                        } else if (idx === selectedOptionIndex) {
-                          btnStyle = "border-rose-500 bg-rose-50/50 text-rose-800 dark:bg-rose-950/30 dark:text-rose-450"
-                        } else {
-                          btnStyle = "border-slate-200 bg-white opacity-40 text-slate-400"
-                        }
-                      }
-
-                      return (
-                        <button
-                          key={option}
-                          onClick={() => selectedOptionIndex === null && setSelectedOptionIndex(idx)}
-                          disabled={selectedOptionIndex !== null}
-                          className={`w-full rounded-xl border p-3.5 text-xs text-left font-semibold transition ${btnStyle}`}
-                        >
-                          {option}
-                        </button>
-                      )
-                    })}
+                  <div>
+                    <h5 className="text-xs font-bold text-slate-900">Estructuración y Planificación Activa</h5>
+                    <p className="text-[11px] text-slate-600 leading-relaxed mt-0.5">
+                      Usa el <strong>Planificador Inverso</strong> para fijar tus fechas de examen final y dejar que la app divida las unidades del programa de forma lógica en base a los días restantes, simplificando la distribución semanal.
+                    </p>
                   </div>
-
-                  {selectedOptionIndex !== null && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 5 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="rounded-xl bg-slate-50 dark:bg-[#0d1615] border border-slate-200 dark:border-[#1d3330] p-4 text-xs space-y-2"
-                    >
-                      <p className="font-bold text-slate-900 dark:text-white">
-                        {selectedOptionIndex === quizQuestions[currentQuestionIndex].correctIndex ? "¡Respuesta Correcta!" : "Respuesta Incorrecta"}
-                      </p>
-                      <p className="text-slate-650 dark:text-slate-400 leading-relaxed font-medium">
-                        {quizQuestions[currentQuestionIndex].explanation}
-                      </p>
-                      <p className="text-[10px] font-bold text-emerald-800 dark:text-emerald-455">
-                        Referencia: {quizQuestions[currentQuestionIndex].reference}
-                      </p>
-
-                      <button
-                        type="button"
-                        onClick={handleNextQuestion}
-                        className="mt-3 rounded-lg bg-emerald-800 hover:bg-slate-900 text-white font-bold text-xs px-4 py-2 transition"
-                      >
-                        {currentQuestionIndex < quizQuestions.length - 1 ? "Siguiente Pregunta" : "Finalizar Autoevaluación"}
-                      </button>
-                    </motion.div>
-                  )}
                 </div>
-              ) : (
-                <div className="text-center py-8 space-y-4">
-                  <h5 className="font-bold text-lg text-slate-900 dark:text-white">Simulador Completado</h5>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-                    Has acertado <strong className="text-emerald-800 dark:text-emerald-400 text-sm">{quizScore}</strong> de <strong>{quizQuestions.length}</strong> preguntas.
-                  </p>
-                  <button
-                    type="button"
-                    onClick={resetQuiz}
-                    className="rounded-lg bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs px-5 py-2.5 transition"
-                  >
-                    Reiniciar Test Choice
-                  </button>
+
+                <div className="flex gap-4">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-800 font-bold text-sm">
+                    2
+                  </div>
+                  <div>
+                    <h5 className="text-xs font-bold text-slate-900">Estudio por Repetición Espaciada</h5>
+                    <p className="text-[11px] text-slate-600 leading-relaxed mt-0.5">
+                      Las <strong>Flashcards VIP</strong> te permiten repasar mnemotecnias, preparados histológicos y clasificaciones de fármacos de manera interactiva, ahorrando horas de lectura improductiva.
+                    </p>
+                  </div>
                 </div>
-              )}
+
+                <div className="flex gap-4">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-800 font-bold text-sm">
+                    3
+                  </div>
+                  <div>
+                    <h5 className="text-xs font-bold text-slate-900">Creador de Hábitos Lógico</h5>
+                    <p className="text-[11px] text-slate-600 leading-relaxed mt-0.5">
+                      Evita el agotamiento cerebral. Nuestro organizador restringe la cantidad de materias a estudiar por día según tu disponibilidad de horas reales, permitiéndote fijar metas realistas y medibles.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="rounded-xl bg-slate-50 border border-slate-200 p-4 text-[11px] text-slate-600 leading-relaxed font-semibold">
+                💡 En resumen: Este panel centraliza el método estratégico de aprobación, eliminando la necesidad de planificar a mano o improvisar el repaso antes de un examen oral.
+              </div>
             </div>
 
-            {/* Columna Derecha: AI Feedback & Asesor */}
-            <div className="space-y-6">
+            {/* Columna Derecha: Mensaje de estudio tranquilo y Soporte vía WhatsApp */}
+            <div className="space-y-4 font-sans">
               
-              {/* Asesor IA Widget */}
-              <div className="glass-card rounded-2xl p-5 border border-amber-500/35 clinical-shadow space-y-3">
-                <span className="rounded bg-amber-500/20 px-2 py-0.5 text-[9px] font-black uppercase text-amber-500">
-                  AI Academic Coach
+              <div className="glass-card rounded-2xl p-6 border border-emerald-500/35 clinical-shadow space-y-4 bg-white">
+                <span className="rounded bg-emerald-50 border border-emerald-200 px-2 py-0.5 text-[9px] font-black uppercase text-emerald-800">
+                  Estudio Tranquilo y Enfocado
                 </span>
-                <h4 className="font-bold text-sm text-slate-800 dark:text-white mt-1">Recomendación Clínica Personalizada</h4>
                 
-                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-                  Hemos analizado tus bloques del <strong>Planificador Semanal</strong>. Tu mayor foco de estudio esta semana corresponde a la anatomía del Miembro Superior. Te sugerimos realizar la <strong>Gymkana de Codo y Antebrazo</strong> para afianzar el reconocimiento antes de tu clase de repaso de este viernes.
-                </p>
-                <div className="rounded-lg bg-emerald-50/50 dark:bg-emerald-950/20 p-3 text-[11px] text-emerald-800 dark:text-emerald-400 font-semibold leading-relaxed">
-                  Tip del Tutor: En miembro superior, asocia cada accidente óseo siempre con el músculo que se inserta allí para no memorizar en vano.
-                </div>
-              </div>
-
-              {/* Quick stats tracker */}
-              <div className="glass-card rounded-2xl p-5 border border-slate-200 dark:border-[#1d3330] clinical-shadow">
-                <h4 className="font-bold text-xs text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-3">
-                  Tus Estadísticas VIP
+                <h4 className="font-bold text-sm text-slate-900 mt-1">
+                  Tu tranquilidad es el pilar de tu aprendizaje
                 </h4>
-                <div className="grid grid-cols-2 gap-3 text-center">
-                  <div className="border border-slate-100 dark:border-[#1d3330] rounded-xl p-3.5">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase block">Horas de Estudio</span>
-                    <span className="text-xl font-black text-emerald-800 dark:text-emerald-400 block mt-1">24 hs</span>
-                    <span className="text-[9px] text-slate-500 block">Esta semana</span>
-                  </div>
+                
+                <p className="text-xs text-slate-600 leading-relaxed font-medium">
+                  La carrera de medicina es de largo aliento. Estudiar con calma, constancia y una estrategia clara reduce el estrés y aumenta la retención. No se trata de memorizar sin parar, sino de estructurar la información con tranquilidad y comprender la lógica clínica detrás de cada preparado o gráfico.
+                </p>
 
-                  <div className="border border-slate-100 dark:border-[#1d3330] rounded-xl p-3.5">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase block">Mnemotecnias</span>
-                    <span className="text-xl font-black text-amber-600 block mt-1">12 activas</span>
-                    <span className="text-[9px] text-slate-500 block">En tus notas</span>
-                  </div>
+                <div className="border-t border-slate-100 pt-4 space-y-3">
+                  <p className="text-[11px] text-slate-500 leading-relaxed">
+                    Si te sientes abrumado con la materia o necesitas ayuda personalizada para sacarle provecho a tus planificadores, solicita soporte directo para recibir asistencia veloz de nuestros tutores.
+                  </p>
+
+                  <a
+                    href="https://wa.me/5492996232195?text=Hola,%20vengo%20del%20Panel%20VIP%20de%20Kinase.%20Necesito%20ayuda%20u%20orientación%20con%20mis%20estudios."
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block w-full rounded-lg bg-emerald-800 hover:bg-slate-900 text-white font-bold text-xs py-2.5 text-center transition shadow-sm"
+                  >
+                    💬 Soporte Veloz por WhatsApp
+                  </a>
                 </div>
               </div>
 
