@@ -24,6 +24,16 @@ type TestimonialPayload = {
   phone?: string
 }
 
+type BookingPayload = {
+  type: 'booking'
+  name: string
+  lastname: string
+  email: string
+  phone: string
+  subject: string
+  dateTime: string
+}
+
 const defaultResendFrom = 'onboarding@resend.dev'
 const defaultResendTo = 'Giacomassi.nqn@gmail.com'
 
@@ -81,6 +91,32 @@ const parseTestimonialPayload = (body: unknown): TestimonialPayload | null => {
   }
 }
 
+const parseBookingPayload = (body: unknown): BookingPayload | null => {
+  if (!body || typeof body !== 'object') return null
+
+  const record = body as Record<string, unknown>
+  if (record.type !== 'booking') return null
+
+  const name = toCleanString(record.name)
+  const lastname = toCleanString(record.lastname)
+  const email = toCleanString(record.email)
+  const phone = toCleanString(record.phone)
+  const subject = toCleanString(record.subject)
+  const dateTime = toCleanString(record.dateTime)
+
+  if (!name || !lastname || !email || !phone || !subject || !dateTime) return null
+
+  return {
+    type: 'booking',
+    name,
+    lastname,
+    email,
+    phone,
+    subject,
+    dateTime
+  }
+}
+
 const buildEmailText = (lead: LeadPayload) => {
   return [
     'Nuevo lead',
@@ -109,6 +145,25 @@ const buildTestimonialText = (testimonial: TestimonialPayload) => {
     '',
     'Testimonio:',
     testimonial.testimonial,
+  ].join('\n')
+}
+
+const buildBookingText = (booking: BookingPayload) => {
+  return [
+    `Hola ${booking.name} ${booking.lastname},`,
+    '',
+    '¡Tu solicitud de Acompañamiento en Kinase Academy ha sido registrada con éxito!',
+    '',
+    'Para que tu tutor asignado pueda preparar la sesión de forma personalizada y darte la mejor ayuda posible, por favor completa el Test de Rendimiento Académico (Semáforo) dentro de nuestra plataforma antes de la fecha de tu encuentro.',
+    '',
+    'Solo te tomará 2 minutos y nos brindará información clave sobre tus hábitos de estudio y estilo de vida.',
+    '',
+    'Detalles de tu solicitud:',
+    `- Tema/Materia: ${booking.subject}`,
+    `- Día y Horario: ${booking.dateTime}`,
+    '',
+    '¡Nos vemos pronto en la academia!',
+    'El equipo de Kinase Academy.'
   ].join('\n')
 }
 
@@ -162,23 +217,40 @@ export const handleSendEmail = async (
   const payload = await readJsonBody(req)
   const lead = parseLeadPayload(payload)
   const testimonial = parseTestimonialPayload(payload)
+  const booking = parseBookingPayload(payload)
 
-  if (!lead && !testimonial) {
+  if (!lead && !testimonial && !booking) {
     return Response.json(
       { error: 'Faltan datos del formulario para enviar el email.' },
       { status: 400 }
     )
   }
 
-  const emailText = lead ? buildEmailText(lead) : buildTestimonialText(testimonial!)
-  const subject = lead ? 'Nuevo diagnostico recibido' : 'Nuevo testimonio recibido'
+  let emailText = ''
+  let subject = ''
+  let targetRecipient = resendTo
+
+  if (lead) {
+    emailText = buildEmailText(lead)
+    subject = 'Nuevo diagnostico recibido'
+  } else if (testimonial) {
+    emailText = buildTestimonialText(testimonial)
+    subject = 'Nuevo testimonio recibido'
+  } else if (booking) {
+    emailText = buildBookingText(booking)
+    subject = '📋 Completa tu Test Académico antes de tu Acompañamiento - Kinase Academy'
+    
+    if (resendFrom !== 'onboarding@resend.dev' && isValidEmail(booking.email)) {
+      targetRecipient = booking.email
+    }
+  }
 
   try {
     const resend = new Resend(resendApiKey)
 
     const data = await resend.emails.send({
       from: resendFrom,
-      to: resendTo,
+      to: targetRecipient,
       subject,
       text: emailText,
     })

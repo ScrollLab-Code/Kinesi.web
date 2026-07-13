@@ -32,11 +32,32 @@ export default function Courses() {
     }
   ]
 
-  const handleBookingSubmit = (e: React.FormEvent) => {
+  const handleBookingSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!selectedDay || !dayOfMonth || !selectedTimeSlot || !name || !lastname || !email || !phone) {
       alert("Por favor completa todos los campos y selecciona un día y horario.")
       return
+    }
+
+    // Send email to student instructing them to do the academic test
+    try {
+      await fetch("/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          type: "booking",
+          name,
+          lastname,
+          email,
+          phone,
+          subject: subject || "Acompañamiento general",
+          dateTime: `${selectedDay} ${dayOfMonth} de ${currentMonthName} a las ${selectedTimeSlot} hs`,
+        }),
+      })
+    } catch (err) {
+      console.warn("Error sending booking email:", err)
     }
 
     const message = [
