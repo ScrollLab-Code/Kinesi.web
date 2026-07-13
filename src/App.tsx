@@ -247,7 +247,7 @@ function App() {
                 { id: 'bienvenido', label: 'Bienvenidos' },
                 { id: 'mercado', label: 'Feria de Materiales' },
                 { id: 'ayuda', label: 'Diagnóstico & Coaching' },
-                { id: 'cursos', label: 'Tutorías Médicas' },
+                { id: 'cursos', label: 'Acompañamiento' },
                 { id: 'testimonios', label: 'Testimonios' },
                 { id: 'premium', label: 'Premium VIP', isSpecial: true }
               ]

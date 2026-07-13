@@ -13,8 +13,11 @@ export default function Courses() {
   const [lastname, setLastname] = useState("")
   const [email, setEmail] = useState("")
   const [phone, setPhone] = useState("")
-  const [subject, setSubject] = useState("Anatomía")
+  const [subject, setSubject] = useState("")
+  const [dayOfMonth, setDayOfMonth] = useState("")
   const [isBooked, setIsBooked] = useState(false)
+
+  const currentMonthName = new Date().toLocaleString("es-AR", { month: "long" })
 
   const availableDays = ["Lunes", "Miércoles", "Jueves", "Viernes"]
   
@@ -31,18 +34,18 @@ export default function Courses() {
 
   const handleBookingSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!selectedDay || !selectedTimeSlot || !name || !lastname || !email || !phone) {
+    if (!selectedDay || !dayOfMonth || !selectedTimeSlot || !name || !lastname || !email || !phone) {
       alert("Por favor completa todos los campos y selecciona un día y horario.")
       return
     }
 
     const message = [
-      "📌 Nueva Reserva de Tutoría Particular (Kinase Academy)",
+      "📌 Nueva Reserva de Acompañamiento Particular (Kinase Academy)",
       `Estudiante: ${name} ${lastname}`,
       `Email: ${email}`,
       `WhatsApp: ${phone}`,
       `Materia/Tema: ${subject}`,
-      `Día: ${selectedDay}`,
+      `Día: ${selectedDay} ${dayOfMonth} de ${currentMonthName} (mes corriente vigente)`,
       `Horario: ${selectedTimeSlot} hs`
     ].join("\n")
 
@@ -58,7 +61,8 @@ export default function Courses() {
     setLastname("")
     setEmail("")
     setPhone("")
-    setSubject("Anatomía")
+    setSubject("")
+    setDayOfMonth("")
     setIsBooked(false)
   }
 
@@ -72,10 +76,10 @@ export default function Courses() {
             Gestión de Compromisos Kinase Academy
           </span>
           <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
-            Tutorías Médicas & Reservas
+            Acompañamiento Médico & Reservas
           </h2>
           <p className="text-xs text-slate-500 dark:text-slate-400 max-w-md mx-auto leading-relaxed">
-            Reserva una vacante para tutorías particulares de Anatomía, Fisiología o Histología con asignación horaria inmediata.
+            Reserva una vacante para acompañamiento particular de Anatomía, Fisiología o Histología con asignación horaria inmediata.
           </p>
         </div>
 
@@ -90,7 +94,7 @@ export default function Courses() {
                   : 'border-transparent text-slate-400 hover:text-slate-655'
               }`}
             >
-              📅 Reservar Turno de Tutoría
+              📅 Reservar Turno de Acompañamiento
             </button>
             <button
               onClick={() => setActiveTab('cursos')}
@@ -197,6 +201,32 @@ export default function Courses() {
                     
                     <div className="grid gap-3 sm:grid-cols-2">
                       <div>
+                        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">
+                          Número de Día del Mes
+                        </label>
+                        <input
+                          type="number"
+                          min="1"
+                          max="31"
+                          required
+                          value={dayOfMonth}
+                          onChange={e => setDayOfMonth(e.target.value)}
+                          placeholder="Ej. 14"
+                          className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs outline-none focus:border-emerald-600 dark:border-[#1d3330] dark:bg-[#090f0e] dark:text-white"
+                        />
+                      </div>
+                      <div className="flex flex-col justify-center bg-stone-50 dark:bg-[#0c1312] border border-slate-200 dark:border-[#1d3330] rounded-lg p-2.5">
+                        <span className="text-[9px] font-black uppercase text-emerald-850 dark:text-emerald-400 block tracking-wider">
+                          Mes Corriente Vigente
+                        </span>
+                        <span className="text-[11px] font-bold text-slate-600 dark:text-slate-300 block capitalize mt-0.5">
+                          {currentMonthName}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      <div>
                         <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Nombre</label>
                         <input
                           type="text"
@@ -247,24 +277,27 @@ export default function Courses() {
 
                     <div>
                       <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Materia / Tema a tratar</label>
-                      <select
+                      <input
+                        type="text"
+                        required
                         value={subject}
                         onChange={e => setSubject(e.target.value)}
+                        placeholder="Ej. Anatomía (Miembro Superior), Fisiología (Cardio) o el tema que necesites..."
                         className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs outline-none focus:border-emerald-600 dark:border-[#1d3330] dark:bg-[#090f0e] dark:text-white"
-                      >
-                        <option value="Anatomía">Anatomía (Miembro Superior, Inferior, Tórax, Neuro)</option>
-                        <option value="Fisiología">Fisiología (Cardio, Renal, Respiratorio, Endocrino)</option>
-                        <option value="Histología">Histología y Embriología</option>
-                        <option value="Otro">Otro Tema / Consulta Académica Especial</option>
-                      </select>
+                      />
                     </div>
 
-                    <button
-                      type="submit"
-                      className="w-full rounded-lg bg-emerald-800 hover:bg-slate-900 text-white font-bold text-xs py-3 transition duration-200 shadow-md uppercase tracking-wider"
-                    >
-                      Confirmar Reserva y Notificar vía WhatsApp
-                    </button>
+                    <div className="space-y-2">
+                      <button
+                        type="submit"
+                        className="w-full rounded-lg bg-emerald-800 hover:bg-slate-900 text-white font-bold text-xs py-3 transition duration-200 shadow-md uppercase tracking-wider"
+                      >
+                        Confirmar Reserva y Notificar vía WhatsApp
+                      </button>
+                      <p className="text-[10px] text-slate-450 text-center dark:text-slate-500 font-medium">
+                        * Cada sesión de acompañamiento personalizado de 1 hora tiene un valor de $12.000 ARS.
+                      </p>
+                    </div>
                   </div>
                 )}
 
@@ -288,7 +321,7 @@ export default function Courses() {
 
             <div className="border-t border-slate-100 dark:border-[#1d3330] pt-6 max-w-sm mx-auto space-y-4">
               <p className="text-xs text-slate-600 dark:text-slate-400 leading-normal">
-                ¿Necesitas apoyo particular inmediato o deseas reservar una vacante para las tutorías personalizadas? Contáctanos de forma directa.
+                ¿Necesitas apoyo particular inmediato o deseas reservar una vacante para el acompañamiento personalizado? Contáctanos de forma directa.
               </p>
               
               <a
