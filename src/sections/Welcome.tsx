@@ -228,24 +228,24 @@ export default function Welcome() {
         <div className="space-y-8">
           
           {/* Tarjeta de Bienvenida */}
-          <div className="rounded-2xl border border-emerald-900 bg-gradient-to-br from-emerald-850 to-emerald-950 p-6 text-white clinical-shadow">
-            <span className="rounded-full bg-emerald-700/60 border border-emerald-500/30 px-3 py-1 text-[10px] font-black uppercase tracking-wider text-emerald-300">
-              Panel de Bienvenida
+          <div className="rounded-2xl border border-emerald-900 bg-[#0e2723] p-6 sm:p-8 text-white clinical-shadow">
+            <span className="rounded-full bg-emerald-800/80 border border-emerald-500/30 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-emerald-300">
+              Espacio del Estudiante
             </span>
-            <h2 className="mt-4 text-3xl font-black tracking-tight text-white">
-              ¡Te damos la bienvenida a la activación académica!
+            <h2 className="mt-3 text-2xl sm:text-3xl font-black tracking-tight text-white">
+              Tu centro de estudio diario en Medicina
             </h2>
-            <p className="mt-2 text-sm text-slate-100 leading-relaxed">
-              Kinase Academy es el catalizador que activa tu potencial. Un espacio libre de competencia destructiva, diseñado para brindarte metodologías y contención en las materias más exigentes de medicina.
+            <p className="mt-2 text-xs sm:text-sm text-emerald-100/90 leading-relaxed max-w-2xl font-normal">
+              Consultá fechas de parciales, guardá tus apuntes por materia y sumate a grupos de estudio de Anatomía, Histología y Fisiología.
             </p>
           </div>
 
           {/* Sección de Avisos */}
-          <div className="glass-card rounded-2xl p-6 clinical-shadow space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+          <div className="tactile-card rounded-2xl p-6 clinical-shadow space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-[#1d3330] pb-3">
               <div className="flex items-center gap-3">
-                <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                  Tablón de Avisos y Novedades
+                <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                  📢 Novedades & Avisos de Cátedra
                 </h3>
                 <button
                   onClick={() => setShowAnnounceForm(!showAnnounceForm)}

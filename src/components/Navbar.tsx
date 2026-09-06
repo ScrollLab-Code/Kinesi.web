@@ -16,60 +16,66 @@ export default function Navbar({
   return (
     <>
       {/* Top bar - Medical Logo and session actions */}
-      <header className="fixed top-0 w-full bg-white/95 backdrop-blur-md border-b border-slate-200 z-40 py-3 px-6 shadow-sm transition-colors duration-300">
+      <header className="fixed top-0 w-full bg-[#fbf9f5]/90 dark:bg-[#091211]/90 backdrop-blur-md border-b border-[#e7e3db] dark:border-[#1c2c29] z-40 py-3.5 px-6 transition-colors duration-300">
         <div className="flex items-center justify-between max-w-7xl mx-auto">
           
           {/* Logo - links to home */}
           <button 
             type="button"
             onClick={() => onNavigate ? onNavigate('bienvenido') : window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="flex items-center gap-2.5 text-left bg-transparent border-0 outline-none p-0 cursor-pointer"
+            className="flex items-center gap-2.5 text-left bg-transparent border-0 outline-none p-0 cursor-pointer group"
           >
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2.5">
               <img 
                 src={logoIcon} 
                 alt="KINASE Logo Mark" 
-                className="h-9 w-9 md:h-11 md:w-11 object-contain rounded-xl border border-slate-200 bg-white p-0.5" 
+                className="h-9 w-9 md:h-10 md:w-10 object-contain rounded-xl border border-slate-200 dark:border-slate-800 bg-white p-0.5 shadow-sm group-hover:scale-105 transition duration-200" 
               />
               <div className="flex flex-col justify-center leading-none">
-                <span className="text-sm md:text-base font-black uppercase tracking-[0.15em] text-slate-900 font-sans">
+                <span className="text-sm md:text-base font-black uppercase tracking-[0.16em] text-slate-900 dark:text-white font-sans">
                   Kinase
                 </span>
-                <span className="text-[8px] md:text-[9px] font-bold uppercase tracking-[0.38em] text-slate-500 font-sans mt-0.5">
+                <span className="text-[8px] md:text-[9px] font-bold uppercase tracking-[0.38em] text-slate-500 dark:text-slate-400 font-sans mt-0.5">
                   Academy
                 </span>
               </div>
             </div>
             {isPremium && (
-              <span className="hidden sm:inline-block rounded-full bg-amber-500/20 border border-amber-500/30 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-amber-600 animate-pulse">
-                Miembro Premium VIP
+              <span className="hidden sm:inline-block rounded-full bg-amber-500/10 border border-amber-500/30 px-2.5 py-0.5 text-[10px] font-bold text-amber-700 dark:text-amber-400">
+                ⭐ Premium VIP
               </span>
             )}
           </button>
 
-          {/* Menú Central */}
+          {/* Central Menu */}
           <div className="hidden md:flex items-center gap-6 font-sans">
             <button
-              onClick={() => onNavigate ? onNavigate('cursos') : document.getElementById('cursos')?.scrollIntoView({ behavior: 'smooth' })}
-              className="text-xs font-bold text-slate-600 hover:text-emerald-800 transition uppercase tracking-wider"
+              onClick={() => onNavigate ? onNavigate('bienvenido') : document.getElementById('inicio')?.scrollIntoView({ behavior: 'smooth' })}
+              className="text-xs font-bold text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition cursor-pointer"
             >
-              Cursos
+              Inicio
             </button>
             <button
               onClick={() => onNavigate ? onNavigate('mercado') : document.getElementById('mercado')?.scrollIntoView({ behavior: 'smooth' })}
-              className="text-xs font-bold text-slate-600 hover:text-emerald-800 transition uppercase tracking-wider"
+              className="text-xs font-bold text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition cursor-pointer"
             >
-              Academia
+              Apuntes & Recursos
+            </button>
+            <button
+              onClick={() => onNavigate ? onNavigate('cursos') : document.getElementById('cursos')?.scrollIntoView({ behavior: 'smooth' })}
+              className="text-xs font-bold text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition cursor-pointer"
+            >
+              Tutorías
             </button>
             <button
               onClick={() => onNavigate ? onNavigate('ayuda') : document.getElementById('ayuda')?.scrollIntoView({ behavior: 'smooth' })}
-              className="text-xs font-bold text-slate-600 hover:text-emerald-800 transition uppercase tracking-wider"
+              className="text-xs font-bold text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition cursor-pointer"
             >
-              Sobre Nosotros
+              Diagnóstico
             </button>
           </div>
 
-          {/* Zona de Acción (Derecha) */}
+          {/* Action Zone (Right) */}
           <div className="flex items-center gap-3">
             {onLogout ? (
               <>
@@ -77,22 +83,21 @@ export default function Navbar({
                   <button
                     type="button"
                     onClick={onPremiumClick}
-                    className={`flex items-center gap-1 px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-lg text-xs font-black transition border shadow-sm ${
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
                       isPremium
-                        ? "bg-amber-500 border-amber-600 text-white hover:bg-amber-600"
-                        : "bg-gradient-to-r from-amber-500 to-yellow-500 border-amber-400 text-slate-900 hover:from-amber-600 hover:to-yellow-600 animate-pulse"
+                        ? "bg-amber-50 border border-amber-200 text-amber-800 dark:bg-amber-950/40 dark:border-amber-900 dark:text-amber-300"
+                        : "bg-amber-500 hover:bg-amber-600 text-white shadow-sm"
                     }`}
                   >
-                    <span className="hidden sm:inline">{isPremium ? "Premium VIP" : "Hazte Premium"}</span>
-                    <span className="inline sm:hidden">{isPremium ? "💎" : "👑"}</span>
+                    <span>{isPremium ? "Miembro VIP" : "Acceso VIP ⭐"}</span>
                   </button>
                 )}
                 <button
                   type="button"
                   onClick={onLogout}
-                  className="rounded-lg bg-emerald-800 px-3.5 py-1.5 sm:px-4 sm:py-2 font-bold text-white transition hover:bg-slate-900 text-xs shadow-sm"
+                  className="rounded-xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-[#0f1918] px-3.5 py-1.5 font-bold text-slate-700 dark:text-slate-300 transition hover:bg-slate-100 dark:hover:bg-[#1a2c28] text-xs shadow-sm cursor-pointer"
                 >
-                  Cerrar Sesión
+                  Salir
                 </button>
               </>
             ) : (
@@ -100,17 +105,9 @@ export default function Navbar({
                 <button
                   type="button"
                   onClick={() => document.getElementById('inicio')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-lg text-xs font-black transition border border-amber-400 shadow-sm bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-900 hover:from-amber-600 hover:to-yellow-600"
+                  className="rounded-xl bg-[#0e2723] hover:bg-slate-900 dark:bg-emerald-800 dark:hover:bg-emerald-700 px-4 py-2 font-bold text-white transition text-xs shadow-sm cursor-pointer"
                 >
-                  <span className="hidden sm:inline">Hazte Premium</span>
-                  <span className="inline sm:hidden">👑</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => document.getElementById('inicio')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="rounded-lg bg-emerald-800 px-3.5 py-1.5 sm:px-4 sm:py-2 font-bold text-white transition hover:bg-slate-900 text-xs shadow-sm"
-                >
-                  Iniciar Sesión
+                  Ingresar
                 </button>
               </>
             )}
@@ -119,7 +116,7 @@ export default function Navbar({
         </div>
       </header>
 
-      {/* Spacers for fixed elements */}
+      {/* Spacers for fixed header */}
       <div className="h-20" />
     </>
   )

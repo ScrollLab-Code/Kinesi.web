@@ -224,61 +224,61 @@ function App() {
         }`}
       >
         <div className="mx-auto max-w-7xl">
-          <p className={`mb-2 text-xs font-black uppercase tracking-[0.2em] ${
-            isPremium ? 'text-amber-500 animate-pulse' : 'text-emerald-800 dark:text-emerald-400'
+          <p className={`mb-1.5 text-xs font-bold uppercase tracking-wider ${
+            isPremium ? 'text-amber-400' : 'text-emerald-800 dark:text-emerald-400'
           }`}>
-            {isPremium ? '💎 Kinase Premium VIP Dashboard' : 'Panel del Estudiante'}
+            {isPremium ? '⭐ Kinase VIP' : 'Panel de Estudio'}
           </p>
 
-          <h1 className={`max-w-3xl text-3xl font-black leading-tight md:text-5xl tracking-tight ${
+          <h1 className={`max-w-3xl text-2xl md:text-4xl font-black leading-tight tracking-tight ${
             isPremium ? 'text-white' : 'text-slate-900 dark:text-white'
           }`}>
             {isPremium 
-              ? 'Entorno Médico de Alto Rendimiento. Tienes acceso completo.' 
-              : 'Estudia con método, comparte tus experiencias y aprueba con tranquilidad.'}
+              ? 'Hola 👋 Tenés acceso libre a todas las herramientas avanzadas.' 
+              : 'Hola 👋 ¿Qué materia o tema vas a repasar hoy?'}
           </h1>
         </div>
       </section>
 
       {/* Dynamic Navigation Tabs */}
-      <nav className={`sticky top-20 bg-white/95 dark:bg-[#111c1a]/95 backdrop-blur-md border-b px-6 py-3 z-30 shadow-sm transition-colors duration-300 ${
-        isPremium ? 'border-amber-500/30' : 'border-slate-200 dark:border-[#1d3330]'
+      <nav className={`sticky top-20 bg-[#fbf9f5]/95 dark:bg-[#091211]/95 backdrop-blur-md border-b px-6 py-3 z-30 transition-colors duration-300 ${
+        isPremium ? 'border-amber-500/20' : 'border-[#e7e3db] dark:border-[#1c2c29]'
       }`}>
         <div className="mx-auto max-w-7xl flex gap-2 overflow-x-auto scrollbar-none">
           {(!isPremium
             ? [
-                { id: 'bienvenido', label: 'Bienvenidos' },
-                { id: 'mercado', label: 'Feria de Materiales' },
-                { id: 'ayuda', label: 'Diagnóstico & Coaching' },
-                { id: 'cursos', label: 'Acompañamiento' },
-                { id: 'testimonios', label: 'Testimonios' },
-                { id: 'premium', label: 'Premium VIP', isSpecial: true }
+                { id: 'bienvenido', label: 'Inicio & Avisos' },
+                { id: 'mercado', label: 'Apuntes & Atlas' },
+                { id: 'ayuda', label: 'Diagnóstico de Cursada' },
+                { id: 'cursos', label: 'Tutorías Cátedra' },
+                { id: 'testimonios', label: 'Experiencias de Examen' },
+                { id: 'premium', label: 'Kinase VIP ⭐', isSpecial: true }
               ]
             : [
-                { id: 'bienvenido', label: 'Bienvenidos' },
-                { id: 'premium', label: 'Panel VIP', isSpecial: true },
-                { id: 'cuadro_sinoptico', label: 'Creador de Cuadro Sinóptico' },
-                { id: 'planificador', label: 'Planificador Inverso' },
-                { id: 'planificador_semanal', label: 'Planificador Semanal' },
-                { id: 'flashcards', label: 'Flashcards VIP' },
-                { id: 'habit_creator', label: 'Creador de Habitos' },
-                { id: 'publicas', label: 'Secciones Públicas' }
+                { id: 'bienvenido', label: 'Inicio & Avisos' },
+                { id: 'premium', label: 'Panel VIP ⭐', isSpecial: true },
+                { id: 'cuadro_sinoptico', label: 'Cuadros Sinópticos' },
+                { id: 'planificador', label: 'Planificador de Finales' },
+                { id: 'planificador_semanal', label: 'Plan Semanal' },
+                { id: 'flashcards', label: 'Flashcards de Anki' },
+                { id: 'habit_creator', label: 'Creador de Hábitos' },
+                { id: 'publicas', label: 'Recursos Públicos' }
               ]
           ).map(tab => {
             const isActive = activeSection === tab.id
-            let activeStyle = 'bg-slate-900 text-white shadow-sm dark:bg-emerald-800'
-            let inactiveStyle = 'bg-stone-50 border border-slate-200 text-slate-655 hover:bg-stone-100 dark:bg-[#0d1615] dark:border-[#1d3330] dark:text-emerald-455'
+            let activeStyle = 'bg-[#0e2723] text-white shadow-sm dark:bg-emerald-800'
+            let inactiveStyle = 'bg-white border border-[#e5e0d5] text-slate-700 hover:bg-slate-100 dark:bg-[#0f1918] dark:border-[#1c2c29] dark:text-slate-300'
 
             if ('isSpecial' in tab && tab.isSpecial) {
               activeStyle = 'bg-amber-500 text-white shadow-sm'
-              inactiveStyle = 'bg-amber-5/10 border border-amber-250/20 text-amber-600 hover:bg-amber-100/50 dark:bg-[#1a170f] dark:border-amber-900/30 dark:text-amber-400'
+              inactiveStyle = 'bg-amber-50 border border-amber-200 text-amber-800 hover:bg-amber-100 dark:bg-amber-950/30 dark:border-amber-900/40 dark:text-amber-300'
             }
 
             return (
               <button
                 key={tab.id}
                 onClick={() => setActiveSection(tab.id as typeof activeSection)}
-                className={`px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
                   isActive ? activeStyle : inactiveStyle
                 }`}
               >

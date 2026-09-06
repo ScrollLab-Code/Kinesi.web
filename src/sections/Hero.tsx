@@ -1,58 +1,18 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import type { FormEvent } from "react"
 import { supabase } from "../lib/supabase"
 import logoIcon from "../assets/logo_icon.jpg"
-
-
-const studyTips = [
-  "En Anatomía, asocia cada accidente óseo con su inserción muscular y pedículo vascular inmediato.",
-  "Histología no se memoriza: entiende primero la relación entre la estructura tisular y su función.",
-  "Para Fisiología, esquematiza los mecanismos de retroalimentación (feedback) antes de ir a los detalles.",
-  "Estudia en bloques de 35 minutos de foco absoluto por cada 5 de descanso mental real.",
-  "Organiza repasos activos semanales: explicarle el tema a un compañero consolida el 90% del conocimiento."
-]
-
-const nextActions = [
-  {
-    title: "1. Lee testimonios y experiencias",
-    detail: "Descubre cómo otros estudiantes de medicina aprobaron Anatomía, Histología y Fisiología.",
-  },
-  {
-    title: "2. Consigue material verificado",
-    detail: "Atlas comentados, flashcards de Anki listas para importar y desgrabados recomendados.",
-  },
-  {
-    title: "3. Obtén un plan de estudio a medida",
-    detail: "Realiza el diagnóstico sin costo para estructurar tus tiempos y repasar bajo simulacros orales.",
-  },
-]
-
-const weeklyPlan = [
-  "Priorizar materias filtro del cuatrimestre",
-  "Esquematizar accidentes y preparados clave",
-  "Creación e importación de mazos Anki",
-  "Simulación de examen práctico cronometrado",
-]
 
 type HeroProps = {
   onAuthenticated?: () => void
 }
 
 export default function Hero({ onAuthenticated }: HeroProps) {
-  const [tipIndex, setTipIndex] = useState(0)
   const [accessMode, setAccessMode] = useState<"email" | "phone">("email")
   const [name, setName] = useState("")
   const [contact, setContact] = useState("")
   const [authStatus, setAuthStatus] = useState("")
   const [isLoading, setIsLoading] = useState(false)
-
-  useEffect(() => {
-    const timer = window.setInterval(() => {
-      setTipIndex((current) => (current + 1) % studyTips.length)
-    }, 5000)
-
-    return () => window.clearInterval(timer)
-  }, [])
 
   const activateLocalAccess = (message: string) => {
     onAuthenticated?.()
@@ -70,7 +30,7 @@ export default function Hero({ onAuthenticated }: HeroProps) {
       accessMode === "email" ? contact.trim() : normalizePhone(contact)
 
     if (!cleanName || !cleanContact) {
-      setAuthStatus("Por favor, ingresa tu nombre y un contacto válido.")
+      setAuthStatus("Por favor, ingresá tu nombre y un contacto válido.")
       return
     }
 
@@ -101,8 +61,8 @@ export default function Hero({ onAuthenticated }: HeroProps) {
 
       setAuthStatus(
         accessMode === "email"
-          ? "Te hemos enviado un enlace mágico a tu correo electrónico para ingresar."
-          : "Te hemos enviado un código SMS a tu celular."
+          ? "Te enviamos un enlace de acceso a tu correo electrónico."
+          : "Te enviamos un código de verificación por SMS."
       )
     } catch (error) {
       const message =
@@ -140,67 +100,106 @@ export default function Hero({ onAuthenticated }: HeroProps) {
   return (
     <section
       id="inicio"
-      className="min-h-[calc(100vh-80px)] bg-stone-50 text-slate-900 flex items-center pt-8 pb-12"
+      className="min-h-[calc(100vh-80px)] bg-[#fbf9f5] dark:bg-[#091211] text-slate-900 flex flex-col items-center justify-center pt-8 pb-16 px-6"
     >
-      <div className="mx-auto max-w-7xl px-6 w-full grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-        <div className="max-w-xl">
-          <div className="mb-6">
-            <div className="flex items-center gap-3.5 mb-5">
-              <img 
-                src={logoIcon} 
-                alt="KINASE Logo Mark" 
-                className="h-12 w-12 object-contain rounded-xl border border-slate-200 bg-white p-1 shadow-sm" 
-              />
-              <div className="flex flex-col justify-center leading-none">
-                <span className="text-xl font-black uppercase tracking-[0.18em] text-slate-950">
-                  Kinase
-                </span>
-                <span className="text-[10px] font-bold uppercase tracking-[0.42em] text-slate-550 mt-1">
-                  Academy
-                </span>
-              </div>
-            </div>
-            <h1 className="mt-2 text-4xl font-black leading-tight text-slate-950 md:text-5xl tracking-tight">
-              Afronta la carrera de medicina con un plan de estudio sólido.
-            </h1>
-            <p className="mt-4 text-base leading-relaxed text-slate-600">
-              Kinase es el espacio donde estudiantes de medicina comparten experiencias reales de examen, consiguen material verificado por tutores y acceden a simulacros prácticos presenciales y orales.
-            </p>
-          </div>
+      <div className="mx-auto max-w-xl w-full text-center space-y-6">
+        
+        {/* Brand Header Badge */}
+        <div className="inline-flex items-center gap-2.5 bg-white dark:bg-[#0e1614] border border-[#e5e0d5] dark:border-[#1d3330] rounded-full px-4 py-1.5 shadow-sm">
+          <img 
+            src={logoIcon} 
+            alt="KINASE Logo Mark" 
+            className="h-5 w-5 object-contain rounded-md" 
+          />
+          <span className="text-xs font-black uppercase tracking-[0.18em] text-slate-800 dark:text-white">
+            Kinase Academy
+          </span>
+          <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full">
+            Medicina
+          </span>
+        </div>
 
-          <form
-            onSubmit={createAccount}
-            className="glass-card rounded-2xl p-6 clinical-shadow space-y-5 transition-all duration-300"
-          >
-            <div className="grid grid-cols-2 rounded-lg bg-slate-100 dark:bg-[#0d1615] p-1 border border-slate-200 dark:border-[#1d3330]">
+        {/* Hero Headings - Clean NotebookLM Style */}
+        <div className="space-y-3">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
+            Tu carrera de medicina, organizada.
+          </h1>
+          <p className="text-sm md:text-base text-slate-600 dark:text-slate-400 max-w-md mx-auto leading-relaxed font-normal">
+            Conectate con compañeros, conseguí apuntes aprobados y prepará Anatomía, Histología y Fisiología con método.
+          </p>
+        </div>
+
+        {/* Centered Registration Card (NotebookLM Style) */}
+        <div className="notebook-hero-card rounded-2xl p-6 sm:p-8 text-left transition-all duration-300">
+          
+          <form onSubmit={createAccount} className="space-y-4">
+            
+            {/* Primary Google Login Button */}
+            <button
+              type="button"
+              onClick={signInWithGoogle}
+              disabled={isLoading}
+              className="w-full flex items-center justify-center gap-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#142220] py-3 text-sm font-bold text-slate-800 dark:text-white hover:bg-slate-50 dark:hover:bg-[#1a2c28] transition shadow-sm cursor-pointer"
+            >
+              <svg className="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+              </svg>
+              Continuar con Google
+            </button>
+
+            <div className="flex items-center my-4">
+              <div className="flex-1 border-t border-slate-200 dark:border-slate-800"></div>
+              <span className="px-3 text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase">o con tu cuenta</span>
+              <div className="flex-1 border-t border-slate-200 dark:border-slate-800"></div>
+            </div>
+
+            {/* Email / Phone Toggle */}
+            <div className="grid grid-cols-2 rounded-xl bg-slate-100 dark:bg-[#0a1211] p-1 border border-slate-200 dark:border-[#1d3330]">
               <button
                 type="button"
                 onClick={() => setAccessMode("email")}
-                className={`rounded-md py-1.5 text-xs font-bold transition ${
+                className={`rounded-lg py-1.5 text-xs font-bold transition ${
                   accessMode === "email"
-                    ? "bg-white text-slate-950 shadow-sm"
-                    : "text-slate-500 hover:text-slate-900"
+                    ? "bg-white dark:bg-[#142220] text-slate-900 dark:text-white shadow-sm"
+                    : "text-slate-500 hover:text-slate-900 dark:text-slate-400"
                 }`}
               >
-                Ingreso por Email
+                Email
               </button>
 
               <button
                 type="button"
                 onClick={() => setAccessMode("phone")}
-                className={`rounded-md py-1.5 text-xs font-bold transition ${
+                className={`rounded-lg py-1.5 text-xs font-bold transition ${
                   accessMode === "phone"
-                    ? "bg-white text-slate-950 shadow-sm"
-                    : "text-slate-500 hover:text-slate-900"
+                    ? "bg-white dark:bg-[#142220] text-slate-900 dark:text-white shadow-sm"
+                    : "text-slate-500 hover:text-slate-900 dark:text-slate-400"
                 }`}
               >
-                Ingreso por Celular
+                Celular
               </button>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-600 mb-1.5">
-                {accessMode === "email" ? "Tu dirección de correo" : "Tu número de celular"}
+              <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">
+                Tu nombre
+              </label>
+              <input
+                type="text"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+                placeholder="ej. Martina"
+                required
+                className="w-full rounded-xl border border-slate-200 dark:border-[#1d3330] bg-white dark:bg-[#070a09] px-4 py-2.5 outline-none transition focus:border-emerald-700 text-sm"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">
+                {accessMode === "email" ? "Correo electrónico" : "Número de celular"}
               </label>
               <input
                 type={accessMode === "email" ? "email" : "tel"}
@@ -212,110 +211,54 @@ export default function Hero({ onAuthenticated }: HeroProps) {
                     : "ej. +54 9 11 1234 5678"
                 }
                 required
-                className="w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 outline-none transition focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600/20 text-sm"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold text-slate-600 mb-1.5">
-                Tu nombre (cómo figurarás en el muro de experiencias)
-              </label>
-              <input
-                type="text"
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-                placeholder="ej. Martina"
-                required
-                className="w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 outline-none transition focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600/20 text-sm"
+                className="w-full rounded-xl border border-slate-200 dark:border-[#1d3330] bg-white dark:bg-[#070a09] px-4 py-2.5 outline-none transition focus:border-emerald-700 text-sm"
               />
             </div>
 
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full rounded-lg bg-emerald-800 py-2.5 text-xs font-bold text-white transition hover:bg-slate-950 disabled:bg-slate-300"
+              className="w-full rounded-xl bg-[#0e2723] hover:bg-slate-900 dark:bg-emerald-800 dark:hover:bg-emerald-700 py-3 text-xs font-bold text-white transition shadow-sm cursor-pointer disabled:opacity-50"
             >
-              {isLoading ? "Validando acceso..." : "Acceder a Kinase Academy"}
+              {isLoading ? "Ingresando..." : "Ingresar a Kinase"}
             </button>
 
-            <div className="flex items-center my-3">
-              <div className="flex-1 border-t border-slate-200"></div>
-              <span className="px-3 text-[10px] font-bold text-slate-400 uppercase">O</span>
-              <div className="flex-1 border-t border-slate-200"></div>
+            {/* NotebookLM Style Direct Demo Button */}
+            <div className="pt-2 text-center">
+              <button
+                type="button"
+                onClick={() => activateLocalAccess("Modo Demo activado.")}
+                className="text-xs font-bold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition underline underline-offset-4 cursor-pointer"
+              >
+                Probar sin registro (Modo Demo) →
+              </button>
             </div>
 
-            <button
-              type="button"
-              onClick={signInWithGoogle}
-              disabled={isLoading}
-              className="w-full flex items-center justify-center gap-2 rounded-lg border border-slate-250 bg-white py-2 text-xs font-bold text-slate-700 transition hover:bg-slate-50 hover:text-slate-900 shadow-sm"
-            >
-              <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
-                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-              </svg>
-              Continuar con Google
-            </button>
-
-            <button
-              type="button"
-              onClick={() => activateLocalAccess("Modo Demo local activado.")}
-              className="w-full text-center text-xs font-bold text-slate-500 hover:text-slate-900 transition py-1 underline underline-offset-4 cursor-pointer"
-            >
-              🚀 Explorar en Modo Demo (Acceso de Prueba)
-            </button>
-
             {authStatus && (
-              <p className="rounded bg-emerald-50 border border-emerald-100 p-2.5 text-xs font-semibold text-emerald-800 text-center">
+              <p className="rounded-xl bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-200 dark:border-emerald-800 p-3 text-xs font-medium text-emerald-800 dark:text-emerald-300 text-center">
                 {authStatus}
               </p>
             )}
+
           </form>
         </div>
 
-        <div className="space-y-4">
-          <div className="glass-card rounded-2xl p-5 clinical-shadow transition-all duration-300">
-            <h3 className="text-sm font-bold text-slate-900 mb-3 border-b border-slate-100 dark:border-[#1d3330] pb-2">
-              Cómo funciona el acompañamiento médico
-            </h3>
-            <div className="space-y-3">
-              {nextActions.map((action) => (
-                <div key={action.title} className="text-xs">
-                  <h4 className="font-bold text-slate-800">{action.title}</h4>
-                  <p className="text-slate-500 leading-normal mt-0.5">{action.detail}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="glass-card rounded-2xl p-5 clinical-shadow transition-all duration-300">
-            <div className="flex items-center justify-between gap-3 border-b border-slate-100 dark:border-[#1d3330] pb-2 mb-3">
-              <h4 className="text-sm font-bold text-slate-900">Plan de Regularidad</h4>
-              <span className="rounded bg-emerald-50 border border-emerald-100 px-2 py-0.5 text-[9px] font-bold text-emerald-850">
-                Frecuencia Semanal
-              </span>
-            </div>
-            <div className="grid grid-cols-2 gap-2 text-xs text-slate-600">
-              {weeklyPlan.map((item) => (
-                <div key={item} className="flex items-center gap-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-700 shrink-0" />
-                  <span>{item}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-emerald-900 bg-gradient-to-br from-emerald-850 to-emerald-950 dark:from-[#0a2622] dark:to-[#05110f] p-5 text-white clinical-shadow transition-all duration-300">
-            <p className="text-[10px] font-black uppercase tracking-wider text-emerald-300 dark:text-emerald-400 mb-1.5">
-              Consejo Clínico de la Semana
-            </p>
-            <p className="text-xs font-medium leading-relaxed italic text-slate-100">
-              "{studyTips[tipIndex]}"
-            </p>
-          </div>
+        {/* Minimal Footnote Badges */}
+        <div className="pt-2 flex flex-wrap items-center justify-center gap-4 text-xs font-medium text-slate-500 dark:text-slate-400">
+          <span className="flex items-center gap-1.5">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-600"></span>
+            Material verificado
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-600"></span>
+            Simulacros y flashcards
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-600"></span>
+            Comunidad de estudiantes
+          </span>
         </div>
+
       </div>
     </section>
   )

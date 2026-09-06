@@ -87,29 +87,29 @@ export default function TestSection() {
     if (totalScore <= 10) {
       return {
         status: "Rojo",
-        title: "Semáforo Rojo: Riesgo Académico Alto / Urgente",
-        description: "Tu nivel de desorganización del volumen de estudio, la falta de simulacros regulares y la alta carga de ansiedad oral indican un riesgo crítico de recursada. Necesitas asistencia urgente para cambiar el método de estudio de inmediato.",
+        title: "Semáforo Rojo: Momento de Reorganizar la Cursada",
+        description: "Estás acumulando atraso en las lecturas y la falta de repasos activos te puede jugar en contra antes de los parciales. Conviene ordenar tu cronograma semanal de inmediato.",
         colorClass: "bg-rose-600",
-        bgLight: "bg-rose-50 border-rose-200 text-rose-800",
+        bgLight: "bg-rose-50 border-rose-200 text-rose-800 dark:bg-rose-950/40 dark:border-rose-900 dark:text-rose-300",
         borderClass: "border-rose-300"
       }
     }
     if (totalScore <= 15) {
       return {
         status: "Amarillo",
-        title: "Semáforo Amarillo: Riesgo Académico Medio / Alerta",
-        description: "Estás dedicando tiempo y esfuerzo, pero careces de un método activo de memorización a largo plazo o sufres fallos de oratoria frente al docente. Con un plan estructurado y simulacros orales periódicos puedes estabilizar tu rendimiento y asegurar la cursada.",
+        title: "Semáforo Amarillo: Ritmo Bueno, Método a Ajustar",
+        description: "Le estás dedicando tiempo, pero falta afianzar la memoria a largo plazo o ganar soltura para los orales. Con esquemas activos y repetición espaciada vas a estabilizar la materia.",
         colorClass: "bg-amber-500",
-        bgLight: "bg-amber-50 border-amber-200 text-amber-800",
+        bgLight: "bg-amber-50 border-amber-200 text-amber-800 dark:bg-amber-950/40 dark:border-amber-900 dark:text-amber-300",
         borderClass: "border-amber-300"
       }
     }
     return {
       status: "Verde",
-      title: "Semáforo Verde: Rendimiento Estable y Optimizable",
-      description: "Tus hábitos de estudio y tu balance semanal son buenos. Puedes optimizar tu rendimiento incorporando flashcards de Anki de nivel avanzado, simulacros cronometrados de examen integrador y técnicas de oratoria para apuntar al promedio de excelencia (9-10).",
+      title: "Semáforo Verde: Buen Ritmo y Foco Firme",
+      description: "Tenés hábitos sólidos. Para mantenerte en 8-10 podés sumar mazos avanzados de Anki y autoevaluaciones cronometradas antes de cada parcial.",
       colorClass: "bg-emerald-600",
-      bgLight: "bg-emerald-50 border-emerald-250 text-emerald-800",
+      bgLight: "bg-emerald-50 border-emerald-250 text-emerald-800 dark:bg-emerald-950/40 dark:border-emerald-900 dark:text-emerald-300",
       borderClass: "border-emerald-300"
     }
   }

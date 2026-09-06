@@ -7,8 +7,8 @@ html {
 body {
   margin: 0;
   min-width: 320px;
-  background: #faf8f5;
-  color: #1e293b;
+  background: #fbf9f5;
+  color: #1a2321;
   font-family:
     'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -18,7 +18,7 @@ body {
 
 /* Dark mode overrides */
 .dark body {
-  background: #070c0b;
+  background: #091211;
   color: #f1f5f9;
 }
 
@@ -28,32 +28,41 @@ input,
 textarea,
 select {
   font: inherit;
-  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, border-color 0.3s ease-in-out, transform 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
 }
 
-/* Premium Warm Glassmorphism */
-.glass-card {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(220, 212, 198, 0.5);
-  box-shadow: 0 8px 32px 0 rgba(142, 135, 120, 0.04);
+/* Tactile / NotebookLM Minimal Card Aesthetics */
+.glass-card, .tactile-card {
+  background: #ffffff;
+  border: 1px solid rgba(226, 221, 212, 0.8);
+  box-shadow: 0 4px 20px -2px rgba(15, 35, 31, 0.04), 0 2px 6px -1px rgba(15, 35, 31, 0.02);
+  border-radius: 1.25rem;
 }
 
-.dark .glass-card {
-  background: rgba(14, 22, 20, 0.85);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(26, 44, 40, 0.7);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+.dark .glass-card, .dark .tactile-card {
+  background: #0f1918;
+  border: 1px solid rgba(27, 44, 41, 0.8);
+  box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.4);
+}
+
+.notebook-hero-card {
+  background: #ffffff;
+  border: 1px solid #e7e3db;
+  box-shadow: 0 20px 40px -15px rgba(15, 35, 31, 0.07), 0 1px 3px 0 rgba(0, 0, 0, 0.02);
+}
+
+.dark .notebook-hero-card {
+  background: #0f1817;
+  border: 1px solid #1c2c29;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
 }
 
 /* Custom premium clinical shadows */
 .clinical-shadow {
-  box-shadow: 0 10px 30px -10px rgba(15, 118, 110, 0.05);
+  box-shadow: 0 12px 32px -8px rgba(11, 35, 31, 0.06);
 }
 .dark .clinical-shadow {
-  box-shadow: 0 10px 35px -10px rgba(0, 0, 0, 0.55);
+  box-shadow: 0 12px 35px -10px rgba(0, 0, 0, 0.55);
 }
 
 /* Custom scrollbar */
@@ -63,10 +72,10 @@ select {
 }
 
 ::-webkit-scrollbar-track {
-  background: #faf8f5;
+  background: #fbf9f5;
 }
 .dark ::-webkit-scrollbar-track {
-  background: #070c0b;
+  background: #091211;
 }
 
 ::-webkit-scrollbar-thumb {
