@@ -166,6 +166,12 @@ export default function Welcome() {
     e.preventDefault()
     if (!announceTitle.trim() || !announceContent.trim()) return
 
+    const adminKey = window.prompt("Ingrese la Clave de Administrador para publicar anuncios oficiales:")
+    if (!adminKey || adminKey.trim() !== "KINASE-ADMIN-2026") {
+      alert("Clave de administrador incorrecta o no provista. No se puede publicar el aviso.")
+      return
+    }
+
     const finalContent = announceLink.trim()
       ? `${announceContent.trim()}\n\n[LINK_URL:${announceLink.trim()}]`
       : announceContent.trim()
@@ -203,17 +209,8 @@ export default function Welcome() {
         setAnnouncements(prev => [newLocal, ...prev])
       }
     } catch (err) {
-      console.warn("Could not insert announcement to Supabase, fallback to local state:", err)
-      const newLocal: Announcement = {
-        id: Math.random().toString(36).substring(2, 9),
-        title: newAnnData.title,
-        content: announceContent.trim(),
-        date: "Reciente",
-        tag: newAnnData.tag,
-        tagColor: "bg-emerald-50 border-emerald-200 text-emerald-800",
-        link: announceLink.trim() || undefined
-      }
-      setAnnouncements(prev => [newLocal, ...prev])
+      console.warn("Could not insert announcement to Supabase:", err)
+      alert("No se pudo publicar el aviso en la base de datos.")
     }
 
     setAnnounceTitle("")

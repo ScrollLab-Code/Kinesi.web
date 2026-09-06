@@ -23,9 +23,11 @@ ON public.announcements
 FOR SELECT 
 USING (true);
 
--- 4. Crear política para que cualquier usuario pueda PUBLICAR anuncios (puedes restringirlo después si lo deseas)
+-- 4. Crear política para inserción (solo usuarios autenticados o con rol adecuado)
 DROP POLICY IF EXISTS "Permitir insercion publica de anuncios" ON public.announcements;
-CREATE POLICY "Permitir insercion publica de anuncios" 
+DROP POLICY IF EXISTS "Permitir insercion de anuncios a usuarios autenticados" ON public.announcements;
+
+CREATE POLICY "Permitir insercion de anuncios a usuarios autenticados" 
 ON public.announcements 
 FOR INSERT 
-WITH CHECK (true);
+WITH CHECK (auth.role() = 'authenticated');

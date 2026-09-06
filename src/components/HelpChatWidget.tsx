@@ -141,11 +141,9 @@ export default function HelpChatWidget() {
                 </div>
               </div>
               <button
-                onClick={() => {
-                  setIsOpen(false)
-                  setMessages([])
-                }}
-                className="text-slate-400 hover:text-white text-xs font-black transition"
+                onClick={() => setIsOpen(false)}
+                className="text-slate-400 hover:text-white text-xs font-black transition cursor-pointer"
+                title="Cerrar chat"
               >
                 ✕
               </button>

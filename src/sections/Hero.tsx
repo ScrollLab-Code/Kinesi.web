@@ -99,14 +99,17 @@ export default function Hero({ onAuthenticated }: HeroProps) {
 
       if (error) throw error
 
-      activateLocalAccess(
-        "Acceso demo activado de forma segura."
+      setAuthStatus(
+        accessMode === "email"
+          ? "Te hemos enviado un enlace mágico a tu correo electrónico para ingresar."
+          : "Te hemos enviado un código SMS a tu celular."
       )
     } catch (error) {
-      // Direct access bypass to support local runs seamlessly when variables are missing
-      activateLocalAccess(
-        "Acceso de desarrollo activado correctamente."
-      )
+      const message =
+        error instanceof Error
+          ? error.message
+          : "No se pudo conectar con el servicio de autenticación."
+      setAuthStatus(`Error: ${message}`)
     } finally {
       setIsLoading(false)
     }
@@ -124,7 +127,11 @@ export default function Hero({ onAuthenticated }: HeroProps) {
       })
       if (error) throw error
     } catch (error) {
-      activateLocalAccess("Acceso de Google simulado correctamente (Modo Desarrollo).")
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Error al iniciar sesión con Google."
+      setAuthStatus(`Error: ${message}`)
     } finally {
       setIsLoading(false)
     }
@@ -250,6 +257,14 @@ export default function Hero({ onAuthenticated }: HeroProps) {
                 <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
               </svg>
               Continuar con Google
+            </button>
+
+            <button
+              type="button"
+              onClick={() => activateLocalAccess("Modo Demo local activado.")}
+              className="w-full text-center text-xs font-bold text-slate-500 hover:text-slate-900 transition py-1 underline underline-offset-4 cursor-pointer"
+            >
+              🚀 Explorar en Modo Demo (Acceso de Prueba)
             </button>
 
             {authStatus && (
