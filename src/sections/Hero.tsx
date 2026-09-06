@@ -100,31 +100,31 @@ export default function Hero({ onAuthenticated }: HeroProps) {
   return (
     <section
       id="inicio"
-      className="min-h-[calc(100vh-80px)] bg-[#fbf9f5] dark:bg-[#091211] text-slate-900 flex flex-col items-center justify-center pt-8 pb-16 px-6"
+      className="min-h-[calc(100vh-80px)] bg-[#fbf9f5] text-slate-900 flex flex-col items-center justify-center pt-8 pb-16 px-6"
     >
       <div className="mx-auto max-w-xl w-full text-center space-y-6">
         
         {/* Brand Header Badge */}
-        <div className="inline-flex items-center gap-2.5 bg-white dark:bg-[#0e1614] border border-[#e5e0d5] dark:border-[#1d3330] rounded-full px-4 py-1.5 shadow-sm">
+        <div className="inline-flex items-center gap-2.5 bg-white border border-[#e5e0d5] rounded-full px-4 py-1.5 shadow-sm">
           <img 
             src={logoIcon} 
             alt="KINASE Logo Mark" 
             className="h-5 w-5 object-contain rounded-md" 
           />
-          <span className="text-xs font-black uppercase tracking-[0.18em] text-slate-800 dark:text-white">
+          <span className="text-xs font-black uppercase tracking-[0.18em] text-slate-800">
             Kinase Academy
           </span>
-          <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full">
+          <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
             Medicina
           </span>
         </div>
 
         {/* Hero Headings - Clean NotebookLM Style */}
         <div className="space-y-3">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
             Tu carrera de medicina, organizada.
           </h1>
-          <p className="text-sm md:text-base text-slate-600 dark:text-slate-400 max-w-md mx-auto leading-relaxed font-normal">
+          <p className="text-sm md:text-base text-slate-600 max-w-md mx-auto leading-relaxed font-normal">
             Conectate con compañeros, conseguí apuntes aprobados y prepará Anatomía, Histología y Fisiología con método.
           </p>
         </div>
@@ -139,7 +139,7 @@ export default function Hero({ onAuthenticated }: HeroProps) {
               type="button"
               onClick={signInWithGoogle}
               disabled={isLoading}
-              className="w-full flex items-center justify-center gap-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#142220] py-3 text-sm font-bold text-slate-800 dark:text-white hover:bg-slate-50 dark:hover:bg-[#1a2c28] transition shadow-sm cursor-pointer"
+              className="w-full flex items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white py-3 text-sm font-bold text-slate-800 hover:bg-slate-50 transition shadow-sm cursor-pointer"
             >
               <svg className="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -151,20 +151,20 @@ export default function Hero({ onAuthenticated }: HeroProps) {
             </button>
 
             <div className="flex items-center my-4">
-              <div className="flex-1 border-t border-slate-200 dark:border-slate-800"></div>
-              <span className="px-3 text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase">o con tu cuenta</span>
-              <div className="flex-1 border-t border-slate-200 dark:border-slate-800"></div>
+              <div className="flex-1 border-t border-slate-200"></div>
+              <span className="px-3 text-[11px] font-bold text-slate-400 uppercase">o con tu cuenta</span>
+              <div className="flex-1 border-t border-slate-200"></div>
             </div>
 
             {/* Email / Phone Toggle */}
-            <div className="grid grid-cols-2 rounded-xl bg-slate-100 dark:bg-[#0a1211] p-1 border border-slate-200 dark:border-[#1d3330]">
+            <div className="grid grid-cols-2 rounded-xl bg-slate-100 p-1 border border-slate-200">
               <button
                 type="button"
                 onClick={() => setAccessMode("email")}
                 className={`rounded-lg py-1.5 text-xs font-bold transition ${
                   accessMode === "email"
-                    ? "bg-white dark:bg-[#142220] text-slate-900 dark:text-white shadow-sm"
-                    : "text-slate-500 hover:text-slate-900 dark:text-slate-400"
+                    ? "bg-white text-slate-900 shadow-sm"
+                    : "text-slate-500 hover:text-slate-900"
                 }`}
               >
                 Email
@@ -175,8 +175,8 @@ export default function Hero({ onAuthenticated }: HeroProps) {
                 onClick={() => setAccessMode("phone")}
                 className={`rounded-lg py-1.5 text-xs font-bold transition ${
                   accessMode === "phone"
-                    ? "bg-white dark:bg-[#142220] text-slate-900 dark:text-white shadow-sm"
-                    : "text-slate-500 hover:text-slate-900 dark:text-slate-400"
+                    ? "bg-white text-slate-900 shadow-sm"
+                    : "text-slate-500 hover:text-slate-900"
                 }`}
               >
                 Celular
@@ -184,7 +184,7 @@ export default function Hero({ onAuthenticated }: HeroProps) {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">
+              <label className="block text-xs font-bold text-slate-600 mb-1">
                 Tu nombre
               </label>
               <input
@@ -193,12 +193,12 @@ export default function Hero({ onAuthenticated }: HeroProps) {
                 onChange={(event) => setName(event.target.value)}
                 placeholder="ej. Martina"
                 required
-                className="w-full rounded-xl border border-slate-200 dark:border-[#1d3330] bg-white dark:bg-[#070a09] px-4 py-2.5 outline-none transition focus:border-emerald-700 text-sm"
+                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 outline-none transition focus:border-emerald-700 text-sm"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">
+              <label className="block text-xs font-bold text-slate-600 mb-1">
                 {accessMode === "email" ? "Correo electrónico" : "Número de celular"}
               </label>
               <input
@@ -211,14 +211,14 @@ export default function Hero({ onAuthenticated }: HeroProps) {
                     : "ej. +54 9 11 1234 5678"
                 }
                 required
-                className="w-full rounded-xl border border-slate-200 dark:border-[#1d3330] bg-white dark:bg-[#070a09] px-4 py-2.5 outline-none transition focus:border-emerald-700 text-sm"
+                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 outline-none transition focus:border-emerald-700 text-sm"
               />
             </div>
 
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full rounded-xl bg-[#0e2723] hover:bg-slate-900 dark:bg-emerald-800 dark:hover:bg-emerald-700 py-3 text-xs font-bold text-white transition shadow-sm cursor-pointer disabled:opacity-50"
+              className="w-full rounded-xl bg-[#0e2723] hover:bg-slate-900 py-3 text-xs font-bold text-white transition shadow-sm cursor-pointer disabled:opacity-50"
             >
               {isLoading ? "Ingresando..." : "Ingresar a Kinase"}
             </button>
@@ -228,14 +228,14 @@ export default function Hero({ onAuthenticated }: HeroProps) {
               <button
                 type="button"
                 onClick={() => activateLocalAccess("Modo Demo activado.")}
-                className="text-xs font-bold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition underline underline-offset-4 cursor-pointer"
+                className="text-xs font-bold text-slate-500 hover:text-slate-900 transition underline underline-offset-4 cursor-pointer"
               >
                 Probar sin registro (Modo Demo) →
               </button>
             </div>
 
             {authStatus && (
-              <p className="rounded-xl bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-200 dark:border-emerald-800 p-3 text-xs font-medium text-emerald-800 dark:text-emerald-300 text-center">
+              <p className="rounded-xl bg-emerald-50 border border-emerald-200 p-3 text-xs font-medium text-emerald-800 text-center">
                 {authStatus}
               </p>
             )}
@@ -244,7 +244,7 @@ export default function Hero({ onAuthenticated }: HeroProps) {
         </div>
 
         {/* Minimal Footnote Badges */}
-        <div className="pt-2 flex flex-wrap items-center justify-center gap-4 text-xs font-medium text-slate-500 dark:text-slate-400">
+        <div className="pt-2 flex flex-wrap items-center justify-center gap-4 text-xs font-medium text-slate-500">
           <span className="flex items-center gap-1.5">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-600"></span>
             Material verificado

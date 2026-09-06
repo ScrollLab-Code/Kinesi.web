@@ -217,21 +217,21 @@ function App() {
 
       <section
         id="inicio"
-        className={`px-6 pb-12 pt-24 text-slate-900 transition-colors duration-300 border-b ${
+        className={`px-6 pb-10 pt-24 text-slate-900 border-b ${
           isPremium
-            ? 'bg-gradient-to-r from-[#14120a] via-[#111c1a] to-[#0a1516] border-amber-500/35 text-white'
-            : 'bg-white dark:bg-[#111c1a] border-slate-100 dark:border-[#1d3330]'
+            ? 'bg-[#0f2824] border-amber-500/30 text-white'
+            : 'bg-white border-[#e7e3db]'
         }`}
       >
         <div className="mx-auto max-w-7xl">
           <p className={`mb-1.5 text-xs font-bold uppercase tracking-wider ${
-            isPremium ? 'text-amber-400' : 'text-emerald-800 dark:text-emerald-400'
+            isPremium ? 'text-amber-300' : 'text-emerald-800'
           }`}>
             {isPremium ? '⭐ Kinase VIP' : 'Panel de Estudio'}
           </p>
 
           <h1 className={`max-w-3xl text-2xl md:text-4xl font-black leading-tight tracking-tight ${
-            isPremium ? 'text-white' : 'text-slate-900 dark:text-white'
+            isPremium ? 'text-white' : 'text-slate-900'
           }`}>
             {isPremium 
               ? 'Hola 👋 Tenés acceso libre a todas las herramientas avanzadas.' 
@@ -241,8 +241,8 @@ function App() {
       </section>
 
       {/* Dynamic Navigation Tabs */}
-      <nav className={`sticky top-20 bg-[#fbf9f5]/95 dark:bg-[#091211]/95 backdrop-blur-md border-b px-6 py-3 z-30 transition-colors duration-300 ${
-        isPremium ? 'border-amber-500/20' : 'border-[#e7e3db] dark:border-[#1c2c29]'
+      <nav className={`sticky top-20 bg-[#fbf9f5]/95 backdrop-blur-md border-b px-6 py-3 z-30 transition-colors duration-300 ${
+        isPremium ? 'border-amber-500/20' : 'border-[#e7e3db]'
       }`}>
         <div className="mx-auto max-w-7xl flex gap-2 overflow-x-auto scrollbar-none">
           {(!isPremium
@@ -266,12 +266,12 @@ function App() {
               ]
           ).map(tab => {
             const isActive = activeSection === tab.id
-            let activeStyle = 'bg-[#0e2723] text-white shadow-sm dark:bg-emerald-800'
-            let inactiveStyle = 'bg-white border border-[#e5e0d5] text-slate-700 hover:bg-slate-100 dark:bg-[#0f1918] dark:border-[#1c2c29] dark:text-slate-300'
+            let activeStyle = 'bg-[#0e2723] text-white shadow-sm'
+            let inactiveStyle = 'bg-white border border-[#e5e0d5] text-slate-700 hover:bg-slate-100'
 
             if ('isSpecial' in tab && tab.isSpecial) {
               activeStyle = 'bg-amber-500 text-white shadow-sm'
-              inactiveStyle = 'bg-amber-50 border border-amber-200 text-amber-800 hover:bg-amber-100 dark:bg-amber-950/30 dark:border-amber-900/40 dark:text-amber-300'
+              inactiveStyle = 'bg-amber-50 border border-amber-200 text-amber-800 hover:bg-amber-100'
             }
 
             return (
