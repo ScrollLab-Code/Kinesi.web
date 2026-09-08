@@ -7,7 +7,7 @@ html {
 body {
   margin: 0;
   min-width: 320px;
-  background: #f4f1ea;
+  background: #ffffff;
   color: #0f172a;
   font-family:
     'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -24,49 +24,49 @@ select {
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
 }
 
+/* Gemini Notebook Gradient Text */
+.text-gradient-gemini {
+  background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 40%, #818cf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+/* Gemini Dark Card Mockup Aesthetics */
+.gemini-dark-card {
+  background: #08090d;
+  border: 1px solid #1a1d26;
+  border-radius: 24px;
+  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.45);
+}
+
+/* Gemini Pill Button */
+.gemini-pill-btn {
+  background: #000000;
+  color: #ffffff;
+  border-radius: 9999px;
+  font-weight: 700;
+  padding: 0.75rem 2rem;
+  transition: all 0.2s ease;
+}
+
+.gemini-pill-btn:hover {
+  background: #1e293b;
+  transform: translateY(-1px);
+}
+
 /* High Contrast Crisp Card Aesthetics */
 .glass-card, .tactile-card {
   background: #ffffff;
-  border: 1.5px solid #d1c9bc;
-  box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.07), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
   border-radius: 1.25rem;
 }
 
 .notebook-hero-card {
   background: #ffffff;
-  border: 2px solid #c9c0b1;
-  box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.12), 0 4px 12px 0 rgba(0, 0, 0, 0.04);
-}
-
-/* Crisp defined shadows */
-.clinical-shadow {
-  box-shadow: 0 12px 32px -8px rgba(15, 23, 42, 0.1);
-}
-
-/* High Contrast Utility Overrides to prevent text/borders from washing out */
-.text-slate-400, .text-slate-455, .text-slate-500 {
-  color: #334155 !important;
-}
-
-.text-slate-600, .text-slate-655, .text-slate-700 {
-  color: #1e293b !important;
-}
-
-.border-slate-100, .border-slate-200 {
-  border-color: #cbd5e1 !important;
-}
-
-.border-\[\#e7e3db\], .border-\[\#e5e0d5\] {
-  border-color: #c9c0b1 !important;
-}
-
-input, textarea, select {
-  border-color: #94a3b8 !important;
-  color: #0f172a !important;
-}
-
-input::placeholder, textarea::placeholder {
-  color: #64748b !important;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.1), 0 4px 12px 0 rgba(0, 0, 0, 0.03);
 }
 
 /* Custom scrollbar */
@@ -76,14 +76,14 @@ input::placeholder, textarea::placeholder {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f4f1ea;
+  background: #ffffff;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #b8b0a2;
+  background: #cbd5e1;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #9e9587;
+  background: #94a3b8;
 }
