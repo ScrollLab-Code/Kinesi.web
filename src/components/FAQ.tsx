@@ -31,11 +31,11 @@ export default function FAQ() {
       items: [
         {
           question: "¿Cómo realizo la compra o reserva de un turno de acompañamiento?",
-          answer: "Puedes reservar sesiones individuales de acompañamiento desde la sección 'Acompañamiento', seleccionando el día y la hora corriente que prefieras. El pago se procesa de manera ágil y la reserva se confirma directamente por WhatsApp para mantener contacto directo con tu tutor asignado."
+          answer: "Puedes reservar sesiones individuales de acompañamiento desde la sección 'Acompañamiento', seleccionando el día y la hora corriente que prefieras. El pago se procesa de manera ágil y la reserva se confirma directamente por WhatsApp para mantener contacto directo con tu acompañante académico asignado."
         },
         {
           question: "¿Puedo cancelar o reprogramar una reserva?",
-          answer: "Sí, puedes coordinar cambios de horario directamente con el tutor asignado a través de WhatsApp con hasta 24 horas de antelación sin costos adicionales."
+          answer: "Sí, puedes coordinar cambios de horario directamente con el acompañante académico asignado a través de WhatsApp con hasta 24 horas de antelación sin costos adicionales."
         }
       ]
     },

@@ -154,7 +154,7 @@ const buildBookingText = (booking: BookingPayload) => {
     '',
     '¡Tu solicitud de Acompañamiento en Kinase Academy ha sido registrada con éxito!',
     '',
-    'Para que tu tutor asignado pueda preparar la sesión de forma personalizada y darte la mejor ayuda posible, por favor completa el Test de Rendimiento Académico (Semáforo) dentro de nuestra plataforma antes de la fecha de tu encuentro.',
+    'Para que tu acompañante académico asignado pueda preparar la sesión de forma personalizada y darte la mejor ayuda posible, por favor completa el Test de Rendimiento Académico (Semáforo) dentro de nuestra plataforma antes de la fecha de tu encuentro.',
     '',
     'Solo te tomará 2 minutos y nos brindará información clave sobre tus hábitos de estudio y estilo de vida.',
     '',

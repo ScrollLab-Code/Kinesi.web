@@ -205,7 +205,7 @@ export default function TestSection() {
             </h2>
 
             <p className="mb-6 text-xs leading-relaxed text-slate-500">
-              El tutor de Kinase Academy ya recibió el resultado de tu semáforo [{result.status}] y tus respuestas. Te contactaremos vía WhatsApp para acordar una entrevista corta de 15 minutos sin cargo.
+              El acompañante académico de Kinase Academy ya recibió el resultado de tu semáforo [{result.status}] y tus respuestas. Te contactaremos vía WhatsApp para acordar una entrevista corta de 15 minutos sin cargo.
             </p>
 
             <a
@@ -235,7 +235,7 @@ export default function TestSection() {
               </h2>
 
               <p className="text-xs text-slate-500 mt-1">
-                Necesitamos tus datos para vincular tus resultados al tutor médico que realizará la devolución.
+                Necesitamos tus datos para vincular tus resultados al acompañante académico que realizará la devolución.
               </p>
             </div>
 

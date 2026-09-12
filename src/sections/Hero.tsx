@@ -103,19 +103,19 @@ export default function Hero({ onAuthenticated }: HeroProps) {
     <div id="inicio" className="bg-white text-slate-900 font-sans min-h-screen">
       
       {/* ------------------------------------------------------------------ */}
-      {/* HERO TOP SECTION (Exact Gemini Notebook Style)                    */}
+      {/* HERO TOP SECTION (Exact Gemini Notebook Style Layout)             */}
       {/* ------------------------------------------------------------------ */}
       <section className="pt-16 pb-20 px-6 max-w-5xl mx-auto text-center space-y-8">
         
         {/* Main Title */}
         <h1 className="text-4xl sm:text-6xl md:text-7xl font-black text-slate-900 tracking-tight leading-[1.1]">
-          Entiende sobre <br />
-          <span className="text-gradient-gemini">cualquier materia</span>
+          Aprobá tus materias filtro <br />
+          <span className="text-gradient-gemini">con Kinase Academy</span>
         </h1>
 
         {/* Subtitle */}
         <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto font-normal leading-relaxed">
-          Es tu socio de investigación y razonamiento médico. Está basado en la información en la que confías y se creó para ayudarte a aprobar.
+          Tu ecosistema de estudio médico integrado: Apuntes verificados, Planificador Inverso de Finales, Diagnóstico Semáforo y Acompañamiento Académico personalizado.
         </p>
 
         {/* Black Pill CTA Button */}
@@ -132,7 +132,7 @@ export default function Hero({ onAuthenticated }: HeroProps) {
         {/* Section Divider Subtitle */}
         <div className="pt-16 sm:pt-24 border-b border-slate-100 pb-8">
           <h2 className="text-xl sm:text-3xl font-black text-slate-900 tracking-tight">
-            Tu compañero de estudio e investigación potenciado por IA
+            Tu plataforma de alto rendimiento médico potenciada por herramientas reales de cátedra
           </h2>
         </div>
       </section>
@@ -142,29 +142,29 @@ export default function Hero({ onAuthenticated }: HeroProps) {
       {/* ------------------------------------------------------------------ */}
       <section className="max-w-6xl mx-auto px-6 py-12 space-y-24">
         
-        {/* Feature 1: Sube tus fuentes */}
+        {/* Feature 1: Apuntes, Desgrabados y Atlas de Cátedra */}
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div className="space-y-4 max-w-md">
-            <div className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center text-xl text-slate-800">
-              👤
+            <div className="h-10 w-10 rounded-full bg-emerald-50 flex items-center justify-center text-xl text-emerald-800">
+              📚
             </div>
             <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
-              Sube tus fuentes de cátedra
+              Apuntes verificados y Atlas de Cátedra
             </h3>
             <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-              Sube archivos PDF, sitios web, videos de YouTube, archivos de audio, documentos de Google, presentaciones de Google y mucho más. Pídele a Kinase que explique conceptos complejos en términos simples, proporcione ejemplos reales y refuerce tu comprensión.
+              Accedé a resúmenes estructurados, desgrabados de clases teóricas de tu facultad y a la mesa de disección virtual con preparados anatómicos basados en libros oficiales (Latarjet, Guyton & Hall, Ross).
             </p>
-            <p className="text-xs sm:text-sm font-semibold text-slate-400 italic pt-2">
-              Aprende más rápido y en profundidad.
+            <p className="text-xs sm:text-sm font-semibold text-emerald-700 italic pt-2">
+              Estudiá con material de tu facultad sin perder tiempo organizando notas.
             </p>
           </div>
 
           {/* Dark Card Mockup 1 */}
           <div className="gemini-dark-card p-6 sm:p-8 text-white space-y-6">
             <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-              <span className="text-xs font-mono text-slate-400">Fuentes de Estudio</span>
+              <span className="text-xs font-mono text-slate-400">Bibliografía de Cátedra</span>
               <span className="text-xs bg-emerald-950 text-emerald-400 border border-emerald-800 px-2.5 py-0.5 rounded-full font-bold">
-                +3 Documentos Activos
+                3 Textos Activos
               </span>
             </div>
 
@@ -172,60 +172,60 @@ export default function Hero({ onAuthenticated }: HeroProps) {
               <div className="bg-[#12151f] p-3.5 rounded-xl border border-slate-800 flex items-center gap-3">
                 <span className="text-amber-400 text-base">📘</span>
                 <div>
-                  <p className="font-bold text-slate-200">LIT 300 Anatomía Latarjet</p>
-                  <p className="text-[10px] text-slate-400">Tomo 1 - Miembro Superior & Sistema Nervioso</p>
+                  <p className="font-bold text-slate-200">Anatomía Humana (Latarjet - Tomo 1)</p>
+                  <p className="text-[10px] text-slate-400">Canal de Torsión del Húmero & Plexo Braquial</p>
                 </div>
               </div>
               <div className="bg-[#12151f] p-3.5 rounded-xl border border-slate-800 flex items-center gap-3">
                 <span className="text-rose-400 text-base">📕</span>
                 <div>
                   <p className="font-bold text-slate-200">Guyton & Hall Fisiología Médica</p>
-                  <p className="text-[10px] text-slate-400">Capítulo 14 - Potenciales de Acción</p>
+                  <p className="text-[10px] text-slate-400">Capítulo 14 - Potenciales de Acción Muscular y Cardíaco</p>
                 </div>
               </div>
               <div className="bg-[#12151f] p-3.5 rounded-xl border border-slate-800 flex items-center gap-3">
-                <span className="text-red-400 text-base">🎥</span>
+                <span className="text-teal-400 text-base">🔬</span>
                 <div>
-                  <p className="font-bold text-slate-200">Clase Teórica Histología Ross</p>
-                  <p className="text-[10px] text-slate-400">Tejido Epitelial y Conectivo Especializado</p>
+                  <p className="font-bold text-slate-200">Histología Texto y Atlas (Ross)</p>
+                  <p className="text-[10px] text-slate-400">Tejido Epitelial de Revestimiento y Glandular</p>
                 </div>
               </div>
             </div>
 
             <div className="bg-[#111726] border border-sky-900/50 rounded-xl p-4 text-xs text-sky-200 leading-relaxed font-sans">
-              💡 <strong>Kinase Responde:</strong> "El nervio radial (C5-C8) discurre por el canal de torsión del húmero acompañado por la arteria braquial profunda..."
+              💡 <strong>Kinase Responde:</strong> "El nervio radial (C5-T1) discurre por el canal de torsión del húmero acompañado por la arteria braquial profunda..."
             </div>
           </div>
         </div>
 
-        {/* Feature 2: Estadísticas e información instantáneas */}
+        {/* Feature 2: Planificador Inverso de Finales */}
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div className="space-y-4 max-w-md lg:order-2">
-            <div className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center text-xl text-slate-800">
-              ⚡
+            <div className="h-10 w-10 rounded-full bg-blue-50 flex items-center justify-center text-xl text-blue-800">
+              📅
             </div>
             <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
-              Estadísticas e información instantáneas
+              Planificador Inverso de Exámenes
             </h3>
             <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-              Con todas tus fuentes en su lugar, Kinase se pone a trabajar y se convierte en un experto en la información que más te interesa. Genera guías de estudio, cuadros sinópticos y autoevaluaciones con un solo clic.
+              Ingresá la fecha de tu examen final o parcial. Kinase calcula automáticamente los bloques de estudio diarios requeridos, simulacros cronometrados y días de repaso liviano antes del examen.
             </p>
-            <p className="text-xs sm:text-sm font-semibold text-slate-400 italic pt-2">
-              Presenta temas con confianza.
+            <p className="text-xs sm:text-sm font-semibold text-blue-700 italic pt-2">
+              Llegá a tu examen con el 100% del temario cubierto.
             </p>
           </div>
 
           {/* Dark Card Mockup 2 */}
           <div className="gemini-dark-card p-6 sm:p-8 text-white space-y-6 lg:order-1 relative overflow-hidden">
             
-            {/* Floating Sticker */}
-            <div className="absolute top-4 right-4 bg-pink-300 text-slate-950 font-black text-[10px] uppercase tracking-wider px-3 py-1 rounded-full rotate-3 shadow-lg border border-pink-400">
-              INSTANT STUDY GUIDE!
+            {/* Floating Badge */}
+            <div className="absolute top-4 right-4 bg-emerald-400 text-slate-950 font-black text-[10px] uppercase tracking-wider px-3 py-1 rounded-full rotate-3 shadow-lg border border-emerald-500">
+              PLANIFICACIÓN DE FINALES
             </div>
 
             <div className="space-y-3">
               <div className="w-full bg-[#12151f] border border-slate-800 rounded-full px-4 py-2.5 flex items-center gap-2 text-slate-400 text-xs font-mono">
-                <span>+ Add note or prompt...</span>
+                <span>🎯 Materia Objetivo: Anatomía Humana - Examen Final</span>
               </div>
 
               <div className="grid grid-cols-2 gap-2.5 pt-2">
@@ -234,115 +234,123 @@ export default function Hero({ onAuthenticated }: HeroProps) {
                   onClick={() => setShowAuthModal(true)}
                   className="bg-[#141b2d] hover:bg-[#1e2942] border border-slate-800 rounded-2xl p-3.5 text-left text-xs font-bold text-slate-200 transition cursor-pointer flex items-center gap-2"
                 >
-                  <span>🎓</span> Study guide
+                  <span>🎓</span> Plan Inverso Anatomía
                 </button>
                 <button 
                   type="button"
                   onClick={() => setShowAuthModal(true)}
                   className="bg-[#141b2d] hover:bg-[#1e2942] border border-slate-800 rounded-2xl p-3.5 text-left text-xs font-bold text-slate-200 transition cursor-pointer flex items-center gap-2"
                 >
-                  <span>📑</span> Briefing doc
+                  <span>📆</span> Cronograma Semanal
                 </button>
                 <button 
                   type="button"
                   onClick={() => setShowAuthModal(true)}
                   className="bg-[#141b2d] hover:bg-[#1e2942] border border-slate-800 rounded-2xl p-3.5 text-left text-xs font-bold text-slate-200 transition cursor-pointer flex items-center gap-2"
                 >
-                  <span>💬</span> FAQ
+                  <span>⏳</span> Días Faltantes: 14 días
                 </button>
                 <button 
                   type="button"
                   onClick={() => setShowAuthModal(true)}
                   className="bg-[#141b2d] hover:bg-[#1e2942] border border-slate-800 rounded-2xl p-3.5 text-left text-xs font-bold text-slate-200 transition cursor-pointer flex items-center gap-2"
                 >
-                  <span>📈</span> Timeline
+                  <span>📊</span> Cobertura Temario: 85%
                 </button>
               </div>
 
-              <div className="bg-[#121722] border border-slate-800 rounded-xl p-3.5 text-xs text-amber-300 font-mono flex items-center gap-2">
-                <span>📋</span> Ulysses & Medical Case Analysis: 18 chapters ready
+              <div className="bg-[#121722] border border-slate-800 rounded-xl p-3.5 text-xs text-emerald-300 font-mono flex items-center gap-2">
+                <span>📋</span> <strong>Bloque Activo:</strong> Día previo - Fijación ligera y repaso de esquemas (2h)
               </div>
             </div>
           </div>
         </div>
 
-        {/* Feature 3: Ve la fuente, no solo la respuesta */}
+        {/* Feature 3: Diagnóstico Semáforo y Acompañamiento Académico */}
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div className="space-y-4 max-w-md">
-            <div className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center text-xl text-slate-800">
-              ✳️
+            <div className="h-10 w-10 rounded-full bg-amber-50 flex items-center justify-center text-xl text-amber-800">
+              🚥
             </div>
             <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
-              Ve la fuente, no solo la respuesta
+              Diagnóstico Semáforo y Acompañamiento Académico
             </h3>
             <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-              Confía en cada respuesta gracias a que Kinase proporciona referencias claras de su trabajo y te muestra las citas exactas de tus fuentes, libros de texto y desgrabados oficiales de cátedra.
+              Evaluá tu nivel de riesgo académico (Verde, Amarillo, Rojo) con nuestro test inicial. Recibí una estrategia personalizada y coordiná encuentros con un acompañante académico para destrabar las unidades más exigentes.
             </p>
-            <p className="text-xs sm:text-sm font-semibold text-slate-400 italic pt-2">
-              Verificabilidad total en cada concepto.
+            <p className="text-xs sm:text-sm font-semibold text-amber-700 italic pt-2">
+              Monitoreo continuo de tu rendimiento real.
             </p>
           </div>
 
           {/* Dark Card Mockup 3 */}
           <div className="gemini-dark-card p-6 sm:p-8 text-white space-y-5">
             <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
-              <span className="text-base">📄</span>
-              <span className="text-sm font-bold text-slate-100">Sources Breakdown</span>
+              <span className="text-base">📊</span>
+              <span className="text-sm font-bold text-slate-100">Estado Académico - Diagnóstico Semáforo</span>
             </div>
 
             <div className="space-y-3 font-mono text-xs">
               <div className="flex items-center justify-between p-3 rounded-xl bg-[#12151f] border border-slate-800">
-                <span className="text-amber-400">🟨 LIT 300 Study Guide</span>
-                <span className="text-[10px] text-slate-400">Page 142</span>
+                <span className="text-emerald-400">🟢 Zona Verde: Anatomía General</span>
+                <span className="text-[10px] text-slate-400">18/20 Correctas</span>
               </div>
               <div className="flex items-center justify-between p-3 rounded-xl bg-[#12151f] border border-slate-800">
-                <span className="text-red-400">📕 LIT 300 Joyce</span>
-                <span className="text-[10px] text-slate-400">Page 89</span>
+                <span className="text-amber-400">🟡 Zona Amarilla: Fisiología Celular</span>
+                <span className="text-[10px] text-slate-400">Repaso Recomendado</span>
               </div>
               <div className="flex items-center justify-between p-3 rounded-xl bg-[#12151f] border border-slate-800">
-                <span className="text-sky-400">▶️ Ulysses Themes</span>
-                <span className="text-[10px] text-slate-400">12:45 min</span>
+                <span className="text-rose-400">🔴 Zona Roja: Histología Ósea</span>
+                <span className="text-[10px] text-slate-400">Atención Prioritaria</span>
               </div>
+            </div>
+
+            <div className="bg-[#191524] border border-purple-900/50 rounded-xl p-3.5 text-xs text-purple-200 font-sans">
+              💬 <strong>Acompañante Académico Asignado:</strong> "Diseñamos una rutina de flashcards y simulador de parcial oral para asegurar Histología este fin de semana."
             </div>
           </div>
         </div>
 
-        {/* Feature 4: Escucha y aprende sobre la marcha */}
+        {/* Feature 4: Flashcards Anki y Simulador de Examen Oral */}
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div className="space-y-4 max-w-md lg:order-2">
-            <div className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center text-xl text-slate-800">
-              🎙️
+            <div className="h-10 w-10 rounded-full bg-purple-50 flex items-center justify-center text-xl text-purple-800">
+              🎴
             </div>
             <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
-              Escucha y aprende sobre la marcha
+              Flashcards Anki y Simulador de Examen Oral
             </h3>
             <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-              Nuestra función Resumen de audio puede convertir tus fuentes en conversaciones de "Análisis en profundidad" atractivas con un solo clic. Escuchá tus temas de estudio mientras viajás a la facultad.
+              Reforzá la memoria a largo plazo con tarjetas de repetición espaciada y practicá la presentación oral ante casos clínicos reales con nuestro simulador de Gymkana.
             </p>
-            <p className="text-xs sm:text-sm font-semibold text-slate-400 italic pt-2">
-              Repaso activo en formato podcast.
+            <p className="text-xs sm:text-sm font-semibold text-purple-700 italic pt-2">
+              Convertí el conocimiento en fluidez para el examen oral.
             </p>
           </div>
 
           {/* Dark Card Mockup 4 */}
-          <div className="gemini-dark-card p-6 sm:p-8 text-white space-y-6 lg:order-1 relative overflow-hidden bg-gradient-to-br from-[#071318] via-[#091a1d] to-[#080a12]">
+          <div className="gemini-dark-card p-6 sm:p-8 text-white space-y-6 lg:order-1 relative overflow-hidden bg-gradient-to-br from-[#08090d] via-[#0f1424] to-[#080a12]">
             
-            <div className="absolute top-4 right-4 bg-yellow-300 text-slate-950 font-black text-[10px] uppercase tracking-wider px-3 py-1 rounded-full -rotate-2 shadow-lg">
-              CREATE AUDIO STUDY GUIDES
+            <div className="absolute top-4 right-4 bg-purple-300 text-slate-950 font-black text-[10px] uppercase tracking-wider px-3 py-1 rounded-full -rotate-2 shadow-lg">
+              SIMULADOR ORAL & FLASHCARDS
             </div>
 
-            <div className="pt-6 pb-2 text-center space-y-4">
-              <div className="inline-flex items-center gap-3 bg-[#0d2a2f] border border-teal-500/40 rounded-full px-5 py-2.5 text-teal-300 text-sm font-bold shadow-lg">
-                <span className="h-3 w-3 rounded-full bg-teal-400 animate-pulse"></span>
-                Audio Overview Player
+            <div className="pt-4 space-y-3 font-mono text-xs">
+              <div className="bg-[#12172b] p-4 rounded-xl border border-purple-950/80 space-y-2">
+                <p className="text-purple-300 font-bold">❓ Pregunta de Flashcard:</p>
+                <p className="text-slate-200 font-sans text-xs">¿Cuáles son las 3 capas que forman la barrera de filtración glomerular renal?</p>
               </div>
-              <div className="flex justify-center items-center gap-1.5 h-12 pt-2">
-                <span className="w-1 bg-teal-400 h-6 animate-pulse rounded-full"></span>
-                <span className="w-1 bg-teal-400 h-10 animate-pulse delay-75 rounded-full"></span>
-                <span className="w-1 bg-teal-300 h-4 animate-pulse delay-150 rounded-full"></span>
-                <span className="w-1 bg-teal-400 h-12 animate-pulse rounded-full"></span>
-                <span className="w-1 bg-teal-300 h-7 animate-pulse delay-100 rounded-full"></span>
-                <span className="w-1 bg-teal-400 h-9 animate-pulse delay-200 rounded-full"></span>
+
+              <div className="bg-[#0e1f1c] p-4 rounded-xl border border-emerald-900/60 space-y-1">
+                <p className="text-emerald-400 font-bold">✅ Respuesta Verificada:</p>
+                <p className="text-slate-300 font-sans text-xs">1) Endotelio fenestrado. 2) Membrana basal glomerular. 3) Pedicelos de los podocitos.</p>
+              </div>
+            </div>
+
+            <div className="pt-2 text-center space-y-2">
+              <div className="inline-flex items-center gap-3 bg-[#131b2e] border border-sky-500/30 rounded-full px-5 py-2 text-sky-300 text-xs font-bold shadow-lg">
+                <span className="h-2.5 w-2.5 rounded-full bg-sky-400 animate-pulse"></span>
+                Simulador de Examen Oral Cronometrado (Gymkana)
               </div>
             </div>
           </div>
@@ -351,14 +359,14 @@ export default function Hero({ onAuthenticated }: HeroProps) {
       </section>
 
       {/* ------------------------------------------------------------------ */}
-      {/* 3-COLUMN FEATURE GRID ("Cómo usan las personas Kinase")            */}
+      {/* 3-COLUMN FEATURE GRID ("Cómo estudian los alumnos en Kinase")       */}
       {/* ------------------------------------------------------------------ */}
       <section className="bg-slate-50/70 border-t border-slate-100 py-20 px-6">
         <div className="max-w-6xl mx-auto space-y-16">
           
           <div className="text-center">
             <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
-              Cómo usan las personas Kinase Academy
+              Cómo estudian los alumnos en Kinase Academy
             </h2>
           </div>
 
@@ -366,49 +374,49 @@ export default function Hero({ onAuthenticated }: HeroProps) {
             
             {/* Column 1 */}
             <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs">
-              <div className="h-10 w-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
-                🎓
+              <div className="h-10 w-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-xl">
+                👨‍⚕️
               </div>
               <h3 className="text-lg font-bold text-slate-900">
-                Potencia tu estudio
+                Acompañamiento Académico Personalizado
               </h3>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Sube grabaciones de clases, capítulos de libros de texto y trabajos de investigación. Pídele a Kinase que explique conceptos complejos en términos simples, proporcione ejemplos reales y refuerce tu comprensión.
+                Conectate con un acompañante académico especializado en tu cátedra para resolver dudas puntuales, revisar autoevaluaciones y estructurar tu forma de rendir.
               </p>
               <p className="text-xs font-semibold text-slate-400 italic pt-2">
-                Aprende más rápido y en profundidad.
+                Rendí con confianza y apoyo real.
               </p>
             </div>
 
             {/* Column 2 */}
             <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs">
-              <div className="h-10 w-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl">
-                📑
+              <div className="h-10 w-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center text-xl">
+                📅
               </div>
               <h3 className="text-lg font-bold text-slate-900">
-                Organiza tu pensamiento
+                Organización Inversa de Cursada
               </h3>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Sube tu material de referencia y permite que Kinase cree un esquema de presentación optimizado, con puntos clave y pruebas de respaldo para rendir tus exámenes orales.
+                Transformá programas extensos de materias filtro en planes semanales alcanzables con metas diarias, bloques de lectura e hitos de autoevaluación.
               </p>
               <p className="text-xs font-semibold text-slate-400 italic pt-2">
-                Presenta temas con confianza.
+                Dominá tus tiempos de estudio.
               </p>
             </div>
 
             {/* Column 3 */}
             <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs">
-              <div className="h-10 w-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl">
-                💡
+              <div className="h-10 w-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center text-xl">
+                📚
               </div>
               <h3 className="text-lg font-bold text-slate-900">
-                Elabora nuevas respuestas
+                Comunidad y Feria de Materiales
               </h3>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Sube notas de intercambio de ideas, investigación de parciales pasados y desgrabados. Pídele a Kinase que identifique preguntas frecuentes de los docentes y anticipe la evaluación.
+                Accedé y compartí desgrabados verificados, resúmenes organizados por comisiones, atlas fotográficos comentados y mazos de Anki de la facultad.
               </p>
               <p className="text-xs font-semibold text-slate-400 italic pt-2">
-                Desbloquea tu potencial creativo.
+                Potenciá tu aprendizaje en equipo.
               </p>
             </div>
 

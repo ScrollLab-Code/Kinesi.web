@@ -105,7 +105,7 @@ export default function AcademicFair() {
           {[
             [`${resources.length} Recursos`, "Disponibles para estudio"],
             ["Fase Inicial", "Esperando propuestas"],
-            ["Verificación", "Por tutores avanzados"],
+            ["Verificación", "Por acompañantes académicos avanzados"],
           ].map(([value, label]) => (
             <div
               key={label}

@@ -93,7 +93,7 @@ export default function HabitCreator() {
     if (hasAcademicSupport) {
       subjects.forEach(sub => {
         if (sub.difficulty === 1 || sub.difficulty === 2) {
-          habits.push(`Alerta de tutoría académica recomendada para la materia: ${sub.name} (Nivel de dificultad crítico).`)
+          habits.push(`Alerta de acompañamiento académico recomendado para la materia: ${sub.name} (Nivel de dificultad crítico).`)
         }
       })
     }
@@ -384,7 +384,7 @@ export default function HabitCreator() {
               {/* Question B */}
               <div>
                 <label className="block text-xs font-bold text-slate-600 mb-1.5">
-                  Pregunta B: ¿Requiere acompañamiento académico docente en tutorías?
+                  Pregunta B: ¿Requiere acompañamiento académico personalizado?
                 </label>
                 <label className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700">
                   <input
@@ -393,7 +393,7 @@ export default function HabitCreator() {
                     onChange={e => setHasAcademicSupport(e.target.checked)}
                     className="rounded accent-amber-500"
                   />
-                  Sí, deseo recibir alertas de tutorías en materias críticas (Dificultad Rojo/Naranja).
+                  Sí, deseo recibir alertas de acompañamiento académico en materias críticas (Dificultad Rojo/Naranja).
                 </label>
               </div>
 
@@ -434,7 +434,7 @@ export default function HabitCreator() {
                   </h5>
                   <ul className="space-y-2">
                     {generatedHabits.map((habit, idx) => {
-                      const isAlert = habit.includes("Alerta de tutoría")
+                      const isAlert = habit.includes("Alerta de acompañamiento")
                       return (
                         <li 
                           key={idx} 

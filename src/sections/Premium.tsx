@@ -52,7 +52,7 @@ export default function Premium({ isPremium, onActivate, onDeactivate }: Premium
               Desbloquea tu Entorno Médico de Alto Rendimiento
             </h2>
             <p className="text-sm md:text-base text-slate-600 dark:text-slate-350 leading-relaxed">
-              Transforma tu forma de estudiar medicina con acceso ilimitado a simuladores, planificadores y herramientas exclusivas diseñadas por tutores de cátedra.
+              Transforma tu forma de estudiar medicina con acceso ilimitado a simuladores, planificadores y herramientas exclusivas diseñadas por acompañantes académicos de cátedra.
             </p>
           </div>
 
@@ -316,7 +316,7 @@ export default function Premium({ isPremium, onActivate, onDeactivate }: Premium
 
                 <div className="border-t border-slate-100 pt-4 space-y-3">
                   <p className="text-[11px] text-slate-500 leading-relaxed">
-                    Si te sientes abrumado con la materia o necesitas ayuda personalizada para organizar tus tiempos, solicita asistencia de nuestros tutores.
+                    Si te sientes abrumado con la materia o necesitas ayuda personalizada para organizar tus tiempos, solicita asistencia de nuestros acompañantes académicos.
                   </p>
 
                   <a
